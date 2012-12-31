@@ -2,4 +2,11 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  default_title:              'White Shark - Windows and Eaves Cleaning, Painting'
+  default_page_description:   'Windows and Eaves Cleaning, Painting, Toronto, White Shark Ltd'
+  white_shark:                'White Shark'
+  extra_mile:                 'Extra Mile'
+  white_shark_ltd:            'White Shark Ltd'
+  call_us_or:                 'Call us or '
+  click_here:                 'click here'
+  free_quote:                 'for a free quote. Quotes usually provided within a day.'

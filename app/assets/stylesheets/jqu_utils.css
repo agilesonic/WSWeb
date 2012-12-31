@@ -1,0 +1,29 @@
+.jqu_imageholder {
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+.jqu_imageholder div {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 0;
+}
+.jqu_imageholder div.prev {
+	z-index: 1;
+}
+.jqu_imageholder div.curr {
+	z-index: 2;
+}
+.jqu_controlbar div {
+	float: right;
+	padding: 2px 10px 2px 0px;
+	color: #fff;
+	font-size: 0.9em;
+}
+.jqu_controlbar div span {
+	cursor: pointer;
+}
+.jqu_controlbar div span.curr{
+	color: #f00;
+}

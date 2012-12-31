@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>WSWeb</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
+  	<title><%= @title || I18n.t(:default_title) %></title>
+  	<meta name="description" content="<%= I18n.t :default_page_description %>" />
+  	<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+  	<%= favicon_link_tag 'favicon.ico' %>
+  	<%= stylesheet_link_tag 'ui-lightness/jquery-ui-1.8.20.custom' %>
+  	<%= stylesheet_link_tag 'global' %>
+  	<%= stylesheet_link_tag 'jqu_utils' %>
+  	<!--[if lt IE 9]>
+  	<%= javascript_include_tag 'html5shiv' %>
+  	<![endif]-->
+  	<%= javascript_include_tag 'jquery-1.7.2.min' %>
+  	<%= javascript_include_tag 'jquery-ui-1.8.20.custom.min' %>
+  	<%= javascript_include_tag 'jqu_utils' %>
+  	<%= csrf_meta_tag %>
+  	<%= yield :head %>
 </head>
-<body>
 
-<%= yield %>
-
+<body >
+	<%= render :partial => '/shared/header' %>
+	<%= render :partial => '/shared/mainnav' %>
+	<div style="clear: both"></div>
+	<div class="content">
+	<%= yield %>
+	</div><!-- end of .content -->
+	<%= render :partial => '/shared/footer' %>
 </body>
+
 </html>

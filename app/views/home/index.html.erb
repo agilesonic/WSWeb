@@ -1,7 +1,7 @@
 <script type="text/javascript">
   	$(function() {
 		$("#services section").click(function() {
-			document.location = "/services.jsp";
+			document.location = '<%= services_path %>';
 		});
 		rotate_images({
 			block: "fadeshow",
@@ -56,20 +56,20 @@
 			</ul>
 		</section>
 		<section id="eaves">
-			<h2>Eaves cleaning</h2>
-			<p>We clean thousands of eaves troughs every year.</p>
+			<h2><%= I18n.t(:eaves_cleaning) %></h2>
+			<p><%= I18n.t(:eaves_cleaning_info) %></p>
 			<ul>
-				<li>Interior of eaves troughs on houses and garages</li>
-				<li>Cleaning downspouts, removing any clogs and installing downspouts cages</li>
+				<li><%= I18n.t(:eaves_trough) %></li>
+				<li><%= I18n.t(:downspout) %></li>
 			</ul>
 		</section>
 		<section id="painting">
-			<h2>Painting</h2>
-			<p>We have painted over 2500 homes in the GTA</p>
+			<h2><%= I18n.t(:painting) %></h2>
+			<p><%= I18n.t(:painting_info) %></p>
 			<ul>
-				<li>Interior painting</li>
-				<li>Exterior painting</li>
-				<li>Staining, paint removal and wallpaper stripping</li>
+				<li><%= I18n.t(:interior_painting) %></li>
+				<li><%= I18n.t(:exterior_painting) %></li>
+				<li><%= I18n.t(:painting_removal) %></li>
 			</ul>
 		</section>
 	</div>

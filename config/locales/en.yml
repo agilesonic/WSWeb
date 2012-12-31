@@ -18,4 +18,13 @@ en:
   interior:                   'Interior'
   storm_window_cleaning:      'Storm window cleaning'
   construction_cleaning:      'Construction cleaning'
+  eaves_cleaning:             'Eaves cleaning'
+  eaves_cleaning_info:        'We clean thousands of eaves troughs every year.'
+  eaves_trough:               'Interior of eaves troughs on houses and garages'
+  downspout:                  'Cleaning downspouts, removing any clogs and installing downspouts cages'
+  painting:                   'Painting'
+  painting_info:              'We have painted over 2500 homes in the GTA.'
+  interior_painting:          'Interior painting'
+  exterior_painting:          'Exterior painting'
+  paint_removal:              'Staining, paint removal and wallpaper stripping'                   
   

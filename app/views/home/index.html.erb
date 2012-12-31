@@ -1,2 +1,76 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<script type="text/javascript">
+  	$(function() {
+		$("#services section").click(function() {
+			document.location = "/services.jsp";
+		});
+		rotate_images({
+			block: "fadeshow",
+				width: 580,
+				height: 393,
+				images: [
+				{
+					src: '/assets/alex.jpg', 
+					alt: 'Crew at work',
+					link: '#'
+				},
+				{
+					src: '/assets/window359.jpg', 
+					alt: 'Crew at work',
+					link: '#'
+				},
+				{
+					src: '/assets/window360.jpg', 
+					alt: 'Crew at work',
+					link: '#'
+				},
+				{
+					src: '/assets/window361.jpg', 
+					alt: 'Crew at work',
+					link: '#'
+				},
+				{
+					src: '/assets/window362.jpg', 
+					alt: 'Crew at work',
+					link: '#'
+				}
+				]
+		});
+	});
+</script>
+<section id="content">
+	<div id="banner">
+		<div id="fadeshow">
+		</div>
+		<p><%= I18n.t(:company_overview) %></p>
+		<p><%= I18n.t(:our_crew) %></p>				
+	</div>
+	<div id="services">
+		<section id="window">
+			<h2><%= I18n.t(:window_cleaning) %></h2>
+			<p><%= I18n.t(:window_cleaning_info) %></p>
+			<ul>
+				<li><%= I18n.t(:exterior) %></li>
+				<li><%= I18n.t(:interior) %></li>
+				<li><%= I18n.t(:storm_window_cleaning) %></li>
+				<li><%= I18n.t(:construction_cleaning) %></li>
+			</ul>
+		</section>
+		<section id="eaves">
+			<h2>Eaves cleaning</h2>
+			<p>We clean thousands of eaves troughs every year.</p>
+			<ul>
+				<li>Interior of eaves troughs on houses and garages</li>
+				<li>Cleaning downspouts, removing any clogs and installing downspouts cages</li>
+			</ul>
+		</section>
+		<section id="painting">
+			<h2>Painting</h2>
+			<p>We have painted over 2500 homes in the GTA</p>
+			<ul>
+				<li>Interior painting</li>
+				<li>Exterior painting</li>
+				<li>Staining, paint removal and wallpaper stripping</li>
+			</ul>
+		</section>
+	</div>
+</section>

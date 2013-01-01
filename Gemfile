@@ -36,6 +36,8 @@ gem 'execjs'
 gem 'libv8', '~> 3.11.8'
 gem 'therubyracer'
 
+gem "dynamic_form"
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

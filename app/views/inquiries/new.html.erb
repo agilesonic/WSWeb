@@ -1,0 +1,54 @@
+<div class="div_form">
+	<h1>Contact us</h1>
+	<p>Fill out the form below for a no-obligation quote on your window/eaves cleaning job, or painting job.</p>
+	<p>For existing clients, please login to book new jobs or manage current jobs.</p>
+	<p><span class="required">*</span> required fields</p>
+
+	<%= form_for @inquiry do |form| %>
+		<div class="input">
+			<%= form.label :name, 'Name <span class="required">*</span>'.html_safe %>
+			<%= form.text_field :name, :size => 40 %>
+			<span style="color: red"><%= field_error :name, @inquiry.errors[:name] %></span>
+		</div>
+		<div class="input">
+			<%= form.label :address, 'Address <span class="required">*</span>'.html_safe %>
+			<%= form.text_field :address, :size => 40 %>
+			<span style="color: red"><%= field_error :address, @inquiry.errors[:address] %></span>
+		</div>
+		<div class="input">
+			<%= form.label :city, 'City <span class="required">*</span>'.html_safe %>
+			<%= form.select :city, ['Toronto'], :selected => 'Toronto' %>
+			<span style="color: red"><%= field_error :city, @inquiry.errors[:city] %></span>
+		</div>
+		<div class="input">
+			<%= form.label :postal_code, 'Postal code <span class="required">*</span>'.html_safe %>
+			<%= form.text_field :postal_code, :size => 7 %>
+			<span style="color: red"><%= field_error :postal_code, @inquiry.errors[:postal_code] %></span>
+		</div>
+		<div class="input">
+			<%= form.label :phone, 'Phone <span class="required">*</span>'.html_safe %>
+			<%= form.text_field :phone, :size => 40 %>
+			<span style="color: red"><%= field_error :phone, @inquiry.errors[:phone] %></span>
+		</div>
+		<div class="input">
+			<%= form.label :email, 'Email' %>
+			<%= form.text_field :email, :size => 40 %>
+			<span style="color: red"><%= field_error :email, @inquiry.errors[:email] %></span>
+		</div>
+		<div class="input">
+			<%= form.label :inquiry_type, 'Type of inquiry' %>
+			<%= form.select :inquiry_type, ['Obtain a quote for window cleaning', 
+						'Obtain a quote for eaves cleaning', 'Obtain a quote for painting', 'General inquiry'],
+						:selected => 'Obtain a quote for window cleaning' %>
+		</div>
+		<div class="input">
+			<%= form.label :inquiry, 'Inquiry' %>
+			<%= form.text_area :inquiry, :rows => 5, :cols => 50 %>
+		</div>
+		<div class="input">
+			<label for="submit">&nbsp;</label>
+			<%= form.submit "Submit" %>
+		</div>
+	<% end %>
+	
+</div>

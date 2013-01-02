@@ -1,21 +1,8 @@
-class Inquiry
-  include ActiveModel::Validations
-  include ActiveModel::Conversion
-  extend ActiveModel::Naming
+class Inquiry < BaseModel
   
   attr_accessor :name, :address, :city, :postal_code, :phone, :email, :inquiry_type, :inquiry
   
   validates_presence_of :name, :address, :city, :postal_code, :phone
-  validates_format_of :email, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i
-  
-  def initialize(attributes = {})
-    attributes.each do |name, value|
-      send("#{name}=", value)
-    end
-  end
-
-  def persisted?
-    false
-  end
+  validates_format_of :email, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i, :unless => "email.empty?"
   
 end

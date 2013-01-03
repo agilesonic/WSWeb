@@ -1,4 +1,4 @@
-class InquiryMailer < ActionMailer::Base
+class AppMailer < ActionMailer::Base
   default :from => "customerservice@whiteshark.ca"
  
   def inquiry_mail(inquiry)

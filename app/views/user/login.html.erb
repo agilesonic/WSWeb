@@ -1,0 +1,54 @@
+<div class="content">
+
+<p class="header3"><input type="radio" name="usertype" value="registered" checked="true" onclick="window.location='<%= link_to :controller => 'user', :action => 'login' %>'"/>
+I'm registered on White Shark Online Services. Please let me in.</p>
+
+<div id="registered">
+<%= form_for(@login_form), :action="process_login" do |form| %>
+	<fieldset>
+		<legend>Login to White Shark Online Services</legend>
+	   	<html:messages property="error" id="error">
+	      	<p style="color: red"><bean:write name="error"/></p>
+	   	</html:messages>
+		<table border="0">
+			<tr>
+				<td>Email address: </td>
+				<td><html:text property="email" size="30"></html:text></td>
+			</tr>
+		   	<html:messages property="email" id="email">
+			<logic:notEmpty name="email">
+			<tr>
+				<td colspan="2">
+					<span style="color: red"><bean:write name="email"/></span>
+				</td>
+			</tr>			
+			</logic:notEmpty>
+			</html:messages>
+			<tr>
+				<td>Password: </td> 
+				<td>
+					<html:password property="password" size="30"></html:password><br/>
+				</td>
+			</tr>
+		   	<html:messages property="password" id="password">
+			<logic:notEmpty name="password">
+			<tr>
+				<td colspan="2">
+					<span style="color: red"><bean:write name="password"/></span>
+				</td>
+			</tr>			
+			</logic:notEmpty>
+			</html:messages>
+			<tr style="padding-top:10px">
+				<td>&nbsp;</td>
+				<td><html:submit>Login</html:submit></td>
+			</tr>
+		</table>
+		<p><a href="<%=request.getContextPath()%>/eServices/login/recoverPassword.jsp">I forgot my password</a></p>
+	</fieldset>
+</html:form>
+</div>
+
+<p class="header3"><input type="radio" name="usertype" value="existing" onclick="window.location='<%=request.getContextPath()%>/eServices/login/register.jsp'"/>
+I'm a Client of White Shark Ltd. Please register me on White Shark Online Services</p>
+</div>

@@ -9,7 +9,8 @@
 			<em>Free quote usually provided in a day</em>
 		</li>
 		<li id="nav_book">
-			<a href="/eServices/index.jsp" title="Book a job">Book a job</a><em>Sign in, book or manage jobs</em>
+			<%= link_to 'Book a job', :controller => :online_services, :action => :index, :title => "Book a job" %>
+			<em>Sign in, book or manage jobs</em>
 		</li>
 	</ul>
 </div>

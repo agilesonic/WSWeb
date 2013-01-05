@@ -1,5 +1,9 @@
 WSWeb::Application.routes.draw do
+  get "online_services/index"
+
   get "user/login"
+  
+  post "user/process_login"
 
   get "user/register"
 

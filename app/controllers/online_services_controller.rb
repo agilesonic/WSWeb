@@ -1,7 +1,9 @@
 class OnlineServicesController < ApplicationController
   def index
     if session[:user_email].nil?
-      redirect_to :controller => 'user', :action => 'login'
+      redirect_to login_path
+    else
+      @user = web_user
     end
   end
 end

@@ -1,4 +1,4 @@
-class Inquiry < BaseModel
+class InquiryForm < BaseForm
   
   attr_accessor :name, :address, :city, :postal_code, :phone, :email, :inquiry_type, :inquiry
   

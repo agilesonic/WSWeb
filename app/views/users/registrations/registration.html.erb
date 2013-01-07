@@ -1,0 +1,61 @@
+<div class="content">
+
+<p class="header3">
+	<input type="radio" name="usertype" value="registered" checked="true" onclick="window.location='<%= new_users_session_path %>'"/>
+	I'm registered on White Shark Online Services. Please let me in.
+</p>
+
+<p class="header3">
+	<input type="radio" name="usertype" value="existing" checked="true" onclick="window.location='<%= new_users_registration_path %>'"/>
+	I'm a Client of White Shark Ltd. Please register me on White Shark Online Services.
+</p>
+
+<p class="text_body">All fields are mandatory.</p>
+
+<div id="register">
+	<%= form_for @registration_form, :url => users_registrations_path do |form| %>	
+	<fieldset>
+		<legend>Register me on White Shark Online Services</legend>
+	  	<% if @registration_form.errors[''].any? %>
+		<span style="color: red"><%= field_error '', @registration_form.errors[''] %></span>
+	    <% end %>
+	   	<p>Please enter an email address that only you can access; An email that includes your password will be sent to this email address.</p> 
+		<table border="0">
+			<tr>
+				<td><%= form.label :last_name, 'Last name:' %></td> 
+				<td>
+					<%= form.text_field :last_name, :size => 30 %>
+					<span style="color: red"><%= field_error :last_name, @registration_form.errors[:last_name] %></span>
+				</td>
+			</tr>
+			<tr>
+				<td><%= form.label :phone, 'Phone:' %></td> 
+				<td>
+					<%= form.text_field :phone, :size => 30 %>
+					<span style="color: red"><%= field_error :phone, @registration_form.errors[:phone] %></span>
+				</td>
+			</tr>
+			<tr>
+				<td><%= form.label :postal_code, 'Postal code:' %></td> 
+				<td>
+					<%= form.text_field :postal_code, :size => 30 %>
+					<span style="color: red"><%= field_error :postal_code, @registration_form.errors[:postal_code] %></span>
+				</td>
+			</tr>
+			<tr>
+				<td><%= form.label :email, 'Email address:' %></td> 
+				<td>
+					<%= form.text_field :email, :size => 30 %>
+					<span style="color: red"><%= field_error :email, @registration_form.errors[:email] %></span>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><%= form.submit "Register" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<% end %>
+</div>
+</div>
+

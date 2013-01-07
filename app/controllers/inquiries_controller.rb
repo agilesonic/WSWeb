@@ -1,12 +1,12 @@
 class InquiriesController < ApplicationController
   def new
-    @inquiry = @inquiry || Inquiry.new
+    @inquiry_form = InquiryForm.new
   end
 
   def create
-    @inquiry = Inquiry.new(params[:inquiry])
-    if @inquiry.valid?
-      AppMailer.inquiry_mail(@inquiry).deliver
+    @inquiry_form = InquiryForm.new(params[:inquiry])
+    if @inquiry_form.valid?
+      AppMailer.inquiry_mail(@inquiry_form).deliver
       render :confirm
     else
       render :new

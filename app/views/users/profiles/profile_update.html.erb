@@ -1,0 +1,48 @@
+<div class="content">
+
+<p class="header1">Update White Shark Online Services security profile</p>
+
+<p class="text_body">To change your email address and/or password, please fill out this form. After the change is made, an email will be sent to the email address you provided with the changed login information for your reference.</p>
+
+<%= form_for @profile_form, :url => users_profiles_path do |form| %>
+	<fieldset>
+		<legend>Update email address/password</legend>
+	   	<p>Please enter an email address that only you can access; An email that includes your password will be sent to this email address.</p> 
+		<table border="0">
+			<tr>
+				<td><%= form.label :email, 'Email address:' %></td>
+				<td>
+					<%= form.text_field :email, :size => 30 %>
+					<span style="color: red"><%= field_error :email, @profile_form.errors[:email] %></span>
+				</td>
+			</tr>
+			<tr>
+				<td><%= form.label :current_password, 'Current password:' %></td>
+				<td>
+					<%= form.password_field :current_password, :size => 30 %>
+					<span style="color: red"><%= field_error :current_password, @profile_form.errors[:current_password] %></span>
+				</td>
+			</tr>
+			<tr>
+				<td><%= form.label :new_password, 'New password:' %></td>
+				<td>
+					<%= form.password_field :new_password, :size => 30 %>
+					<span style="color: red"><%= field_error :new_password, @profile_form.errors[:new_password] %></span>
+				</td>
+			</tr>
+			<tr>
+				<td><%= form.label :new_password_confirm, 'Confirm new password:' %></td>
+				<td>
+					<%= form.password_field :new_password_confirm, :size => 30 %>
+					<span style="color: red"><%= field_error :new_password_confirm, @profile_form.errors[:new_password_confirm] %></span>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><%= form.submit 'Update my profile' %></td>
+			</tr>
+		</table>
+	</fieldset>
+<% end %>
+
+</div>

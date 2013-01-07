@@ -1,6 +1,6 @@
-class BaseModel
-  include ActiveModel::Validations
+class BaseForm
   include ActiveModel::Conversion
+  include ActiveModel::Validations
   extend ActiveModel::Naming
   
   def initialize(attributes = {})

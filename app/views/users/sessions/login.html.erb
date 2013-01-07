@@ -1,0 +1,42 @@
+<div class="content">
+
+<p class="header3"><input type="radio" name="usertype" value="registered" checked="true" onclick="window.location='<%= new_users_session_path %>'"/>
+I'm registered on White Shark Online Services. Please let me in.</p>
+
+<div id="registered">
+<%= form_for @login_form, :url => users_sessions_path do |form| %>
+	<fieldset>
+		<legend>Login to White Shark Online Services</legend>
+	  	<% if @login_form.errors[''].any? %>
+		<span style="color: red"><%= field_error '', @login_form.errors[''] %></span>
+	    <% end %>
+		<table border="0">
+			<tr>
+				<td><%= form.label :email, "Email address: " %></td>
+				<td>
+					<%= form.text_field :email, :size => 30 %>
+					<span style="color: red"><%= field_error :email, @login_form.errors[:email] %></span>
+				</td>
+			</tr>
+			<tr>
+				<td><%= form.label :password, "Password: " %></td>
+				<td>
+					<%= form.password_field :password, :size => 30 %>
+					<span style="color: red"><%= field_error :password, @login_form.errors[:password] %></span>
+				</td>
+			</tr>
+			<tr style="padding-top:10px">
+				<td>&nbsp;</td>
+				<td><%= form.submit "Login" %></td>
+			</tr>
+		</table>
+		<p><%= link_to 'I forgot my password', new_users_forgot_password_path %></p>
+	</fieldset>
+<% end %>
+</div>
+
+<p class="header3">
+	<input type="radio" name="usertype" value="existing" onclick="window.location='<%= new_users_registration_path %>'"/>
+	I'm a Client of White Shark Ltd. Please register me on White Shark Online Services
+</p>
+</div>

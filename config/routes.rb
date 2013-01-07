@@ -1,21 +1,21 @@
 WSWeb::Application.routes.draw do
   get "online_services/index"
-
-  get "user/login"
   
-  post "user/process_login"
-
-  get "user/register"
-
-  get "user/register_confirm"
-
-  get "user/forgot_password"
-
-  get "user/forgot_password_confirm"
+  match 'login'   => 'users/sessions#new'
+  match 'logout'  => 'users/sessions#destroy'
+  match 'signup'  => 'users/registrations#new'
+  
+  namespace :users do
+    resources :sessions,          :only => [:new, :create, :destroy]
+    resources :forgot_passwords,  :only => [:new, :create]
+    resources :registrations,     :only => [:new, :create]
+    resources :profiles,          :only => [:new, :create]
+  end
 
   root :to => 'home#index'
   
-  resources  :services,     :only => ['index']
-  resources  :inquiries #,       :only => ['create', 'confirm']
+  resources  :services,           :only => ['index']
+  resources  :online_services,    :only => ['index']
+  resources  :inquiries,          :only => ['new', 'create']
 
 end

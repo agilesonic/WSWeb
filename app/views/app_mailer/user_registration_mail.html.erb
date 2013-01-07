@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>White Shark Online Services Registration</title>
+</head>
+<body>
+<p><b>Dear <%= @user.client.full_name %>,</b></p>
+<p>Your <a href="https://www.whiteshark.ca/login">White Shark Online Services</a> security profile was updated. Your current login information is:</p>
+<table>
+	<tr>
+		<td><B>Email Address: </B></td>
+		<td><%= @user.email %></td>
+	</tr>
+	<tr>
+		<td><B>Password: </B></td>
+		<td><%= @user.password %></td>
+	</tr>
+</table>
+<br/>
+
+<p>Please login to <a href="https://www.whiteshark.ca/login">whiteshark.ca</a> to access these online services:</p>
+<ul>
+	<li>Book a job</li>
+	<li>View recent and pending jobs</li>
+	<li>Update email address or password</li>
+</ul>
+
+<br/>
+<p>
+Regards,<br/><br/>
+
+White Shark Ltd<br/>
+(416)363-7420<br/>
+<a href="https://www.whiteshark.ca">www.whiteshark.ca</a><br/>
+<a href="mailto:customerservice@whiteshark.ca">customerservice@whiteshark.ca</a>
+</p>
+</body>
+</html>

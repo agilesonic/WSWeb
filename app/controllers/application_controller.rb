@@ -6,5 +6,6 @@ class ApplicationController < ActionController::Base
   def web_user
     WebUser.by_email(session[:user_email])
   end
+
   
 end

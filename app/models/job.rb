@@ -3,7 +3,7 @@ class Job < ActiveRecord::Base
   
   has_many :jobdnfs, :foreign_key => "jobid", :inverse_of => :job
 
-#  has_one :satisfaction, :foreign_key => "jobid"
+  has_one :satisfaction, :foreign_key => "jobid"
   
   scope :assigned_jobs, lambda { |schdate, crew| where("schdate = ? and crewname = ?", schdate.mysql_date, crew) } 
   

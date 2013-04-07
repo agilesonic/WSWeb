@@ -1,3 +1,3 @@
-class Satisfaction < BaseForm
+class SatisfactionForm < BaseForm
     attr_accessor :jobid, :caller, :satdate, :type, :comments
 end

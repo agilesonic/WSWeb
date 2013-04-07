@@ -4,9 +4,9 @@ class Satisfaction < ActiveRecord::Base
   belongs_to :job, :foreign_key => "jobid"
 
 
-#  def self.search_sats(key1)
-#    Satisfaction.joins(:job).where("jobs.datebi >= ? ",key1).order("jobs.jobid") 
-#  end
+  def self.search_sats(key1)
+    Satisfaction.joins(:job).where("jobs.datebi >= ? ",key1).order("jobs.jobid") 
+  end
 
 
   

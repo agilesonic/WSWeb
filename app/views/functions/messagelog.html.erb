@@ -1,0 +1,29 @@
+<%=@test%>
+
+<%if !@mess.nil?&& !@mess.empty?%>
+	<fieldset class="mystyle">
+		<legend>Create Sale</legend>
+			<table border="1" class="mystyle">
+				<tr border="1" class="cell">
+					<th>MSID</th>
+					<th>Message Date</th>
+					<th>Recorder</th>
+					<th>Message</th>
+					<th>Follow Up Object</td>
+					<th>Follow Up Date</td>
+					<th>CFID</td>
+				</tr>
+				<%@mess.each do |m|%>
+				<tr border="1" class="cell">
+					<td><%=m.msid %></td>
+					<td><%=m.messdate%></td>
+					<td><%=m.recorder%></td>
+					<td><%=m.message %></td>
+					<td><%=m.followobject %></td>
+					<td><%=m.followup %></td>
+					<td><%=m.cfid %></td>
+					<td><%= link_to 'Client Profile', clientprofile_function_path(:id => m.cfid,:source=>'messages'),{:style=>"color: yellow"}%></td>
+				</tr>
+			<%end%>
+		</table>	
+<%end%>

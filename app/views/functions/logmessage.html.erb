@@ -1,0 +1,115 @@
+<script text="text/javascript" type="text/javascript">
+	function transfer_data(cfid,name,address,phone){
+		  alert('In transfer');
+		  var cfid5=$('#log_message_form_cfid');
+		  var name5=$('#log_message_form_name');
+		  var address5=$('#log_message_form_address');
+		  var phone5=$('#log_message_form_phone');
+		  var action5=$('#log_message_form_action');
+	      cfid5.val(cfid);
+	      name5.val(name);
+	      address5.val(address);
+	      phone5.val(phone);  
+	      action5.val('Create Message');
+	}
+</script>
+
+<%if !@clients.nil?%>
+	<%@clients.size%>
+	<%@clients.each do |c|%>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<td><%= c.CFID %></td>
+				<td><%= c.full_name %></td>
+				<td><%= c.address %></td>
+				<td><%= c.phone %></td>
+				<td><button onclick="transfer_data('<%=c.CFID%>','<%=c.full_name%>','<%=c.address%>','<%=c.phone%>')" >Transfer DATA</button></td>
+			</tr>
+		</table>
+	<%end%>
+<%else%>
+Fuck You
+<%end%>
+<br/>
+
+<%= form_for @log_message_form, :url => screenmessage_functions_url do |ss| %>
+	<fieldset class="mystyle">
+		<legend>Log Message</legend>
+		<%
+			bumbbaclot=''
+		%>
+	    <%=ss.hidden_field :action, :value=>@action%>
+	    <%=ss.hidden_field :source, :value=>@source%>
+	    <%=ss.hidden_field :sourceid, :value=>@sourceid%>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<td><%= ss.label :cfid, 'CFID' %></td>
+				<td>
+					<%= ss.text_field :cfid, :value=>@cfid, :size => 30 %>
+				</td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%= ss.label :jobid, 'JOBID' %></td>
+				<td>
+					<%= ss.text_field :jobid, :value=>@jobid, :size => 30 %>
+				</td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%= ss.label :shortname %></td>
+				<td>
+					<%= ss.text_field :shortname,:value=>@shortname, :size => 30 %>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= ss.label :name %></td>
+				<td>
+					<%= ss.text_field :name, :value=>@name, :size => 30 %>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= ss.label :address,'Billing/Job Address' %></td>
+				<td>
+					<%= ss.text_field :address, :value=>@address, :size => 30 %>
+				</td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%= ss.label :jobaddress, "Job Address" %></td>
+				<td>
+					<%=ss.select :jobaddress, options_for_select(@jobaddress_options, @selected_jobaddress)%>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= ss.label :phone %></td>
+				<td>
+					<%= ss.text_field :phone, :value=>@phone, :size => 30 %>
+				</td>
+			</tr>
+			
+			<tr border="1" class="cell">
+				<td><%= ss.label :messtype %></td>
+				<td>
+					<%=ss.select :messtype, options_for_select(@messtype_options, @selected_messtype)%>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= ss.label :messheader %></td>
+				<td>
+					<%=ss.select :messheader, options_for_select(@messheader_options, @selected_messheader)%>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= ss.label :message %></td>
+				<td>
+					<%= ss.text_field :message, :value=>@message, :size => 30 %>
+				</td>
+			</tr>
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td>&nbsp;</td>
+				<td><%= ss.submit @action%></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>	

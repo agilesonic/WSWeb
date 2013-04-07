@@ -1,0 +1,99 @@
+<%=@x%>
+<%  if !@calls.nil? then %>
+	
+	<table border="1" class="mystyle">
+				<tr border="1" class="cell">
+					<th>Status</th>
+					<th>Date Att</td>
+					<th>Caller</th>
+					<th>Notes</th>
+					<th>Follow Up</th>
+				</tr>
+   	<% @calls.each do |call|
+       	dateatt=''
+       	if call.dateatt.nil?
+       		dateatt='unknown'
+       	else	
+       		dateatt=call.dateatt.to_formatted_s(:long_ordinal)
+       	end
+       	followup=''
+       	if call.followup.nil?
+       		followup='unknown'
+       	else 
+		       	followup=call.followup.to_formatted_s(:long_ordinal)
+       	end
+	%>
+        
+				<tr border="1" class="cell">
+					<td><%=call.tstatus %></td>
+					<td><%=dateatt%></td>
+					<td><%=call.caller%></td>
+					<td><%=call.notes%></td>
+					<td><%=followup%></td>
+				</tr>
+        <% 	end %>
+			</table>
+        <% end%>
+        <br/><br/>
+        <%  if !@prices_all.nil? then
+	        	@prices_all.each do |price|
+        %>
+	 			<table border="1" class="mystyle">
+					<tr border="1" class="cell">
+						<td>ID</td>
+						<td>Address</td>
+						<td>W1</td>
+						<td>EH</td>
+					</tr>
+					<tr border="1" class="cell">
+						<td><%=price.id %></td>
+						<td><%=price.address %></td>
+						<td><%=sprintf("$%0.02f", price.w1) %></td>
+						<td><%=sprintf("$%0.02f", price.eh) %></td>
+						<td><%=link_to 'Make Sale', makesale_sale_path(:jobinfoid => price.id, :source=>'tsales'),:style=>"color: yellow"%>
+					</tr>
+				</table>
+        <% 	end
+          end
+        %>
+        <br/><br/>
+
+
+<%= form_for @call_client_form, :url => callclient1_sale_url(:id => @cfid) do |cc| %>
+	<fieldset class="mystyle">
+		<legend>Call Client</legend>
+		    <%=cc.hidden_field :cfid, :value=>@cfid%>
+ 		<table border="1" class="mystyle">
+			<tr class="cell">
+				<td><%=cc.label :tstatus, "TStatus: " %></td>
+				<td>
+					<%=cc.select :tstatus, options_for_select(@tstatus_options, @selected_tstatus)%>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= cc.label :notes, "Notes: " %></td>
+				<td>
+					<%= cc.text_field :notes, :size => 30 %>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= cc.label :year, "Follow Up: " %></td>
+				<td>
+					<%=cc.select :year, options_for_select(@years,@selected_year)%>
+					<%=cc.select :month, options_for_select(@months,@selected_month)%>
+					<%=cc.select :day, options_for_select(@days,@selected_day)%>
+				</td>
+			</tr>
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td>&nbsp;</td>
+				<td><%= cc.submit "Call Client" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>	
+
+<b><%= link_to 'Call Next Client', nextclient_sale_path(:id => @cfid)%></b> <br/>
+
+<b><%= link_to 'Client Profile', clientprofile_function_path(:id => @cfid,:source=>'callclient')%></b><br/>
+
+<b><%= link_to 'Client List', clientlist_sales_path,%></b><br/>

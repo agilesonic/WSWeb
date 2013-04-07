@@ -1,0 +1,37 @@
+<%=@test%><br/>
+
+	<%if !@done_jobs.nil? && !@done_jobs.empty? then%>
+	<b>Satisfaction&nbsp;&nbsp;<%=@i%>&nbsp;calls</b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Job ID</b></th>
+					<th><b>Address</b></th>
+					<th><b>Job Desc</b></th>
+					<th><b>Price</b></th>
+					<th><b>Crew</b></th>
+					<th><b>Minutes</b></th>
+					<th><b>Date Done</b></th>
+					<th><b>Days To Pay</b></th>
+				</tr>	
+			<%@done_jobs.each do |job|
+			  class5='cell'	
+			  if job.jobdnf=='dnf'
+			  	class5='dnf'
+			  elsif	job.jobdnf=='sat'
+			  	class5='sat'
+			  end	
+			%>
+				<tr class=<%=class5%>>
+					<td><b><%= job.jobid %></b></td>
+					<td><b><%= job.address %></b></td>
+					<td><b><%= job.jobdesc %></b></td>
+					<td><b><%= number_to_currency job.price %></b></td>
+					<td><b><%= job.crewname %></b></td>
+					<td><b><%= job.minutes %></b></td>
+					<td><b><%= job.datebi %></b></td>
+					<td><b><%= job.daystopay %></b></td>
+					<td><%= link_to 'Satisfaction Call', clientprofile_function_path(:id => job.cfid, :jobid1=>job.jobid, :source=>'satcall',:function=>'satcall'),{:style=>"color: yellow"}%></td>
+				</tr>	
+			<%end%>
+		</table>
+	<%end%>

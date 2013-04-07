@@ -11,7 +11,7 @@ class Users::SessionsController < ApplicationController
         session[:user_email] = @login_form.email
         redirect_to online_services_path
       else
-        login_form.errors[''] << 'The login info does not match our record.'
+        login_form.errors[''] << 'The login info does not match our record.'    #h = {:a=>'jj', '' => [] }
         render :login
       end
     else

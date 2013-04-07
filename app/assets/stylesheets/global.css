@@ -3,7 +3,7 @@ address, article, aside, canvas, details, figcaption, figure, footer, header, hg
 	display: block;
 }
 
-html, body, div, section, article, aside, header, hgroup, footer, nav, h1, h2, h3, h4, h5, h6, p, blockquote, address, time, span, em, strong, img, ol, ul, li, figure, canvas, video, th, td, tr {
+html, body, div, section, article, aside, header, hgroup, footer, nav, h1, h2, h3, h4, h5, h6, p, blockquote, address, time, span, em, strong, img, ol, ul, li, figure, canvas, video {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -16,9 +16,9 @@ html {
 }
 
 body {
-	width: 960px;
+	width: 1100px;
 /*	background: #EDE4D6; */
-	background: #eee;
+/*	background: #eee;   */
 	margin: 0px auto;
 	padding: 5px 0px;
 }
@@ -272,13 +272,14 @@ div.content {
 .content td {
 	vertical-align: top;
 }
+
 fieldset {
 	border-radius:7px;
 	background: linear-gradient(center top , #E1E1E1 0pt, #FFFFFF 100%) repeat scroll 0 0 transparent;	
 	border: 1px solid #E1E1E1;
 	margin:0 0 1.25em;
 	padding:8px 8px;
-	width:640px;
+	width:1100px;
 }
 
 fieldset legend {
@@ -390,3 +391,585 @@ fieldset legend {
 	font-size:14px;
 	font-style:italic;
 }
+
+
+	fieldset.function{
+		font-weight:bold;
+		background:#FF0000;
+		color:#FF0000;
+	}
+
+	fieldset.mystyle{
+		font-weight:bold;
+		background:yellow;
+		color:blue;
+	}
+
+	
+	table.mystyle{
+		font-weight:bold;
+		background:blue;
+		color:white;
+	}
+	
+	td.mia{
+		font-weight:bold;
+		background:black;
+		color:red;
+	}
+
+	td.travel{
+		font-weight:bold;
+		background:yellow;
+		color:blue;
+	}
+
+	td.red{
+		font-weight:bold;
+		background:black;
+		color:red;
+	}
+
+	td.blue{
+		font-weight:bold;
+		background:yellow;
+		color:blue;
+	}
+
+	tr.r0{
+		font-weight:bold;
+		background:black;
+		color:blue;
+	}
+
+	tr.r1{
+		font-weight:bold;
+		background:red;
+		color:black;
+	}
+
+
+	tr.r2{
+		font-weight:bold;
+		background:yellow;
+		color:blue;
+	}
+
+	tr.r3{
+		font-weight:bold;
+		background:white;
+		color:blue;
+	}
+
+	tr.r4{
+		font-weight:bold;
+		background:black;
+		color:red;
+	}
+
+
+	tr.dnf{
+		font-weight:bold;
+		background:red;
+		color:black;
+	}
+
+	tr.sat{
+		font-weight:bold;
+		background:green;
+		color:yellow;
+	}
+
+
+
+
+
+
+
+
+
+
+
+	tr.responseOK{
+		font-weight:bold;
+		background:blue;
+		color:white;
+	}
+	
+	tr.responseN{
+		font-weight:bold;
+		background:black;
+		color:red;
+	}
+
+
+	tr.numnull{
+		font-weight:bold;
+		background-color:black;
+		color:yellow;
+	}
+
+
+	tr.numzero{
+		font-weight:bold;
+		background-color:black;
+		color:red;
+	}
+
+	tr.numone{
+		font-weight:bold;
+		background-color:blue;
+		color:yellow;
+	}
+
+	tr.numtwo{
+		font-weight:bold;
+		background-color:red;
+		color:black;
+	}
+
+	tr.numthree{
+		font-weight:bold;
+		background-color:green;
+		color:yellow;
+	}
+
+	tr.numfour{
+		font-weight:bold;
+		background-color:blue;
+		color:yellow;
+	}
+
+	tr.numfive{
+		font-weight:bold;
+		background-color:black;
+		color:red;
+	}
+
+    tr.numfiveplus{
+		font-weight:bold;
+		background-color:yellow;
+		color:blue;
+	}
+    
+    
+    
+	tr.travel{
+		font-weight:bold;
+		background:green;
+		color:white;
+	}
+
+
+    tr.done{
+		font-weight:bold;
+		background:black;
+		color:yellow;
+	}
+
+	tr.started{
+		font-weight:bold;
+		background:red;
+		color:black;
+	}
+
+	tr.notdone{
+		font-weight:bold;
+		background:blue;
+		color:white;
+	}
+
+
+    tr.job{
+		font-weight:bold;
+		background:black;
+		color:yellow;
+	}
+
+	tr.dnf{
+		font-weight:bold;
+		background:red;
+		color:black;
+	}
+
+
+	tr.inspection{
+		font-weight:bold;
+		background:green;
+		color:white;
+	}
+
+	tr.sign{
+		font-weight:bold;
+		background:blue;
+		color:white;
+	}
+
+	tr.gth{
+		font-weight:bold;
+		background:black;
+		color:red;
+	}
+
+
+	tr.cell{
+		font-weight:bold;
+		color:yellow;
+	}
+	
+	tr.darker{
+		font-weight:bold;
+		background:grey;
+		color:white;
+	}
+	
+
+	td.col50{
+		font-weight:bold;
+		color:yellow;
+		width:50px
+	}
+    td.col30{
+		font-weight:bold;
+		color:yellow;
+    	width:30px
+    }
+	td.col10{
+		font-weight:bold;
+		color:yellow;
+		width:10px
+	}
+	
+	h2.head{font-weight:bold;color:blue}
+	ul.show{font-weight:bold;color:blue}
+    b.error{font-weight:bold;color:red}
+    
+html {
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+}
+body {
+	color:#505050;
+	font-size:12px;
+	margin:0 auto;
+	width:1100px;
+}
+a {
+	background-color:transparent;
+	color:#0033AA;
+	text-decoration:none;
+}
+a:hover {
+	text-decoration:underline;
+}
+.shark1 {
+	background-repeat:repeat;
+	color:#000066;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:22px;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:bolder;
+	text-transform:none;
+}
+.mainheading {
+	color:#000066;
+	font-size:30px;
+	font-weight:bolder;
+}
+.text_body {
+	color:#000066;
+}
+.header1 {
+	color:#000066;
+	font-size:18px;
+	font-weight:bold;
+}
+.header2 {
+	color:#000066;
+	font-size:16px;
+	font-style:italic;
+	font-weight:bold;
+}
+.header3 {
+	color:#000066;
+	font-size:14px;
+	font-style:italic;
+}
+#nav, #nav ul { /* all lists */
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	line-height: 1;
+}
+
+#nav a {
+	display: block;
+	width: 100px;
+}
+
+#nav li { /* all list items */
+	float: left;
+}
+
+#nav li ul { /* second-level lists */
+	position: absolute;
+	width: 100px;
+	left: -999em; /* using left instead of display to hide menus because display: none isn't read by screen readers */
+	font-weight:normal;
+}
+#nav li:hover ul, #nav li.sfhover ul { /* lists nested under hovered list items */
+	left: auto;
+}
+
+#nav {
+	-moz-background-clip:border;
+	-moz-background-inline-policy:continuous;
+	-moz-background-origin:padding;
+	background:transparent url("/images/menu_bg.gif") repeat-x scroll 0 0;
+	border-bottom:0px solid #999999;
+	display:block;
+	height:30px;
+	margin:1px;
+	width:660px;
+}
+
+#nav ul {
+	font-size:14px;
+	font-weight:bold;
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	margin:0 !important;
+	padding:0;
+	text-indent:0;
+}
+#nav li {
+	float:left;
+}
+#nav li a {
+	-moz-background-clip:border;
+	-moz-background-clip:border;
+	-moz-background-inline-policy:continuous;
+	-moz-background-origin:padding;
+	background:#FFFFFF url("/images/nav_bg.gif") repeat-x scroll 0 0;
+	border-right:1px solid #FFFFFF;
+	color:#1A1E1E;
+	display:block;
+	margin:0 !important;
+	padding:5px 5px 5px 15px;
+	text-align:left;
+}
+
+#nav #mainMenuClients {
+	width: 90px;
+}
+#nav #mainMenuMessages {
+	width: 90px;
+}
+
+#nav #mainMenuSales {
+	width: 90px;
+}
+
+#nav #mainMenuTasks {
+	width: 90px;
+}
+
+#nav #mainMenuHumanResources {
+	width: 90px;
+}
+
+#nav #mainMenuProduction {
+	width: 110px;
+}
+
+#nav #mainMenuStats {
+	width: 90px;
+}
+
+#nav li:hover, #mainMenu li.menuMouseHover {
+	background-color: #F8ECDC;
+	background: url("/images/mainHover.gif");
+}
+#nav li a:hover {
+	background: url("/images/mainHover.gif");
+}
+#nav li ul li a:hover {
+	color:inherit;
+}
+/*
+#nav li.current a {
+	background-color: #F8ECDC;
+	background: url("/images/mainHover.gif");
+}
+*/
+.content {
+	margin:15px 15px 15px 15px;
+	padding:0;
+	width:630px;
+	line-height: 150%;
+}
+#footer {
+	border-top:1px dashed #A9A9A9;
+	margin:20px 0 0 0;
+	padding:10px 0 10px;
+	width:660px;
+}
+#footer #contact {
+	text-align:right;
+}
+#footer #contact img {
+	vertical-align:text-top;
+}	
+.content .name {
+	font-weight:bold;
+}
+.content .bold {
+	font-weight:bold;
+}
+.content td {
+	vertical-align: top;
+}
+fieldset {
+	-moz-border-radius-bottomleft:7px;
+	-moz-border-radius-bottomright:7px;
+	-moz-border-radius-topleft:7px;
+	-moz-border-radius-topright:7px;
+	background:#EEFAF9 none repeat scroll 0 0;
+	border:1px solid #000066;
+	margin:0 0 1.25em;
+	padding:8px 8px;
+	width:1100px;
+}
+
+fieldset legend {
+	-moz-border-radius-bottomleft:4px;
+	-moz-border-radius-bottomright:4px;
+	-moz-border-radius-topleft:4px;
+	-moz-border-radius-topright:4px;
+	background:#EEFAF9;
+	border-color:#000066;
+	border-style:solid;
+	border-width:3px 1px 1px;
+	font-size:13px;
+	font-weight:bold;
+	margin:0 0 6px;
+	padding:3px 6px;
+}
+.floatLeft {
+	float:left;
+	clear: left;
+	line-height: .99em;
+}
+.floatRight {
+	float: right;
+	clear: right;
+	line-height: .99em;
+}
+.clearBoth {
+	clear:both;
+	margin: 0;
+	padding: 0;
+}
+#buttons {
+	padding: 12px 8px 8px 12px;
+	width: 640px;
+	background:#EEFAF9;
+}
+#home_left {
+	margin:0;
+	padding: 12px 8px 12px 8px;
+	float:left;
+	clear: left;
+}
+#home_right {
+	margin:0;
+	padding: 12px 8px 12px 8px;
+	width: 240px;
+	float: right;
+	clear: right;
+	font-style:normal;
+	color:#000066;
+	font-size:16px;
+	font-weight:bold;
+}
+#home_highlights li {
+	line-height: 1.5em;
+	margin-bottom: 10px;
+	color:#000066;
+	font-size:14px;
+}
+#logout {
+	margin: 0;
+	padding:5px 0 5px 0;
+	text-align:right;
+	width:660px;
+	color:#000066;
+	font-size:12px;
+	background:#EEFAF9;
+}
+.contentTable {
+	width:100%;
+}
+.columnNames {
+	background:#EEFAF9;
+	font-weight:bold;
+}
+.tableData {
+	font-weight:normal;
+}
+.row1 {
+	background-color: rgb(241, 244, 247);
+}
+.row2 {
+	background-color: rgb(247, 250, 252);
+}
+#eServicesMenu li {
+	line-height: 2em;
+}    
+
+
+.leftColumn {
+	width: 280px;
+	height: 200px;
+	margin: 1px 1px 1px 1px;
+	float: left;
+	background-color: green;
+}
+.middleColumn {
+	width: 280px;
+	height: 200px;
+	margin: 5px 5px 5px 5px;
+	float: left;
+	background-color: #cccccc;
+}
+.rightColumn {
+	width: 180px;
+	height: 200px;
+	float: right;
+	margin: 5px 5px 5px 5px;
+	vertical-align: top;
+	background-color:blue;
+}
+
+
+.oneColumn {
+	width: 365px;
+	height: 350px;
+	margin: 1px 1px 1px 1px;
+	border:5px solid blue;
+	float: left;
+	background-color: #D4ECFB;
+}
+.twoColumn {
+	width: 265px;
+	height: 350px;
+	margin: 1px 1px 1px 1px;
+	border:5px solid blue;
+	float: right;
+	background-color: #BFE2F9;
+}
+
+.center5 {
+ text-align:center;
+ }

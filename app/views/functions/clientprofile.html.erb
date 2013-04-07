@@ -1,0 +1,395 @@
+
+<script text="text/javascript" type="text/javascript">
+
+		function show_editclient(){
+			var butt=$('#editclient');
+			var edit=$('#show_editclient');
+			if(butt.html()=='Show Edit Client'){
+				butt.html('Hide Edit Client');
+				edit.show();
+			}else{
+				butt.html('Show Edit Client');
+				edit.hide();
+			}
+		}
+
+		function show_completedjobs(){
+			var butt=$('#completedjobs');
+			var jobs=$('#show_completedjobs');
+			if(butt.html()=='Show Completed Jobs'){
+				butt.html('Hide Completed Jobs');
+				jobs.show();
+			}else{
+				butt.html('Show Completed Jobs');
+				jobs.hide();
+			}
+		}
+
+
+function nigs(){
+	alert ('nigs');
+}
+
+
+</script>
+
+
+
+
+<%if @source=='callclient'%>
+	<b><%= link_to 'Back To Call Client', callclient_sale_path(:id => @cfid, :source=>@source, :source=>@function)%></b>
+<%elsif @source=='smartsearch'%>
+	<b><%= link_to 'Back To Smart Search', smartsearch_functions_path%></b>
+<%elsif @source=='messages'%>
+	<b><%= link_to 'Back To Messages', messagelog_functions_path%></b>
+<%end%>
+
+<b><%= link_to 'Log Message For This Client', logmessage_functions_path(:sourceid => @cfid, :source=>'clientprofile')%></b>&nbsp;
+<b><%= link_to 'Smart Search', smartsearch_functions_path%></b><br/>
+<b><%= link_to 'Log Message', logmessage_functions_path%></b>&nbsp;
+<b><%= link_to 'Message Log', messagelog_functions_path%></b>
+<br/><br/><br/>
+
+<%if !@client_header.nil?%>
+<h2><%=@client_header%></h2>
+<%end%>
+
+<%if !@function.nil?
+	call_client_display='display:none'
+	sat_call_display='display:none'
+	if @function=='callclient'
+		call_client_display='display:inline'
+	elsif @function=='satcall'
+		sat_call_display='display:inline'
+	end
+%>
+<div id="show_callclient" style=<%=call_client_display%>>
+	<fieldset class="function">
+	<legend>Function Call Client</legend>
+		<% if !@calls.nil? then %>
+			<table border="1" class="mystyle">
+				<tr border="1" class="cell">
+					<th>Status</th>
+					<th>Date Att</th>
+					<th>Caller</th>
+					<th>Notes</th>
+					<th>Follow Up</th>
+				</tr>
+			  	<% @calls.each do |call|
+			       	dateatt=''
+			       	if call.dateatt.nil?
+			       		dateatt='unknown'
+			       	else	
+				       	dateatt=call.dateatt.to_formatted_s(:long_ordinal)
+				    end
+				    followup=''
+				    if call.followup.nil?
+				   		followup='unknown'
+				   	else 
+					   	followup=call.followup.to_formatted_s(:long_ordinal)
+				    end
+				%>
+			   	<tr border="1" class="cell">
+					<td><%=call.tstatus %></td>
+					<td><%=dateatt%></td>
+					<td><%=call.caller%></td>
+					<td><%=call.notes%></td>
+					<td><%=followup%></td>
+				</tr>
+	        <%end%>
+		</table>
+	<% end%>
+	<br/>
+	<%= form_for @call_client_form, :url => callclient1_sale_url(:id => @cfid, :jobid1=>@jobid1,:source=>@source, :function=>@function) do |cc| %>
+ 		<table border="1" class="mystyle">
+			<tr class="cell">
+				<td><%=cc.label :tstatus, "TStatus: " %></td>
+				<td><%=cc.select :tstatus, options_for_select(@tstatus_options, @selected_tstatus)%></td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= cc.label :notes, "Notes: " %></td>
+				<td><%= cc.text_field :notes, :size => 30 %></td>
+			</tr>				
+			<tr border="1" class="cell">
+				<td><%= cc.label :year, "Follow Up: " %></td>
+				<td>
+					<%=cc.select :year, options_for_select(@years,@selected_fyear_foll)%>
+					<%=cc.select :month, options_for_select(@months,@selected_fmonth_foll)%>
+					<%=cc.select :day, options_for_select(@days,@selected_fday_foll)%>
+				</td>
+			</tr>
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td>&nbsp;</td>
+				<td><%= cc.submit "Call Client" %></td>
+			</tr>
+		</table>
+	<%end%>	
+	<br/>	
+	<h3><b><%= link_to 'Call Next Client', nextclient_sale_path(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)%></b></h3><br/>
+	<%if @source=='callclient'%>
+		<h3><b><b><%= link_to 'Client List', clientlist_sales_path,%></b><br/>
+</b></h3>
+	<%end%>
+</fieldset>
+</div>
+
+<div id="show_satcall" style=<%=sat_call_display%>>
+	<fieldset class="function">
+	<legend>Function Satisfaction</legend>
+
+	<%if !@cfmess.nil?%>
+		<h1><font color="blue"><%=@cfmess%></font></h1>
+	<%end%>
+
+	<% if !@sat_info.nil? then %>
+		
+				<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Job ID</b></th>
+					<th><b>Address</b></th>
+					<th><b>Job Desc</b></th>
+					<th><b>Price</b></th>
+					<th><b>Crew</b></th>
+					<th><b>Minutes</b></th>
+					<th><b>Date Done</b></th>
+					<th><b>Days To Pay</b></th>
+				</tr>	
+			<%@sat_info.each do |job|
+			  class5='cell'	
+			  if job.jobdnf=='dnf'
+			  	class5='dnf'
+			  elsif	job.jobdnf=='sat'
+			  	class5='sat'
+			  end	
+			%>
+				<tr class=<%=class5%>>
+					<td><b><%= job.jobid %></b></td>
+					<td><b><%= job.address %></b></td>
+					<td><b><%= job.jobdesc %></b></td>
+					<td><b><%= number_to_currency job.price %></b></td>
+					<td><b><%= job.crewname %></b></td>
+					<td><b><%= job.minutes %></b></td>
+					<td><b><%= job.datebi %></b></td>
+					<td><b><%= job.daystopay %></b></td>
+				</tr>	
+			<%end%>
+		</table>
+
+		
+  		<% end%>
+	<br/>
+	<%= form_for @sat_call_form, :url => savesatcall_function_url(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function) do |cc| %>
+ 		<table border="1" class="mystyle">
+			<tr class="cell">
+				<td><%=cc.label :type %></td>
+				<td><%=cc.select :type, options_for_select(@sat_options, @selected_sat)%></td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= cc.label :comments %></td>
+				<td><%= cc.text_field :comments, :size => 30 %></td>
+			</tr>				
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td>&nbsp;</td>
+				<td><%= cc.submit "Record Satisfaction" %></td>
+			</tr>
+		</table>
+	<%end%>	
+	<br/>	
+	<%if @source=='satcall'%>
+		<h3><b><%= link_to 'Call Next Satisfaction Client', nextsatclient_function_path(:jobid1=>@jobid1, :source=>@source, :function=>@function)%></b></h3><br/>
+		<h3><b><%= link_to 'Satisfaction Calls', satisfaction_functions_path,%></b></h3><br/>
+	<%end%>
+</fieldset>
+</div>
+
+
+
+<%end%>
+
+
+<fieldset class="mystyle">
+	<legend>Client Profile</legend>
+
+	<%if !@nosale.nil?%>
+		<h1><font color="red"><%=@nosale%></font></h1>
+	<%end%>
+
+	<%if !@cfmess.nil?%>
+		<h1><font color="red"><%=@cfmess%></font></h1>
+	<%end%>
+
+
+<%if !@prices_all.nil? && !@prices_all.empty? then%>
+<b>Properties</b>
+	<table border="1" class="mystyle">
+			<tr class="cell">
+				<th><b>JobInfoId</b></th>
+				<th><b>Address</b></th>
+				<th><b>Post Code</b></th>
+				<th><b>Perly</b></th>
+				<th><b>W1 Price</b></th>
+				<th><b>EH Price</b></th>
+				<th><b>EG Price</b></th>
+			</tr>	
+		<%@prices_all.each do |pr|%>
+			<tr class="cell">
+				<td><b><%= pr.id %></b></td>
+				<td><b><%= pr.address %></b></td>
+				<td><b><%= pr.post_code %></b></td>
+				<td><b><%= pr.perly %></b></td>
+				<td><b><%= number_to_currency pr.w1 %></b></td>
+				<td><b><%= number_to_currency pr.eh %></b></td>
+				<td><b><%= number_to_currency pr.eg %></b></td>
+				<td><%= link_to 'Make Sale', makesale_sale_path(:jobinfoid => pr.id, :jobid1=>@jobid1, :source => @source, :function=>@function),:style=>"color: yellow"%></td>
+			</tr>	
+		<%end%>
+	</table>
+<%end%>
+<br/>
+
+<%if !@upcoming_jobs.nil? && !@upcoming_jobs.empty? then%>
+<b>Upcoming Jobs</b>
+	<table border="1" class="mystyle">
+			<tr class="cell">
+				<th><b>Job ID</b></th>
+				<th><b>Address</b></th>
+				<th><b>Job Desc</b></th>
+				<th><b>Price</b></th>
+				<th><b>Type</b></th>
+				<th><b>Start Date</b></th>
+			</tr>	
+		<%@upcoming_jobs.each do |job|%>
+			<tr class="cell">
+				<td><b><%= job.jobid %></b></td>
+				<td><b><%= job.address %></b></td>
+				<td><b><%= job.jobdesc %></b></td>
+				<td><b><%= number_to_currency job.price %></b></td>
+				<td><b><%= job.type %></b></td>
+				<td><b><%= job.sdate %></b></td>
+				<td><%= link_to 'Edit Sale', modifysale_sale_path(:jobid => job.jobid, :jobid1=>@jobid1,  :source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+			</tr>	
+		<%end%>
+	</table>
+<%end%>
+<br/>
+<%if !@upcoming_dnfs.nil? && !@upcoming_dnfs.empty? then%>
+<b>Upcoming DNFs</b>
+	<table border="1" class="mystyle">
+			<tr class="cell">
+				<th><b>Job ID</b></th>
+				<th><b>Address</b></th>
+				<th><b>Job Desc</b></th>
+				<th><b>Price</b></th>
+				<th><b>Type</b></th>
+				<th><b>Start Date</b></th>
+			</tr>	
+		<%@upcoming_dnfs.each do |job|%>
+			<tr class="cell">
+				<td><b><%= job.jobid %></b></td>
+				<td><b><%= job.address %></b></td>
+				<td><b><%= job.jobdesc %></b></td>
+				<td><b><%= number_to_currency job.price %></b></td>
+				<td><b><%= job.type %></b></td>
+				<td><b><%= job.sdate %></b></td>
+				<td><%= link_to 'Edit DNF', modifydnf_function_path(:dnfid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+			</tr>	
+		<%end%>
+	</table>
+<%end%>
+<br/>
+
+<button id="completedjobs" onclick="show_completedjobs()" >Show Completed Jobs</button><br/>
+<div id="show_completedjobs" style="display:none">
+	<%if !@done_jobs.nil? && !@done_jobs.empty? then%>
+	<b>Completed Jobs</b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Job ID</b></th>
+					<th><b>Address</b></th>
+					<th><b>Job Desc</b></th>
+					<th><b>Price</b></th>
+					<th><b>Crew</b></th>
+					<th><b>Minutes</b></th>
+					<th><b>Date Done</b></th>
+					<th><b>Days To Pay</b></th>
+				</tr>	
+			<%@done_jobs.each do |job|
+			  class5='cell'	
+			  if job.jobdnf=='dnf'
+			  	class5='dnf'
+			  elsif	job.jobdnf=='sat'
+			  	class5='sat'
+			  end	
+			%>
+				<tr class=<%=class5%>>
+					<td><b><%= job.jobid %></b></td>
+					<td><b><%= job.address %></b></td>
+					<td><b><%= job.jobdesc %></b></td>
+					<td><b><%= number_to_currency job.price %></b></td>
+					<td><b><%= job.crewname %></b></td>
+					<td><b><%= job.minutes %></b></td>
+					<td><b><%= job.datebi %></b></td>
+					<td><b><%= job.daystopay %></b></td>
+					<%if class5=='cell'%>
+					<td><%= link_to 'Create DNF', makednf_function_path(:jobid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+					<td><%= link_to 'Satisfaction Call', clientprofile_function_path(:id => @cfid, :jobid1=>job.jobid, :source=>'cfinfo',:function=>'satcall'),{:style=>"color: yellow"}%></td>
+					<%end%>
+				</tr>	
+			<%end%>
+		</table>
+	<%end%>
+</div>
+
+<button id="editclient" onclick="show_editclient()" >Show Edit Client</button><br/>
+<div id="show_editclient" style="display:none">
+
+<%= form_for @edit_client_form, :url => editclient_function_url(:id => @cfid, :jobid1=>@jobid,:source=>@source, :function=>@function) do |cc| %>
+	<table border="1" class="mystyle">
+	    <%=cc.hidden_field :source, :value=>@source%>
+		<tr class="cell">
+			<td><b><%=cc.label :company%></b></td>
+			<td><b><%=cc.text_field :company, :value=> @client.company, :size=>"8x1" %></b></td>
+			<td><b><%=cc.label :honorific%></b></td>
+			<td><b><%=cc.text_field :honorific, :value=> @client.honorific, :size=>"5x1" %></b></td>
+			<td><b><%=cc.label :firstname%></b></td>
+			<td><b><%=cc.text_field :firstname, :value=> @client.firstname, :size=>"8x1" %></b></td>
+			<td><b><%=cc.label :lastname%></b></td>
+			<td><b><%=cc.text_field :lastname, :value=> @client.lastname, :size=>"8x1" %></b></td>
+		</tr>	
+		<tr class="cell">
+			<td><b><%=cc.label :address, 'Billing Address'%></b></td>
+			<td><b><%=cc.text_field :address, :value=> @client.address, :size=>"7x1" %></b></td>
+			<td><b><%=cc.label :city%></b></td>
+			<td><b><%=cc.text_field :city, :value=> @client.city, :size=>"5x1" %></b></td>
+			<td><b><%=cc.label :province%></b></td>
+			<td><b><%=cc.text_field :province, :value=> @client.province, :size=>"5x1" %></b></td>
+			<td><b><%=cc.label :postcode%></b></td>
+			<td><b><%=cc.text_field :postcode, :value=> @client.postcode, :size=>"5x1" %></b></td>
+			<td><b><%=cc.label :perly%></b></td>
+			<td><b><%=cc.text_field :perly, :value=> @client.perly, :size=>"5x1" %></b></td>
+		</tr>	
+		<tr class="cell">
+			<td><b><%=cc.label :phone%></b></td>
+			<td><b><%=cc.text_field :phone, :value=> @client.phone, :size=>"7x1" %></b></td>
+			<td><b><%=cc.label :offphone%></b></td>
+			<td><b><%=cc.text_field :offphone, :value=> @client.offphone, :size=>"5x1" %></b></td>
+			<td><b><%=cc.label :cellphone%></b></td>
+			<td><b><%=cc.text_field :cellphone, :value=> @client.cellphone, :size=>"5x1" %></b></td>
+			<td><b><%=cc.label :fax%></b></td>
+			<td><b><%=cc.text_field :fax, :value=> @client.fax, :size=>"5x1" %></b></td>
+			<td><b><%=cc.label :email%></b></td>
+			<td><b><%=cc.text_field :email, :value=> @client.email, :size=>"5x1" %></b></td>
+		</tr>	
+		<tr style="padding-top:10px" border="1" class="cell">
+			<td>&nbsp;</td>
+			<td><%= cc.submit "Edit Client Info" %></td>
+		</tr>
+	</table>
+<%end%>	
+</div>
+
+
+</fieldset>
+
+
+

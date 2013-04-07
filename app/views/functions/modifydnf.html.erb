@@ -1,0 +1,176 @@
+<script text="text/javascript" type="text/javascript">
+		
+		function dnftype(){
+			var appt=$('#create_dnf_form_dnftype_appt');
+			var floater=$('#create_dnf_form_dnftype_floater');
+			var fyear=$('#create_dnf_form_fyear');
+			var fmonth=$('#create_dnf_form_fmonth');
+			var fday=$('#create_dnf_form_fday');
+	
+			var syear=$('#create_dnf_form_syear');
+			var smonth=$('#create_dnf_form_smonth');
+			var sday=$('#create_dnf_form_sday');
+
+			var fyear1=$('#create_dnf_form_fyear1');
+			var fmonth1=$('#create_dnf_form_fmonth1');
+			var fday1=$('#create_dnf_form_fday1');
+		
+			var syear1=$('#create_dnf_form_syear1');
+			var smonth1=$('#create_dnf_form_smonth1');
+			var sday1=$('#create_dnf_form_sday1');
+            
+            var sy=syear1.val();
+            var sm=smonth1.val();
+            var sd=sday1.val();
+
+			if ($('#create_dnf_form_dnftype_appt').attr('checked')) {
+				fyear.val(syear.val());
+				fmonth.val(smonth.val());
+				fday.val(sday.val());
+			}
+			if ($('#create_dnf_form_dnftype_floater').attr('checked')) {
+				syear.val(syear1.val());
+				smonth.val(smonth1.val());
+				sday.val(sday1.val());
+
+				fyear.val(syear1.val());
+				fmonth.val(smonth1.val());
+				fday.val(sday1.val());
+			}
+
+		}
+
+
+
+        function numtomonth(num){
+        	if(num=='0')
+        		return 'Jan';
+        	else if(num=='1')
+        	  	return 'Feb';   
+        	else if(num=='2')
+        	  	return 'Mar';   
+        	else if(num=='3')
+        	  	return 'Apr';   
+        	else if(num=='4')
+        	  	return 'May';   
+        	else if(num=='5')
+        	  	return 'Jun';   
+        	else if(num=='6')
+        	  	return 'Jul';   
+        	else if(num=='7')
+        	  	return 'Aug';   
+        	else if(num=='8')
+        	  	return 'Sep';   
+        	else if(num=='9')
+        	  	return 'Oct';   
+        	else if(num=='10')
+        	  	return 'Nov';   
+        	else if(num=='11')
+        	  	return 'Dec';
+        }
+
+        function monthtonum(month){
+        	if(month=='Jan')
+        		return '0';
+        	else if(month=='Feb')
+        	  	return '1';   
+        	else if(month=='Mar')
+        	  	return '2';   
+        	else if(month=='Apr')
+        	  	return '3';   
+        	else if(month=='May')
+        	  	return '4';   
+        	else if(month=='Jun')
+        	  	return '5';   
+        	else if(month=='Jul')
+        	  	return '6';   
+        	else if(month=='Aug')
+        	  	return '7';   
+        	else if(month=='Sep')
+        	  	return '8';   
+        	else if(month=='Oct')
+        	  	return '9';   
+        	else if(month=='Nov')
+        	  	return '10';   
+        	else if(month=='Dec')
+        	  	return '11';
+        }
+        
+	
+
+</script>
+
+<%=@ln%>
+<b><%=link_to 'Back To Client Profile', clientprofile_function_path(:CFID=>@cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)%></b><br/>     
+
+
+
+ 
+
+<%= form_for @edf_form, :url => savemodifydnf_function_url(:dnfid => @dnfid, :CFID=>@cfid, :jobid1=>@jobid1, :source => @source, :function=>@function) do |cc| %>
+	<fieldset class="mystyle">
+		<legend>Edit DNF</legend>
+		    <%=cc.hidden_field :dnfid, :value=>@dnfid%>
+		    <%=cc.hidden_field :jobinfoid, :value=>@jobinfoid%>
+			<table border="1" class="mystyle">
+				<tr border="1" class="cell">
+					<td><%=cc.label :contact, 'Contact' %></td>
+					<td>
+						<%=cc.text_field :contact, :value=>@ppr.client%>
+					</td>
+				</tr>
+				<tr border="1" class="cell">
+					<td><%=cc.label :clienthm, 'Client Needs To Be Home' %></td>
+					<td>
+						<%=cc.select :clienthm, options_for_select(@clienthm_options, @selected_clienthm)%>
+					</td>
+				</tr>
+				<tr border="1" class="cell">
+					<%if @dnf.Sdate!=@dnf.Fdate%>
+						<td><%=cc.radio_button :dnftype, 'floater',:checked=>true, :onclick=>'dnftype()' %>
+						<%=cc.label :dnftype_floater,'Floater' %></td>
+						<td><%=cc.radio_button :dnftype, 'appt', :onclick=>'dnftype()'%>
+						<%=cc.label :dnftype_appt,'Appointment' %></td>
+					<%else%>
+						<td><%=cc.radio_button :dnftype, 'floater', :onclick=>'jobtype()' %>
+						<%=cc.label :dnftype_floater,'Floater' %></td>
+						<td><%=cc.radio_button :dnftype, 'appt',:checked=>true, :onclick=>'jobtype()'%>
+						<%=cc.label :dnftype_appt,'Appointment' %></td>
+					<%end%>
+				</tr>
+				<tr border="1" class="cell">
+					<td><%=cc.label 'Start Date' %></td>
+					<td>
+						<%=cc.select :syear, options_for_select(@syear_options, @selected_syear)%>
+						<%=cc.select :smonth, options_for_select(@smonth_options, @selected_smonth)%>
+						<%=cc.select :sday, options_for_select(@sday_options, @selected_sday)%>
+					</td>
+				</tr>
+	
+				<tr border="1" class="cell">
+					<td><%=cc.label 'Finish Date' %></td>
+					<td>
+						<%=cc.select :fyear, options_for_select(@fyear_options, @selected_fyear)%>
+						<%=cc.select :fmonth, options_for_select(@fmonth_options, @selected_fmonth)%>
+						<%=cc.select :fday, options_for_select(@fday_options, @selected_fday)%>
+					</td>
+				</tr>
+	
+				<tr border="1" class="cell">
+					<td><%=cc.label :stime %></td>
+					<td>
+						<%=cc.select :stime, options_for_select(@stime_options, @selected_stime)%>
+					</td>
+				</tr>
+			</table><br/>	
+        
+			<table border="1" class="mystyle">
+				<tr border="1" class="cell">
+					<td colspan=3><%=cc.text_area :dnfdesc ,:value=>@dnf.DnfDesc,:size=>'60x4'%></td>
+				</tr>
+				<tr style="padding-top:10px" border="1" class="cell">
+					<td colspan=3, align=center><%= cc.submit "Edit DNF" %></td>
+				</tr>
+			</table>
+	</fieldset>
+<%end%>	

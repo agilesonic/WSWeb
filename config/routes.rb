@@ -1,7 +1,9 @@
 WSWeb::Application.routes.draw do
   get "online_services/index"
   
-  match 'login'   => 'users/sessions#new'
+  #match 'login'   => 'users/sessions#new'
+  #match 'login'   => 'functions/login'
+
   match 'logout'  => 'users/sessions#destroy'
   match 'signup'  => 'users/registrations#new'
   
@@ -12,10 +14,64 @@ WSWeb::Application.routes.draw do
     resources :profiles,          :only => [:new, :create]
   end
 
-  root :to => 'home#index'
+
+  root :to => 'functions#new'
   
   resources  :services,           :only => ['index']
   resources  :online_services,    :only => ['index']
   resources  :inquiries,          :only => ['new', 'create']
 
+  #match "/sales/loadclients" => "sales#loadclients"
+  #match "/sales/callclient1" => "sales#callclient1"
+  #match "/functions/messages" => "functions#messages"
+  
+ 
+  resources :functions do
+    collection do 
+      get 'login'
+      post 'login'
+      post 'findclients'   # /clients/count   helper_method: count_clients_path
+      get 'smartsearch'
+      get 'messagelog'
+      get 'logmessage'
+      post 'screenmessage'
+      get 'satisfaction'
+    end
+    member do
+      get 'new'
+      get 'clientprofile'
+      post 'editclient'
+      get 'makednf'
+      post 'makednffromcfdetails'
+      get 'modifydnf'
+      post 'savemodifydnf'
+      post 'savesatcall'
+      get 'nextsatclient'
+    end
+  end
+  resources :functions
+  
+  
+  
+  resources :sales do
+    collection do 
+      post 'loadclients'   # /clients/count   helper_method: count_clients_path
+      get 'index'
+      get 'schedule'
+      get 'clientlist'
+    end
+    member do
+#      get 'loadclient'  # /clients/:id/changeAddress   helper_method: changeAddress_client_path(:id)
+      get 'callclient'
+      post 'callclient1'
+      get 'makesale'
+      post 'makesale1'
+      post 'makesalefromcfdetails'
+      post 'savemodifysale'
+      get 'modifysale'
+      get 'nextclient'
+    end
+  end
+  #resources :sales
+  
 end

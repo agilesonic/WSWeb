@@ -1,0 +1,37 @@
+
+
+<%= form_for @sales_form, :url => loadclients_sales_url do |sales| %>
+	<fieldset class="mystyle">
+		<legend>Load Clients</legend>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<td><%= sales.label :user, "User: " %></td>
+				<td>
+					<%= sales.text_field :user, :size => 30 %>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= sales.label :profile, "Profile: " %></td>
+				<td>
+					<%= sales.text_field :profile, :size => 30 %>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= sales.label :lowcf, "Low CF: " %></td>
+				<td>
+					<%= sales.text_field :lowcf, :size => 30 %>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= sales.label :lowcf, "High CF: " %></td>
+				<td>
+					<%= sales.text_field :highcf, :size => 30 %>
+				</td>
+			</tr>
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td>&nbsp;</td>
+				<td><%= sales.submit "Load Clients" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>	

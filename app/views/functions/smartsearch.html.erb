@@ -1,0 +1,51 @@
+<%= form_for @smart_search_form, :url => findclients_functions_url do |ss| %>
+	<%= ss.hidden_field :source, :value=>'cfinfo' %>
+	<fieldset class="mystyle">
+		<legend>Smart Search</legend>
+		<table border="1" class="mystyle">
+
+			<tr border="1" class="cell">
+				<td><%= ss.label :CFID, 'CFID' %></td>
+				<td>
+					<%= ss.text_field :CFID, :size => 30 %>
+				</td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%= ss.label :jobid, 'JOBID' %></td>
+				<td>
+					<%= ss.text_field :jobid, :size => 30 %>
+				</td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%= ss.label :name %></td>
+				<td>
+					<%= ss.text_field :name, :size => 30 %>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= ss.label :address %></td>
+				<td>
+					<%= ss.text_field :address, :size => 30 %>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= ss.label :jobaddress, "Job Address " %></td>
+				<td>
+					<%= ss.text_field :jobaddress, :size => 30 %>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= ss.label :phone %></td>
+				<td>
+					<%= ss.text_field :phone, :size => 30 %>
+				</td>
+			</tr>
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td>&nbsp;</td>
+				<td><%= ss.submit "Smart Search" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>	

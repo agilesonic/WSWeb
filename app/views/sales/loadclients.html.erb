@@ -1,0 +1,29 @@
+<b>In load clients</b>
+<b>TRYING IT</b>
+<%=@x%>
+
+
+<% if !@clients.nil? %>
+<div id="clients">
+	<% if @clients.empty? %>
+	<p>No matching clients found.</p>
+	<% else %>
+	        <h2>Search Results</h2>
+			<table border='1' class="mystyle">
+				<% @clients.each do |client|
+					String date='unknown'
+					if !client.registerdate.nil?
+						date=client.registerdate.to_formatted_s(:long_ordinal)
+					end	
+			    %>
+			    	<tr border="1" class="cell"> 
+						<td><%= client.CFID %></td><td><%= client.lastname %></td><td><%= client.address %></td>
+						<td><%= client.phone %></td><td><%=  date %></td>
+						<td><%= link_to 'Call Client', clientprofile_function_path(:id => client.CFID,:source=>'callclient',:function=>'callclient'),:style=>"color: yellow"%></td>
+					</tr>
+				<% end %>
+			</table>
+	<% end %>
+</div>	
+<% end %>
+

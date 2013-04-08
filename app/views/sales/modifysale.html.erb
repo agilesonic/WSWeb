@@ -705,7 +705,7 @@
 					<%else%>
 						<%=cc.check_box :cages, :onclick=>'job_desc()'%>
 						<%=cc.label :cages, 'Cages' %>
-						<%=cc.select :cagenum, options_for_select(@cagenum_options, @selected_cagenum), :onselect=>'job_desc()'%>
+						<%=cc.select :cagenum, options_for_select(@cagenum_options, @selected_cagenum), {},{:onchange=>'job_desc()'}%>
 						<%=cc.text_field :cageprice,:size=>'7'%></td>
 					<%end%>	
 				

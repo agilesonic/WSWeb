@@ -1,3 +1,4 @@
 class JobBundle
-  attr_accessor :num, :cfid, :jobdnf, :jobid, :address, :jobdesc, :price, :crewname, :minutes, :datebi, :daystopay, :type, :sdate
+  attr_accessor :num, :cfid, :jobdnf, :jobid, :address, :jobdesc, :price, :crewname, :minutes, :datebi, :daystopay, :type, :sdate,
+              :sat
 end

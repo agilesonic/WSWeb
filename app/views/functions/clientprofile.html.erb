@@ -298,6 +298,38 @@ function nigs(){
 <%end%>
 <br/>
 
+<%if !@done_jobs_2013.nil? && !@done_jobs_2013.empty? then%>
+<b>2013 Completed Jobs</b>
+	<table border="1" class="mystyle">
+			<tr class="cell">
+				<th><b>Job ID</b></th>
+				<th><b>Address</b></th>
+				<th><b>Job Desc</b></th>
+				<th><b>Price</b></th>
+				<th><b>Date Done</b></th>
+				<th><b>Crew</b></th>
+			</tr>	
+		<%@done_jobs_2013.each do |job|%>
+			<tr class="cell">
+				<td><b><%= job.jobid %></b></td>
+				<td><b><%= job.address %></b></td>
+				<td><b><%= job.jobdesc %></b></td>
+				<td><b><%= number_to_currency job.price %></b></td>
+				<td><b><%= job.datebi %></b></td>
+				<td><b><%= job.crewname %></b></td>
+				<td><b><%= job.minutes %></b></td>
+					<td><%= link_to 'Create DNF', makednf_function_path(:jobid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+				<%if job.sat.nil?%>
+					<td><%= link_to 'Satisfaction Call', satisfaction_from_client_profile_function_path(:id => @cfid, :jobid1=>job.jobid, :source=>'satcall',:function=>'satcall'),{:style=>"color: yellow"}%></td>
+				<%end%>
+			</tr>	
+		<%end%>
+	</table>
+<%end%>
+<br/>
+
+
+
 <button id="completedjobs" onclick="show_completedjobs()" >Show Completed Jobs</button><br/>
 <div id="show_completedjobs" style="display:none">
 	<%if !@done_jobs.nil? && !@done_jobs.empty? then%>
@@ -330,10 +362,6 @@ function nigs(){
 					<td><b><%= job.minutes %></b></td>
 					<td><b><%= job.datebi %></b></td>
 					<td><b><%= job.daystopay %></b></td>
-					<%if class5=='cell'%>
-					<td><%= link_to 'Create DNF', makednf_function_path(:jobid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
-					<td><%= link_to 'Satisfaction Call', clientprofile_function_path(:id => @cfid, :jobid1=>job.jobid, :source=>'cfinfo',:function=>'satcall'),{:style=>"color: yellow"}%></td>
-					<%end%>
 				</tr>	
 			<%end%>
 		</table>

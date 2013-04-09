@@ -217,8 +217,10 @@ class FunctionsController <  ApplicationController
     @edit_client_form=EditClientForm.new
     @prices_all=HomeHelper::get_props_and_prices(@client)
     donejobs=@client.done_jobs
+    donejobs2013=@client.done_jobs_2013
     upcomingjobs=@client.upcoming_jobs
     @done_jobs=[]
+    @done_jobs_2013=[]
     @upcoming_jobs=[]
     upcomingjobs.each do |job|
       job_bundle=JobBundle.new
@@ -240,6 +242,9 @@ class FunctionsController <  ApplicationController
     donejobs.each do |job|
       job_bundle=JobBundle.new
       job_bundle.jobdnf='job'
+      if !job.satisfaction.nil?
+        job_bundle.sat='ok'
+      end
       job_bundle.jobid=job.JobID
       job_bundle.address=job.property.address
       job_bundle.jobdesc=job.JobDesc
@@ -264,21 +269,33 @@ class FunctionsController <  ApplicationController
  
       if !job.Recstatus.nil? && !job.Recstatus.index('Receiv').nil? && job.Recstatus.index('Receiv')>-1
          job_bundle.daystopay=job.Recstatus
-          @done_jobs << job_bundle
+         if job_bundle.datebi<Date.parse('2013-01-01')
+            @done_jobs << job_bundle
+         else
+            @done_jobs_2013 << job_bundle
+         end
       else       
         trandate=Transactions.date_paid job.JobID
         paid_date=trandate
         job_date=job.Datebi
         if(paid_date.nil? || job_date.nil?)
           job_bundle.daystopay='unknown'    
-          @done_jobs << job_bundle
+         if job_bundle.datebi<Date.parse('2013-01-01')
+            @done_jobs << job_bundle
+         else
+            @done_jobs_2013 << job_bundle
+         end
         else  
           days=(paid_date-job_date).to_i
           job_bundle.daystopay=days    
-          @done_jobs << job_bundle
+         if job_bundle.datebi<Date.parse('2013-01-01')
+            @done_jobs << job_bundle
+         else
+            @done_jobs_2013 << job_bundle
+         end
         end
-      end
-
+    end
+    
     upcomingdnfs=Jobdnf.search_incomplete_dnfs job.JobID
     upcomingdnfs.each do |dnf|
       job_bundle=JobBundle.new
@@ -319,14 +336,18 @@ class FunctionsController <  ApplicationController
                               end
                             end
                       end
-                  job_bundle.crewname=job.CrewName.to_s + partner.to_s
+                  jdb.crewname=job.CrewName.to_s + partner.to_s
                 else
-                  job_bundle.crewname=''
+                  jdb.crewname=''
                 end
             jdb.minutes=dnf.Minutes
             jdb.datebi=dnf.Datebi
             jdb.daystopay='n/a'    
-            @done_jobs << jdb
+            if jdb.datebi<Date.parse('2013-01-01')
+               @done_jobs << jdb
+            else
+               @done_jobs_2013 << jdb
+            end
           end
       end
       sat=job.satisfaction
@@ -343,7 +364,11 @@ class FunctionsController <  ApplicationController
         sb.minutes='n/a'
         sb.datebi=sat.SatDate
         sb.daystopay='n/a'    
-        @done_jobs << sb
+        if sb.datebi<Date.parse('2013-01-01')
+          @done_jobs << sb
+        else
+          @done_jobs_2013 << sb
+        end
       end     
     end
   end
@@ -681,13 +706,11 @@ class FunctionsController <  ApplicationController
     redirect_to clientprofile_function_url(:cfid=>@cfid,:jobid1=>@jobid1, :source=>@source, :function=>@function, :cfmess=>cfmess)
   end
   
-  def satisfaction
-    @test='Nut WEEEENNNAAHHHHHH'
+  def generate_sat_list
     date=Date.parse('2013-03-01')
     sat_jobids=[]
     job_jobids=[]
     sats=Satisfaction.search_sats date
-    puts 'SATIS+++++++++++++++++++++++',sats.size
     sats.each do |sat|
       sat_jobids<<sat.JobID  
     end
@@ -695,11 +718,8 @@ class FunctionsController <  ApplicationController
     jobs.each do |job|
       job_jobids<<job.JobID  
     end
-    puts 'Jobs+++++++++++++++++++++++',jobs.size
-    
     need_sat_jobids=job_jobids-sat_jobids
-    puts 'Need Sat+++++++++++++++++++++++',need_sat_jobids.size
-    @done_jobs=[]
+    done_jobs=[]
     i=0
     need_sat_jobids.each do |jobid|
       job=Job.find jobid
@@ -732,25 +752,41 @@ class FunctionsController <  ApplicationController
       job_bundle.datebi=job.Datebi
       if !job.Recstatus.nil? && !job.Recstatus.index('Receiv').nil? && job.Recstatus.index('Receiv')>-1
          job_bundle.daystopay=job.Recstatus
-          @done_jobs << job_bundle
+          done_jobs << job_bundle
       else       
         trandate=Transactions.date_paid job.JobID
         paid_date=trandate
         job_date=job.Datebi
         if(paid_date.nil? || job_date.nil?)
           job_bundle.daystopay='unknown'    
-          @done_jobs << job_bundle
+          done_jobs << job_bundle
         else  
           days=(paid_date-job_date).to_i
           job_bundle.daystopay=days    
-          @done_jobs << job_bundle
+          done_jobs << job_bundle
         end
       end
       i+=1
     end
+    return done_jobs
+  end
+  
+    
+  def satisfaction
+    @done_jobs=generate_sat_list
     @source='satcall'
     @function='satcall'
   end
+
+  def satisfaction_from_client_profile
+    id=params[:id]
+    jobid1=params[:jobid1]
+    @done_jobs=generate_sat_list
+    source=params[:source]
+    function=params[:function]
+    redirect_to clientprofile_function_url(:cfid=>id,:jobid1=>jobid1, :source=>source, :function=>function)
+  end
+
 
   def nextsatclient
     @test='Nut WEEEENNNAAHHHHHH'

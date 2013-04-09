@@ -12,18 +12,20 @@ class SalesController < ApplicationController
   end
   
   def loadclients
-    @sf=params[:sales_form]
-    @clients=Client.search_cfrange(@sf[:lowcf].to_s,@sf[:highcf].to_s)
-    #@x='xxx'
+    sf=SalesForm.new(params[:sales_form])
+    #@clients=Client.search_cfrange(@sf[:lowcf].to_s,@sf[:highcf].to_s)
     #@clients=Client.search_kbanger('HR00005045')
-    session[:lowcf] = @sf[:lowcf]
-    session[:highcf] = @sf[:highcf]
+    @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit
+    
+    session[:lowcf] = sf.lowcf
+    session[:limit] = sf.limit
   end   
 
   def clientlist
     lowcf=session[:lowcf]
-    highcf=session[:highcf]
-    @clients=Client.search_cfrange(lowcf,highcf)
+    limit=session[:highcf]
+    @cc=Convertcalls.search_ccrange(lowcf, limit)
+    #@clients=Client.search_cfrange(lowcf,highcf)
     render 'loadclients'
   end
   

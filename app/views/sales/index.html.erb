@@ -5,12 +5,6 @@
 		<legend>Load Clients</legend>
 		<table border="1" class="mystyle">
 			<tr border="1" class="cell">
-				<td><%= sales.label :user, "User: " %></td>
-				<td>
-					<%= sales.text_field :user, :size => 30 %>
-				</td>
-			</tr>
-			<tr border="1" class="cell">
 				<td><%= sales.label :profile, "Profile: " %></td>
 				<td>
 					<%= sales.text_field :profile, :size => 30 %>
@@ -23,9 +17,9 @@
 				</td>
 			</tr>
 			<tr border="1" class="cell">
-				<td><%= sales.label :lowcf, "High CF: " %></td>
+				<td><%= sales.label :limit %></td>
 				<td>
-					<%= sales.text_field :highcf, :size => 30 %>
+					<%= sales.text_field :limit, :size => 30 %>
 				</td>
 			</tr>
 			<tr style="padding-top:10px" border="1" class="cell">

@@ -9,6 +9,7 @@ class Client < ActiveRecord::Base
   has_many :valid_properties, :class_name => "Property", :foreign_key => "cfid", :conditions => "validuntil is null or validuntil = \'\'"
   has_many :jobs, :through => :properties
   has_many :done_jobs, :class_name => "Job", :through => :properties, :conditions => "datebi is not null", :order=>"datebi desc", :source => :jobs
+  has_many :done_jobs_2013, :class_name => "Job", :through => :properties, :conditions => "datebi>='2013-01-01'", :order=>"datebi desc", :source => :jobs
   has_many :upcoming_jobs, :class_name => "Job", :through => :properties, :conditions => "sdate is not null and datebi is null", :order=>"sdate", :source => :jobs
   
   def self.search(key) 

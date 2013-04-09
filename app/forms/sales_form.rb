@@ -1,6 +1,7 @@
 class SalesForm < BaseForm
   
-  attr_accessor :user, :profile, :lowcf, :highcf
+  attr_accessor :profile, :limit, :lowcf
+
   
 end
   

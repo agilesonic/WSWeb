@@ -47,6 +47,7 @@ WSWeb::Application.routes.draw do
       post 'savemodifydnf'
       post 'savesatcall'
       get 'nextsatclient'
+      get 'satisfaction_from_client_profile'
     end
   end
   resources :functions

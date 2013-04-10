@@ -13,11 +13,11 @@ class Property < ActiveRecord::Base
   end
 
   def self.get_client_properties(key) 
-    where("cfid = ? and validuntil is ?", "#{key}",nil).order("address") 
+    where("cfid = ? and validuntil is null", "#{key}").order("address") 
   end
 
   def self.get_property_from_address(key) 
-    where("address = ? and validuntil is ?", "#{key}",nil) 
+    where("address = ? and validuntil is null", "#{key}") 
   end
 
   def self.get_property_from_jobinfoid(key) 

@@ -127,6 +127,7 @@ class SalesController < ApplicationController
     @source=params[:source]
     @function=params[:function]
     @jobid1=params[:jobid1]
+    @nosale=params[:nosale]
     props=Property.get_property_from_jobinfoid @jobinfoid
     prop=props[0]
     @cfid=prop.CFID
@@ -194,6 +195,7 @@ class SalesController < ApplicationController
     @jobid=params[:jobid]
     @jobid1=params[:jobid1]
     @job=Job.find @jobid
+    @nosale=params[:nosale]
     props=Property.get_property_from_jobinfoid @job.JobInfoID
     prop=props[0]
     puts 'PPPRRROOOOOPPPPPP',prop.address
@@ -293,7 +295,8 @@ class SalesController < ApplicationController
       if sdate==fdate
          if !HomeHelper.check_schedule sdate, stime
            nosale='Edit Sale Not Processed. Invalid Date/Time'
-           redirect_to clientprofile_function_url(:id=>cfid, :nosale=>nosale, :jobid=>@jobid, :jobid1=>@jobid1,  :source=>@source, :function=>@function)
+           #redirect_to clientprofile_function_url(:id=>cfid, :nosale=>nosale, :jobid=>@jobid, :jobid1=>@jobid1,  :source=>@source, :function=>@function)
+           redirect_to modifysale_sale_path(:jobid => @jobid, :jobid1=>@jobid1, :nosale=>nosale,  :source=>@source, :function=>@function)
            return
          end
       end
@@ -422,7 +425,7 @@ class SalesController < ApplicationController
     if sdate==fdate
        if !HomeHelper.check_schedule sdate, stime
           nosale='Sale['+jobdesc+'  '+sdate.to_s+'  '+stime+'] Not Processed. Invalid Date/Time'
-          redirect_to clientprofile_function_url(:id=>cfid,:nosale=>nosale, :jobid1=>@jobid1, :source => @source, :function=>@function)
+          redirect_to makesale_sale_url(:jobinfoid => jobinfoid, :jobid1=>@jobid1,:nosale=>nosale, :source => @source, :function=>@function)
          return
        end
     end

@@ -486,6 +486,11 @@
 </script>
 
 <%=@ln%>
+<%if !@nosale.nil?%>
+<h1><font color="red"><%=@nosale%></font></h1>
+<br/><br/>
+<%end%>
+
 <b><%=link_to 'Back To Client Profile', clientprofile_function_path(:CFID=>@cfid,:jobid1=>@jobid1,:source=>@source,:function=>@function)%></b><br/>     
 
 <button id="schedule" onclick="show_schedule()" >Show Schedule</button>

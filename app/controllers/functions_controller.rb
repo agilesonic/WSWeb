@@ -789,7 +789,6 @@ class FunctionsController <  ApplicationController
 
 
   def nextsatclient
-    @test='Nut WEEEENNNAAHHHHHH'
     jobid5=params[:jobid1]
     @source=params[:source]
     @function=params[:function]

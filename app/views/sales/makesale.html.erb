@@ -568,7 +568,10 @@
 
 
 
-<%=@ok%><br/>
+<%if !@nosale.nil?%>
+<h1><font color="red"><%=@nosale%></font></h1>
+<br/><br/>
+<%end%>
 
 <h1><b><%=@ppr.client%> &nbsp; <%=@ppr.address%></b></h1>
 

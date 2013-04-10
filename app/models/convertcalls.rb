@@ -4,7 +4,7 @@ class Convertcalls < ActiveRecord::Base
   belongs_to :client, :foreign_key => "cfid"
 
   def self.search_ccrange(key1, key2) 
-    where("cfid >= ?", "#{key1}").limit("#{key2}") 
+    where("cfid >= ?", "#{key1}").limit(key2) 
   end
   
   

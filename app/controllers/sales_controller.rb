@@ -7,27 +7,49 @@ class SalesController < ApplicationController
   
   def index
     @sales_form=SalesForm.new
-    @profile_options=['No Calls', 'Windows Last Spring', 'EH Last Spring', 'Used Us Last Year'] 
-    @x='Got into index'
+    @profile_options=HomeHelper::CONNECTION_OPTIONS
+    @lowcf=session[:lowcf]
+    @limit=session[:limit] 
+    @selected_profile=session[:selected_profile] 
   end
+  
   
   def loadclients
     sf=SalesForm.new(params[:sales_form])
-    #@clients=Client.search_cfrange(@sf[:lowcf].to_s,@sf[:highcf].to_s)
-    #@clients=Client.search_kbanger('HR00005045')
     @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit
-    
+    cc=@cc.last
     session[:lowcf] = sf.lowcf
+    session[:highcf] = cc.cfid
     session[:limit] = sf.limit
+    session[:selected_profile] = sf.profile
   end   
 
   def clientlist
     lowcf=session[:lowcf]
-    limit=session[:highcf]
+    limit=session[:limit]
     @cc=Convertcalls.search_ccrange(lowcf, limit)
-    #@clients=Client.search_cfrange(lowcf,highcf)
     render 'loadclients'
   end
+
+  def nextbatch
+    @sales_form=SalesForm.new
+    @profile_options=HomeHelper::CONNECTION_OPTIONS
+    
+    cfid=session[:highcf]
+    
+    cfid=cfid[2,cfid.size]
+    cfid=cfid.to_i
+    cfid+=1
+    cfid=HomeHelper.pad_id_num('CF', cfid)
+
+    session[:lowcf]=cfid
+    @lowcf=cfid
+    @limit=session[:limit] 
+    @selected_profile=session[:selected_profile] 
+    render 'index'
+  end
+
+
   
   def nextclient
     cfid=params[:id]
@@ -35,68 +57,87 @@ class SalesController < ApplicationController
     @source=params[:source]
     @function=params[:function]
     lowcf=session[:lowcf]
-    highcf=session[:highcf]
-    clients=Client.search_cfrange(lowcf,highcf)
+    limit=session[:limit]
+    clients=Convertcalls.search_ccrange(lowcf, limit)
     i=0
     clients.each do |client|
-      if client.CFID==cfid
+      if client.cfid==cfid
         i+=1
         break
       end
       i+=1
     end
     next_client=clients[i]
-    #redirect_to callclient_sale_url(:id=>next_client.CFID)
-    redirect_to clientprofile_function_path(:id => next_client.CFID, :jobid1=>@jobid1, :source=>@source,:function=>@function)
+    redirect_to clientprofile_function_path(:id => next_client.cfid, :jobid1=>@jobid1, :source=>@source,:function=>@function)
   end
 
-  def callclient
-    @source=params[:source]
-    @function=params[:function]
+ # def callclient
+  #  @source=params[:source]
+  #  @function=params[:function]
+  #  
+  #  @cfid=params[:id]
+  #  @client=Client.find(@cfid)
+  #  @calls=@client.clientcontacts
+  #  if !@calls.nil?
+  #    @calls.each do |call|
+  #      name='unknown'
+  #      if !call.caller.nil?
+  #        e=Employee.find(call.caller)
+  #      end
+  #      if !e.nil?
+  #        call.caller=e.name
+  #      else
+  #        call.caller=name
+  #      end  
+  #    end
+  #  end
     
-    @cfid=params[:id]
-    @client=Client.find(@cfid)
-    @calls=@client.clientcontacts
-    if !@calls.nil?
-      @calls.each do |call|
-        name='unknown'
-        if !call.caller.nil?
-          e=Employee.find(call.caller)
-        end
-        if !e.nil?
-          call.caller=e.name
-        else
-          call.caller=name
-        end  
-      end
-    end
-    
-    @prices_all=HomeHelper.get_props_and_prices(@client)
-    @x='OK'
-    @tstatus_options=['SOLD', 'LMM', 'LMP']
-    @years=HomeHelper::YEARS
-    @months=HomeHelper::MONTHS
-    @days=HomeHelper::DAYS
-    #@cfid=@id
-    @call_client_form=CallClientForm.new
+  #  @prices_all=HomeHelper.get_props_and_prices(@client)
+  #  @x='OK'
+  #  @tstatus_options=['SOLD', 'LMM', 'LMP']
+  #  @years=HomeHelper::YEARS
+  #  @months=HomeHelper::MONTHS
+  #  @days=HomeHelper::DAYS
+  #  #@cfid=@id
+  #  @call_client_form=CallClientForm.new
     
     
     
-    date=HomeHelper.add_days_to_current_date(1)
-    date10=HomeHelper.add_days_to_date date,10
-    dates=date.to_s
-    date10s=date10.to_s
+  #  date=HomeHelper.add_days_to_current_date(1)
+  #  date10=HomeHelper.add_days_to_date date,10
+  #  dates=date.to_s
+  #  date10s=date10.to_s
     
-    @selected_syear_foll=dates[0,4]
-    @selected_smonth_foll=HomeHelper.get_month_from_num(dates[5,2]) 
-    @selected_sday_foll=dates[8,2]
-    @selected_fyear_foll=date10s[0,4]
-    @selected_fmonth_foll=HomeHelper.get_month_from_num(date10s[5,2]) 
-    @selected_fday_foll=date10s[8,2]
+  #  @selected_syear_foll=dates[0,4]
+  #  @selected_smonth_foll=HomeHelper.get_month_from_num(dates[5,2]) 
+  #  @selected_sday_foll=dates[8,2]
+  #  @selected_fyear_foll=date10s[0,4]
+  #  @selected_fmonth_foll=HomeHelper.get_month_from_num(date10s[5,2]) 
+  #  @selected_fday_foll=date10s[8,2]
+  #end
+  
+  def update_convertcall(cfid, tstatus, followup)
+    convcall=Convertcalls.find cfid
+    convcall.laststatus=tstatus
+    convcall.followup=followup
+    convcall.lastcall=Date.today
+    convcall.summcalls=Clientcontact.num_cfcontacts_summer2013 cfid
+    convcall.fallcalls=Clientcontact.num_cfcontacts_fall2013 cfid
+    convcall.save!
+  end
+
+  def record_contact(cfid, tstatus, followup,notes)
+    cc=Clientcontact.new
+    cc.CFID= cfid
+    cc.tstatus= tstatus
+    cc.notes= notes
+    cc.followup= followup
+    cc.dateatt= Date.today
+    cc.caller= session[:hrid]
+    cc.save!
   end
   
   def callclient1
-    #ccf=params[:call_client_form]
     ccf=CallClientForm.new(params[:call_client_form])
     cfid=params[:id]
     t=Time.now
@@ -106,18 +147,10 @@ class SalesController < ApplicationController
     curr=Date.parse(month+' '+day+', '+year)
     fu=Date.parse(ccf.month.to_s+' '+ccf.day.to_s+', '+ccf.year.to_s)
     
-    cc=Clientcontact.new
-    cc.CFID= cfid
-    cc.tstatus= ccf.tstatus.to_s
-    cc.notes= ccf.notes.to_s
-    cc.followup= fu
-    cc.dateatt= curr
-    cc.caller= session[:hrid]
-    cc.save!
-    #if ccf[:tstatus]=='SOLD'
-    #makesale(id, 'tsales')
-    #end 
-    #redirect_to clientprofile_sale_url(:CFID=>ccf.cfid)
+    record_contact(cfid, ccf.tstatus, fu, ccf.notes)
+    update_convertcall(cfid, ccf.tstatus, fu)
+
+
     cfmess='Client Call Recorded Successfully!!!'
     redirect_to clientprofile_function_path(:id => cfid,:source=>'callclient',:function=>'callclient',:cfmess=>cfmess)
   end
@@ -521,6 +554,10 @@ class SalesController < ApplicationController
       note.id1=jobid
       note.for_invoice='N' 
       note.save!   
+    end
+    if @function=='callclient'
+      record_contact(cfid, 'SALE', Date.today, '')
+      update_convertcall(cfid, 'SALE', Date.today)
     end
     cfmess='SALE Created Successfully!!!'
     #redirect_to makesale_sale_url(:jobinfoid=>jobinfoid)

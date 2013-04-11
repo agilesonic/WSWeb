@@ -90,7 +90,23 @@ class FunctionsController <  ApplicationController
     
     @call_client_form=CallClientForm.new
     @sat_call_form=SatCallForm.new
-    @tstatus_options=['SOLD', 'LMM', 'LMP']
+    @tstatus_options=HomeHelper::CALL_OPTIONS
+    
+ 
+    date=HomeHelper.add_days_to_current_date(1)
+    date10=HomeHelper.add_days_to_date date,10
+    date10s=date10.to_s
+    
+    @selected_foll_year=date10s[0,4]
+    @selected_foll_month=HomeHelper.get_month_from_num(date10s[5,2]) 
+    @selected_foll_day=date10s[8,2]
+ 
+    
+    
+    
+    
+    
+    
     @sat_options=HomeHelper::SAT_TYPES
     @years=HomeHelper::YEARS
     @months=HomeHelper::MONTHS

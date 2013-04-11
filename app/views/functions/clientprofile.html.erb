@@ -37,18 +37,19 @@ function nigs(){
 
 
 <%if @source=='callclient'%>
-	<b><%= link_to 'Back To Call Client', callclient_sale_path(:id => @cfid, :source=>@source, :source=>@function)%></b>
+    <b><%= link_to 'Back To Sales List Index', sales_path%></b><br/>
 <%elsif @source=='smartsearch'%>
 	<b><%= link_to 'Back To Smart Search', smartsearch_functions_path%></b>
 <%elsif @source=='messages'%>
 	<b><%= link_to 'Back To Messages', messagelog_functions_path%></b>
 <%end%>
-
+<br/>
 <b><%= link_to 'Log Message For This Client', logmessage_functions_path(:sourceid => @cfid, :source=>'clientprofile')%></b>&nbsp;
 <b><%= link_to 'Smart Search', smartsearch_functions_path%></b><br/>
 <b><%= link_to 'Log Message', logmessage_functions_path%></b>&nbsp;
 <b><%= link_to 'Message Log', messagelog_functions_path%></b>
-<br/><br/><br/>
+<b><%= link_to 'Back To Sales List', sales_path%></b><br/>
+<br/><br/>
 
 <%if !@client_header.nil?%>
 <h2><%=@client_header%></h2>
@@ -113,9 +114,9 @@ function nigs(){
 			<tr border="1" class="cell">
 				<td><%= cc.label :year, "Follow Up: " %></td>
 				<td>
-					<%=cc.select :year, options_for_select(@years,@selected_fyear_foll)%>
-					<%=cc.select :month, options_for_select(@months,@selected_fmonth_foll)%>
-					<%=cc.select :day, options_for_select(@days,@selected_fday_foll)%>
+					<%=cc.select :year, options_for_select(@years,@selected_foll_year)%>
+					<%=cc.select :month, options_for_select(@months,@selected_foll_month)%>
+					<%=cc.select :day, options_for_select(@days,@selected_foll_day)%>
 				</td>
 			</tr>
 			<tr style="padding-top:10px" border="1" class="cell">

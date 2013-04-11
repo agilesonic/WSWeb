@@ -11,6 +11,9 @@ module HomeHelper
           'Pick Up Debris', 'Pick Up Equipment', 'Pay by Visa', 'Invoice Dispute', 'Mail Invoice', 'Email Invoice',
           'Call Back', 'Custom']
     YESNO=['Yes', 'No']
+    CONNECTION_OPTIONS=['No Calls', '4.1+ clients', 'Windows Last Spring', 'EH Last Spring', 'Used Us Last Year']
+    CALL_OPTIONS=['LMM', 'LMP', 'Pending Summer 2014', 'Pending Fall 2013', 'NC', 'Moved', 'Phone Out Of Service'] 
+
     
     def self.add_days_to_current_date(days)
         date=Date.today+days

@@ -26,9 +26,35 @@
 		}
 
 
-function nigs(){
-	alert ('nigs');
-}
+		function nigs(){
+			alert ('nigs');
+		}
+		
+		function tstatus(){
+			var tstatus=$('#call_client_form_tstatus');
+			var tyear=$('#call_client_form_year');
+			var tmonth=$('#call_client_form_month');
+			var tday=$('#call_client_form_day');
+	
+			var year10=$('#call_client_form_year10');
+			var day10=$('#call_client_form_day10');
+			var month10=$('#call_client_form_month10');
+		//'LMM', 'LMP', 'Pending Summer 2014', 'Pending Fall 2013', 'NC', 'Moved', 'Phone Out Of Service'	
+			if(tstatus.val()=='Pending Summer 2014'){
+				tyear.val("2014");
+        		tmonth.val("Apr");
+        		tday.val("01");
+        	}else if(tstatus.val()=='Pending Fall 2013'){
+        		tyear.val("2013");
+        		tmonth.val("Oct");
+        		tday.val("01");
+        	}else{
+        		tyear.val(year10.val());
+        		tmonth.val(month10.val());
+        		tday.val(day10.val());
+        	}
+
+		}
 
 
 </script>
@@ -102,10 +128,14 @@ function nigs(){
 	<% end%>
 	<br/>
 	<%= form_for @call_client_form, :url => callclient1_sale_url(:id => @cfid, :jobid1=>@jobid1,:source=>@source, :function=>@function) do |cc| %>
+		<%=cc.hidden_field :day10, :value=>@selected_foll_day%>
+		<%=cc.hidden_field :month10, :value=>@selected_foll_month%>
+		<%=cc.hidden_field :year10, :value=>@selected_foll_year%>
+
  		<table border="1" class="mystyle">
 			<tr class="cell">
 				<td><%=cc.label :tstatus, "TStatus: " %></td>
-				<td><%=cc.select :tstatus, options_for_select(@tstatus_options, @selected_tstatus)%></td>
+				<td><%=cc.select :tstatus, options_for_select(@tstatus_options, @selected_tstatus), {}, {:onchange => 'tstatus()'}%></td>
 			</tr>
 			<tr border="1" class="cell">
 				<td><%= cc.label :notes, "Notes: " %></td>

@@ -60,6 +60,12 @@ class SalesController < ApplicationController
     limit=session[:limit]
     clients=Convertcalls.search_ccrange(lowcf, limit)
     i=0
+    c=clients.last
+    if c.cfid==cfid
+      redirect_to sales_path
+      return
+    end
+    
     clients.each do |client|
       if client.cfid==cfid
         i+=1

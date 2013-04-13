@@ -1,0 +1,50 @@
+
+<% if !@callers.nil? %>
+	        <h2>Holder Profile</h2>
+			<table border='1' class="mystyle">
+				
+			    	<tr border="1" class="cell"> 
+						<th>Holder</th>
+						<th>Number</th>
+					</tr>
+				
+				
+				<% @callers.each do |c| %>
+		    		<tr border="1" class="cell">
+						<td><%= c.name %></td>
+						<td><%= c.num %></td>
+					</tr>
+				<% end %>
+			</table>
+<% end %>
+<br/><br/>
+
+<%= form_for @find_client_form, :url => searchclients_sales_url do |sales| %>
+	<fieldset class="mystyle">
+		<legend>Find Clients</legend>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<td><%= sales.label :profile %></td>
+				<td>
+					<%=sales.select :profile, options_for_select(@profile_options, @selected_profile)%>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= sales.label :lowcf, "Low CF: " %></td>
+				<td>
+					<%= sales.text_field :lowcf, :value=>@lowcf, :size => 30 %>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= sales.label :limit %></td>
+				<td>
+					<%= sales.text_field :limit, :value=>@limit, :size => 30 %>
+				</td>
+			</tr>
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td>&nbsp;</td>
+				<td><%= sales.submit "Find Clients" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>	

@@ -8,15 +8,35 @@
 	<% else %>
 	        <h2>Search Results</h2>
 			<table border='1' class="mystyle">
+				
+			    	<tr border="1" class="cell"> 
+						<th>CFID</th>
+						<th>Name</th>
+						<th>Rating</th>
+						<th>Summer Calls</th>
+						<th>Last Status</td>
+						<th>Follow Up</th>
+						<th>Call Client</th>
+					</tr>
+				
+				
 				<% @cc.each do |c|
 					String date='unknown'
-					if !c.client.registerdate.nil?
-						date=c.client.registerdate.to_formatted_s(:long_ordinal)
+					if !c.followup.nil?
+						date=c.followup.to_formatted_s(:long_ordinal)
 					end	
 			    %>
-			    	<tr border="1" class="cell"> 
-						<td><%= c.client.CFID %></td><td><%= c.client.lastname %></td><td><%= c.client.address %></td>
-						<td><%= c.client.phone %></td><td><%=  date %></td>
+			        <% if c.laststatus=='Pending'%>
+			    		<tr border="1" class="redcell">
+			        <%else%>
+			    		<tr border="1" class="cell">
+			    	<%end%>	 
+						<td><%= c.client.CFID %></td>
+						<td><%= c.client.full_name %></td>
+						<td><%= c.rating %></td>
+						<td><%= c.summcalls %></td>
+						<td><%= c.laststatus %></td>
+						<td><%=  date %></td>
 						<td><%= link_to 'Call Client', clientprofile_function_path(:id => c.client.CFID,:source=>'callclient',:function=>'callclient'),:style=>"color: yellow"%></td>
 					</tr>
 				<% end %>

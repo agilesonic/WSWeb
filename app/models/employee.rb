@@ -14,5 +14,10 @@ class Employee < ActiveRecord::Base
     Employee.where("name= ? ", "#{key}") 
   end
 
+  def self.active_sales_people 
+    where("jobdesc like '%Sales Agent%' and status='active'").order('name')
+  end
+
+
 end
   

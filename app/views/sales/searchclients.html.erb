@@ -1,0 +1,72 @@
+<%= form_for @assign_client_form, :url => assclients_sales_url do |sales| %>
+	<fieldset class="mystyle">
+		<legend>Assign Clients</legend>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<td><%= sales.label :salesp,'Sales Person' %></td>
+				<td>
+					<%=sales.select :salesp, options_for_select(@salesp_options, @selected_salesp)%>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= sales.label :low, "Low Number: " %></td>
+				<td>
+					<%= sales.text_field :low, :value=>@low, :size => 30 %>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%= sales.label :high,'High Number' %></td>
+				<td>
+					<%= sales.text_field :high, :value=>@high, :size => 30 %>
+				</td>
+			</tr>
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td>&nbsp;</td>
+				<td><%= sales.submit "Assign Clients" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>	
+<br/><br/>
+
+
+<% if !@cc.nil? %>
+	        <h2>Search Results</h2>
+			<table border='1' class="mystyle">
+				
+			    	<tr border="1" class="cell"> 
+						<th>Number</th>
+						<th>CFID</th>
+						<th>Name</th>
+						<th>Rating</th>
+						<th>#Jobs Last Summer</th>
+						<th>Last Status</td>
+						<th>Follow Up</th>
+					</tr>
+				
+				
+				<%i=0
+				@cc.each do |c|
+					i+=1
+					String date='unknown'
+					if !c.followup.nil?
+						date=c.followup.to_formatted_s(:long_ordinal)
+					end	
+			    %>
+			        <% if c.laststatus=='Pending'%>
+			    		<tr border="1" class="redcell">
+			        <%else%>
+			    		<tr border="1" class="cell">
+			    	<%end%>	 
+						<td><%= i %></td>
+						<td><%= c.client.CFID %></td>
+						<td><%= c.client.full_name %></td>
+						<td><%= c.rating %></td>
+						<td><%= c.numjobsls %></td>
+						<td><%= c.laststatus %></td>
+						<td><%=  date %></td>
+					</tr>
+				<% end %>
+			</table>
+<% end %>
+

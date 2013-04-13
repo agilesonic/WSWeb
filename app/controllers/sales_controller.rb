@@ -5,6 +5,71 @@ class SalesController < ApplicationController
   protect_from_forgery
 
   
+  def findclients
+    @find_client_form=FindClientForm.new
+    @profile_options=HomeHelper::PROFILE_OPTIONS
+    cc=Convertcalls.select(:hrid).uniq
+    @callers=[]
+    cb=CallerBundle.new
+    cb.name='Unassigned'
+    cb.num=Convertcalls.search_unassigned
+    @callers<<cb
+    cc.each do |c|
+      if !c.hrid.nil?
+        cb=CallerBundle.new
+        emp=Employee.name_from_id c.hrid
+        cb.name=emp.first.name
+        cb.num=Convertcalls.search_assigned_by_holder c.hrid
+        @callers<<cb
+      end
+    end
+  end
+  
+  def searchclients
+    fcf=FindClientForm.new(params[:find_client_form])
+    session[:assprofile]=fcf.profile
+    session[:asslowcf]=fcf.lowcf
+    session[:asslimit]=fcf.limit
+    @cc=[]
+  #    PROFILE_OPTIONS=['4.1+ clients', 'Used Us Last Summer']
+    if fcf.profile=='4.1+ clients'
+      @cc=Convertcalls.available_ratingsfourpointone fcf.lowcf, fcf.limit
+    elsif fcf.profile=='Used Us Last Summer'
+      @cc=Convertcalls.available_lastsummer fcf.lowcf, fcf.limit  
+    end
+    @assign_client_form=AssignClientForm.new
+    emps=Employee.active_sales_people
+    @salesp_options=[]
+    emps.each do|emp|
+      @salesp_options<<emp.name
+    end        
+  end
+  
+  def assclients
+    acf=AssignClientForm.new(params[:assign_client_form])
+    profile=session[:assprofile]
+    lowcf=session[:asslowcf]
+    limit=session[:asslimit]
+    cc=[]
+  #    PROFILE_OPTIONS=['4.1+ clients', 'Used Us Last Summer']
+    if profile=='4.1+ clients'
+      cc=Convertcalls.available_ratingsfourpointone  lowcf, limit
+    elsif profile=='Used Us Last Summer'
+      cc=Convertcalls.available_lastsummer lowcf, limit  
+    end
+    salesp=acf.salesp
+    low=acf.low
+    high=acf.high
+    emp=Employee.find_by_name salesp
+    hrid=emp.first.HRID
+    cc_select=cc[low.to_i-1, high.to_i-1]
+    cc_select.each do |c|
+      c.hrid=hrid
+      c.save!
+    end
+    redirect_to findclients_sales_url    
+  end   
+  
   def index
     @sales_form=SalesForm.new
     @profile_options=HomeHelper::CONNECTION_OPTIONS
@@ -16,18 +81,24 @@ class SalesController < ApplicationController
   
   def loadclients
     sf=SalesForm.new(params[:sales_form])
-    @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit
+    hrid=session[:hrid]
+    @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today
     cc=@cc.last
-    session[:lowcf] = sf.lowcf
-    session[:highcf] = cc.cfid
-    session[:limit] = sf.limit
-    session[:selected_profile] = sf.profile
+    if !@cc.empty?
+      session[:profile] = sf.profile
+      session[:lowcf] = sf.lowcf
+      session[:highcf] = cc.cfid
+      session[:limit] = sf.limit
+      session[:selected_profile] = sf.profile
+    end
   end   
 
   def clientlist
     lowcf=session[:lowcf]
     limit=session[:limit]
-    @cc=Convertcalls.search_ccrange(lowcf, limit)
+    hrid=session[:hrid]
+    profile=session[:profile]
+    @cc=Convertcalls.search_ccrange(lowcf, limit, hrid, profile, Date.today)
     render 'loadclients'
   end
 
@@ -58,7 +129,9 @@ class SalesController < ApplicationController
     @function=params[:function]
     lowcf=session[:lowcf]
     limit=session[:limit]
-    clients=Convertcalls.search_ccrange(lowcf, limit)
+    hrid=session[:hrid]
+    profile=session[:profile]
+    clients=Convertcalls.search_ccrange(lowcf, limit, hrid,profile, Date.today)
     i=0
     c=clients.last
     if c.cfid==cfid
@@ -124,6 +197,9 @@ class SalesController < ApplicationController
   
   def update_convertcall(cfid, tstatus, followup)
     convcall=Convertcalls.find cfid
+    if tstatus=='Pending Summer 2014' || tstatus=='Pending Fall 2013'
+      tstatus='Pending'
+    end
     convcall.laststatus=tstatus
     convcall.followup=followup
     convcall.lastcall=Date.today

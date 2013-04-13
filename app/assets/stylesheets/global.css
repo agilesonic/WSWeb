@@ -616,6 +616,12 @@ fieldset legend {
 		font-weight:bold;
 		color:yellow;
 	}
+
+	tr.redcell{
+		font-weight:bold;
+		background:black;
+		color:red;
+	}
 	
 	tr.darker{
 		font-weight:bold;

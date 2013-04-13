@@ -61,6 +61,9 @@ WSWeb::Application.routes.draw do
       get 'schedule'
       get 'clientlist'
       get 'nextbatch'
+      get 'findclients' 
+      post 'searchclients'
+      post 'assclients' 
     end
     member do
 #      get 'loadclient'  # /clients/:id/changeAddress   helper_method: changeAddress_client_path(:id)

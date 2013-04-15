@@ -36,6 +36,7 @@ WSWeb::Application.routes.draw do
       get 'logmessage'
       post 'screenmessage'
       get 'satisfaction'
+      get 'login1'
     end
     member do
       get 'new'

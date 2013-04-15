@@ -26,6 +26,10 @@ class FunctionsController <  ApplicationController
     end
   end
   
+  def login1
+    render 'login'
+  end
+  
   def smartsearch
     @smart_search_form=SmartSearchForm.new
   end

@@ -32,8 +32,14 @@ class SalesController < ApplicationController
     session[:asslimit]=fcf.limit
     @cc=[]
   #    PROFILE_OPTIONS=['4.1+ clients', 'Used Us Last Summer']
-    if fcf.profile=='4.1+ clients'
+    if fcf.profile=='4.0=>4.1 clients'
       @cc=Convertcalls.available_ratingsfourpointone fcf.lowcf, fcf.limit
+    elsif fcf.profile=='4.2=>4.3 clients'
+      @cc=Convertcalls.available_ratingsfourpointthree  fcf.lowcf, limit
+    elsif fcf.profile=='4.4=>4.5 clients'
+      @cc=Convertcalls.available_ratingsfourpointfive  fcf.lowcf, limit
+    elsif fcf.profile=='4.6=>4.7 clients'
+      @cc=Convertcalls.available_ratingsfourpointseven  fcf.lowcf, limit
     elsif fcf.profile=='Used Us Last Summer'
       @cc=Convertcalls.available_lastsummer fcf.lowcf, fcf.limit  
     end
@@ -52,8 +58,16 @@ class SalesController < ApplicationController
     limit=session[:asslimit]
     cc=[]
   #    PROFILE_OPTIONS=['4.1+ clients', 'Used Us Last Summer']
-    if profile=='4.1+ clients'
+  #'4.0=>4.1 clients','4.2=>4.3 clients','4.4=>4.5 clients', '4.6=>4.7 clients'
+  
+    if profile=='4.0=>4.1 clients'
       cc=Convertcalls.available_ratingsfourpointone  lowcf, limit
+    elsif profile=='4.2=>4.3 clients'
+      cc=Convertcalls.available_ratingsfourpointthree  lowcf, limit
+    elsif profile=='4.4=>4.5 clients'
+      cc=Convertcalls.available_ratingsfourpointfive  lowcf, limit
+    elsif profile=='4.6=>4.7 clients'
+      cc=Convertcalls.available_ratingsfourpointseven  lowcf, limit
     elsif profile=='Used Us Last Summer'
       cc=Convertcalls.available_lastsummer lowcf, limit  
     end

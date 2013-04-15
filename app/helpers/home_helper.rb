@@ -37,13 +37,16 @@ module HomeHelper
     def self.pad_id_num(type,num)
       num=num.to_s
       a=num.length
+      if(a==10)
+        return num
+      end
       b=8-a.to_i
       zero="0"*b
       a=zero + num
       ans=type+a
     end
     
-    
+ 
 
     def self.get_num_from_month(month)
       ans=''   

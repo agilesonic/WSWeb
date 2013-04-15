@@ -28,6 +28,10 @@ class SalesController < ApplicationController
   def searchclients
     fcf=FindClientForm.new(params[:find_client_form])
     session[:assprofile]=fcf.profile
+    if fcf.lowcf!=''
+      fcf.lowcf=HomeHelper.pad_id_num('CF',fcf.lowcf)
+    end
+    
     session[:asslowcf]=fcf.lowcf
     session[:asslimit]=fcf.limit
     @cc=[]
@@ -97,13 +101,17 @@ class SalesController < ApplicationController
     sf=SalesForm.new(params[:sales_form])
     hrid=session[:hrid]
     @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today
-    cc=@cc.last
     if !@cc.empty?
+      cc=@cc.last
       session[:profile] = sf.profile
+      if sf.lowcf!=''
+        sf.lowcf=HomeHelper.pad_id_num('CF',sf.lowcf)
+      end
       session[:lowcf] = sf.lowcf
       session[:highcf] = cc.cfid
       session[:limit] = sf.limit
       session[:selected_profile] = sf.profile
+      @count=Convertcalls.count_ccrange cc.cfid, hrid, sf.profile, Date.today
     end
   end   
 
@@ -117,6 +125,16 @@ class SalesController < ApplicationController
   end
 
   def nextbatch
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
     @sales_form=SalesForm.new
     @profile_options=HomeHelper::CONNECTION_OPTIONS
     
@@ -176,6 +194,7 @@ class SalesController < ApplicationController
   #      name='unknown'
   #      if !call.caller.nil?
   #        e=Employee.find(call.caller)
+  
   #      end
   #      if !e.nil?
   #        call.caller=e.name
@@ -654,6 +673,9 @@ class SalesController < ApplicationController
     if @function=='callclient'
       record_contact(cfid, 'SALE', Date.today, '')
       update_convertcall(cfid, 'SALE', Date.today)
+      tsj=Telesalejobs.new
+      tsj.jobid=jobid
+      tsj.save!
     end
     cfmess='SALE Created Successfully!!!'
     #redirect_to makesale_sale_url(:jobinfoid=>jobinfoid)

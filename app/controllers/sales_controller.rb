@@ -35,11 +35,11 @@ class SalesController < ApplicationController
     if fcf.profile=='4.0=>4.1 clients'
       @cc=Convertcalls.available_ratingsfourpointone fcf.lowcf, fcf.limit
     elsif fcf.profile=='4.2=>4.3 clients'
-      @cc=Convertcalls.available_ratingsfourpointthree  fcf.lowcf, limit
+      @cc=Convertcalls.available_ratingsfourpointthree  fcf.lowcf, fcf.limit
     elsif fcf.profile=='4.4=>4.5 clients'
-      @cc=Convertcalls.available_ratingsfourpointfive  fcf.lowcf, limit
+      @cc=Convertcalls.available_ratingsfourpointfive  fcf.lowcf, fcf.limit
     elsif fcf.profile=='4.6=>4.7 clients'
-      @cc=Convertcalls.available_ratingsfourpointseven  fcf.lowcf, limit
+      @cc=Convertcalls.available_ratingsfourpointseven  fcf.lowcf, fcf.limit
     elsif fcf.profile=='Used Us Last Summer'
       @cc=Convertcalls.available_lastsummer fcf.lowcf, fcf.limit  
     end

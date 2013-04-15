@@ -163,21 +163,27 @@ class SalesController < ApplicationController
     limit=session[:limit]
     hrid=session[:hrid]
     profile=session[:profile]
-    clients=Convertcalls.search_ccrange(lowcf, limit, hrid,profile, Date.today)
+    clients=Convertcalls.search_ccrange(lowcf, limit, hrid, profile, Date.today)
     i=0
     c=clients.last
     if c.cfid==cfid
       redirect_to sales_path
       return
     end
-    
+    puts 'CFID**************',cfid
+    #puts 'VALUE OF **************',i
     clients.each do |client|
-      if client.cfid==cfid
-        i+=1
+      puts 'LOOP CFID*******',client.cfid
+    end    
+    clients.each do |client|
+      if client.cfid>cfid
+        #i+=1
         break
       end
       i+=1
     end
+    puts 'Clients size**************',clients.size
+    puts 'VALUE OF **************',i
     next_client=clients[i]
     redirect_to clientprofile_function_path(:id => next_client.cfid, :jobid1=>@jobid1, :source=>@source,:function=>@function)
   end

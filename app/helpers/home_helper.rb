@@ -218,6 +218,9 @@ module HomeHelper
      # end
       booked=Job.search_schedule_times(date,stime)
       lim=Apptsched.search_limits(date, stime)
+      if lim.nil?
+        return true
+      end
       if booked.to_i<=lim.to_i
         return true
       else  

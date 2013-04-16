@@ -94,6 +94,45 @@
 <div id="show_callclient" style=<%=call_client_display%>>
 	<fieldset class="function">
 	<legend>Function Call Client</legend>
+	
+		<%if !@call_info.nil? && !@call_info.empty? then%>
+		<b>Upcoming Jobs</b>
+			<table border="1" class="mystyle">
+					<tr class="cell">
+						<th><b>Job ID</b></th>
+						<th><b>Address</b></th>
+						<th><b>Job Desc</b></th>
+						<th><b>Price</b></th>
+						<th><b>Type</b></th>
+						<th><b>Start Date</b></th>
+						<th><b>Date Done</b></th>
+						<th><b>Crewname</b></th>
+					</tr>	
+				<%@call_info.each do |job|
+				  class5='cell'	
+				  if job.jobdnf=='dnf'
+				  	class5='dnf'
+				  elsif	job.jobdnf=='sat'
+				  	class5='sat'
+				  end	
+            	%>
+					<tr class="<%=class5%>"
+						<td><b><%= job.jobid %></b></td>
+						<td><b><%= job.address %></b></td>
+						<td><b><%= job.jobdesc %></b></td>
+						<td><b><%= number_to_currency job.price %></b></td>
+						<td><b><%= job.type %></b></td>
+						<td><b><%= job.sdate %></b></td>
+						<td><b><%= job.datebi %></b></td>
+						<td><b><%= job.crewname %></b></td>
+					</tr>	
+				<%end%>
+			</table>
+		<%end%>
+		<br/>
+
+	
+	
 		<% if !@calls.nil? then %>
 			<table border="1" class="mystyle">
 				<tr border="1" class="cell">

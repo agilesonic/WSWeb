@@ -243,6 +243,10 @@ class SalesController < ApplicationController
     if tstatus=='Pending Summer 2014' || tstatus=='Pending Fall 2013'
       tstatus='Pending'
     end
+    if tstatus=='Phone Out Of Service'
+      tstatus='Phone OOS'
+    end
+    
     convcall.laststatus=tstatus
     convcall.followup=followup
     convcall.lastcall=Date.today
@@ -320,8 +324,10 @@ class SalesController < ApplicationController
 
     date=HomeHelper.add_days_to_current_date(1)
     date10=HomeHelper.add_days_to_date date,10
+    date30=HomeHelper.add_days_to_date date,30
     dates=date.to_s
     date10s=date10.to_s
+    date30s=date30.to_s
     
     @selected_syear=dates[0,4]
     @selected_smonth=HomeHelper.get_month_from_num(dates[5,2]) 
@@ -334,7 +340,7 @@ class SalesController < ApplicationController
     @cagenum_options=HomeHelper::CAGES   
     @sbs=[]
     d1=date
-    d2=date10
+    d2=date30
 #    d1=Date.parse('Mar 22, 2013')
 #    d2=Date.parse('Mar 31, 2013')
   
@@ -415,11 +421,11 @@ class SalesController < ApplicationController
     end
     @sbs=[]
     date=HomeHelper.add_days_to_current_date(1)
-    date10=HomeHelper.add_days_to_date date,10
+    date30=HomeHelper.add_days_to_date date,30
 #    d1=Date.parse('Mar 22, 2013')
 #    d2=Date.parse('Mar 31, 2013')
   
-    while date!=date10 do
+    while date!=date30 do
       sb=ScheduleBundle.new
       sb=HomeHelper.schedule_bean date
       @sbs<<sb

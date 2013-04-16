@@ -114,6 +114,9 @@ class FunctionsController <  ApplicationController
     @months=HomeHelper::MONTHS
     @days=HomeHelper::DAYS
     @calls=@client.clientcontacts
+    @call_info=[]      
+
+
     if @function=='callclient'
       if !@calls.nil?
         @calls.each do |call|
@@ -227,10 +230,6 @@ class FunctionsController <  ApplicationController
       end
     end
     end
-
-
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
    
     @edit_client_form=EditClientForm.new
     @prices_all=HomeHelper::get_props_and_prices(@client)
@@ -254,6 +253,7 @@ class FunctionsController <  ApplicationController
       end
       job_bundle.sdate=job.Sdate
       @upcoming_jobs << job_bundle
+      @call_info << job_bundle      
     end
 
     @upcoming_dnfs=[]
@@ -291,6 +291,7 @@ class FunctionsController <  ApplicationController
             @done_jobs << job_bundle
          else
             @done_jobs_2013 << job_bundle
+            @call_info << job_bundle      
          end
       else       
         trandate=Transactions.date_paid job.JobID
@@ -301,6 +302,7 @@ class FunctionsController <  ApplicationController
          if job_bundle.datebi<Date.parse('2013-01-01')
             @done_jobs << job_bundle
          else
+            @call_info << job_bundle      
             @done_jobs_2013 << job_bundle
          end
         else  
@@ -310,7 +312,8 @@ class FunctionsController <  ApplicationController
             @done_jobs << job_bundle
          else
             @done_jobs_2013 << job_bundle
-         end
+            @call_info << job_bundle
+         end      
         end
     end
     
@@ -328,6 +331,7 @@ class FunctionsController <  ApplicationController
       end
       job_bundle.sdate=dnf.Sdate
       @upcoming_dnfs << job_bundle
+      @call_info << job_bundle
     end
 
     dnfs=Jobdnf.search_completed_dnfs(job.JobID)
@@ -365,6 +369,7 @@ class FunctionsController <  ApplicationController
                @done_jobs << jdb
             else
                @done_jobs_2013 << jdb
+               @call_info << job_bundle
             end
           end
       end
@@ -386,7 +391,8 @@ class FunctionsController <  ApplicationController
           @done_jobs << sb
         else
           @done_jobs_2013 << sb
-        end
+          @call_info << job_bundle
+     end
       end     
     end
   end

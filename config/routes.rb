@@ -78,6 +78,7 @@ WSWeb::Application.routes.draw do
       post 'savemodifysale'
       get 'modifysale'
       get 'nextclient'
+      get 'previousclient'
       get 'deletecontact'
     end
   end

@@ -200,7 +200,7 @@
 		</table>
 	<%end%>	
 	<br/>	
-	<h3><b><%= link_to 'Call Next Client', nextclient_sale_path(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)%></b></h3><br/>
+	<h3><b><%= link_to 'Call Next Client', nextclient_sale_path(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)%>&nbsp;&nbsp;&nbsp;<%= link_to 'Call Previous Client', previousclient_sale_path(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)%></b></h3><br/>&nbsp;&nbsp;&nbsp;
 	<%if @source=='callclient'%>
 		<h3><b><b><%= link_to 'Client List', clientlist_sales_path%></b><br/>
 </b></h3>

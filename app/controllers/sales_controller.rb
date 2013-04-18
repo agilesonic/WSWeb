@@ -224,9 +224,48 @@ class SalesController < ApplicationController
       redirect_to sales_path
       return
     end
+    redirect_to clientprofile_function_path(:id => next_client.cfid, :jobid1=>@jobid1, :source=>@source,:function=>@function)
+  end
+
+  def previousclient
+    cfid=params[:id]
+    @jobid1=params[:jobid1]
+    @source=params[:source]
+    @function=params[:function]
+    lowcf=session[:lowcf]
+    limit=session[:limit]
+    hrid=session[:hrid]
+    profile=session[:profile]
+    if(profile=='No Calls')
+      clients=Convertcalls.search_ccrange(lowcf, limit.to_i-1, hrid, profile, Date.today)
+    else
+      clients=Convertcalls.search_ccrange(lowcf, limit, hrid, profile, Date.today)
+    end
+    i=0
+    puts 'CFID**************',cfid
+    #puts 'VALUE OF **************',i
+    clients.each do |client|
+      puts 'LOOP CFID*******',client.cfid
+    end    
+    clients.each do |client|
+      i+=1
+      if client.cfid>cfid
+        i=i-3
+        break
+      end
+    end
+    puts 'Clients size**************',clients.size
+    puts 'VALUE OF **************',i
+    next_client=clients[i]
+    if next_client.nil?
+      redirect_to sales_path
+      return
+    end
 
     redirect_to clientprofile_function_path(:id => next_client.cfid, :jobid1=>@jobid1, :source=>@source,:function=>@function)
   end
+
+
 
  # def callclient
   #  @source=params[:source]

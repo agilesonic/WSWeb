@@ -126,9 +126,52 @@ class Convertcalls < ActiveRecord::Base
     where("hrid is null").count 
   end
 
+  def self.search_unassigned_fourseven
+    where("hrid is null and rating between '4.6' and '4.7'").count 
+  end
+
+  def self.search_unassigned_fourfive
+    where("hrid is null and rating between '4.4' and '4.5'").count 
+  end
+
+  def self.search_unassigned_fourthree
+    where("hrid is null and rating between '4.2' and '4.3'").count 
+  end
+
+  def self.search_unassigned_fourone
+    where("hrid is null and rating between '4.0' and '4.1'").count 
+  end
+
+  def self.search_unassigned_lastsummer
+    where("hrid is null and numjobsls>'0'").count 
+  end
+
+
+
   def self.search_assigned_by_holder hrid
     where("hrid=?","#{hrid}").count 
   end
+
+  def self.search_assigned_by_holder_fourseven hrid
+    where("hrid=? and rating between '4.6' and '4.7'","#{hrid}").count 
+  end
+
+  def self.search_assigned_by_holder_fourfive hrid
+    where("hrid=? and rating between '4.4' and '4.5'","#{hrid}").count 
+  end
+
+  def self.search_assigned_by_holder_fourthree hrid
+    where("hrid=? and rating between '4.2' and '4.3'","#{hrid}").count 
+  end
+
+  def self.search_assigned_by_holder_fourone hrid
+    where("hrid=? and rating between '4.0' and '4.1'","#{hrid}").count 
+  end
+
+  def self.search_assigned_by_holder_lastsummer hrid
+    where("hrid=? and numjobsls>'0'","#{hrid}").count 
+  end
+
 
   def self.available_ratingsfourpointone(lowcf, limit)
     where("cfid >= ? and hrid is null and rating between '4.0' and '4.1'",

@@ -62,9 +62,11 @@ WSWeb::Application.routes.draw do
       get 'schedule'
       get 'clientlist'
       get 'nextbatch'
-      get 'findclients' 
+      get 'findclients'
+      get 'callprofile' 
       post 'searchclients'
       post 'assclients' 
+      post 'callprofile1' 
     end
     member do
 #      get 'loadclient'  # /clients/:id/changeAddress   helper_method: changeAddress_client_path(:id)
@@ -76,6 +78,7 @@ WSWeb::Application.routes.draw do
       post 'savemodifysale'
       get 'modifysale'
       get 'nextclient'
+      get 'deletecontact'
     end
   end
   #resources :sales

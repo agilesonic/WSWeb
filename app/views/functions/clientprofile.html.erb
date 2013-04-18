@@ -116,8 +116,8 @@
 				  	class5='sat'
 				  end	
             	%>
-					<tr class="<%=class5%>"
-						<td><b><%= job.jobid %></b></td>
+					<tr class="<%=class5%>">
+						<td><b><%= job.jobid%></b></td>
 						<td><b><%= job.address %></b></td>
 						<td><b><%= job.jobdesc %></b></td>
 						<td><b><%= number_to_currency job.price %></b></td>
@@ -141,6 +141,7 @@
 					<th>Caller</th>
 					<th>Notes</th>
 					<th>Follow Up</th>
+					<th>Delete Call</th>
 				</tr>
 			  	<% @calls.each do |call|
 			       	dateatt=''
@@ -162,6 +163,9 @@
 					<td><%=call.caller%></td>
 					<td><%=call.notes%></td>
 					<td><%=followup%></td>
+					<%if call.dateatt>@date5%>
+						<td><%= link_to 'Delete', deletecontact_sale_path(:id => @cfid, :jobid1=>@jobid1,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+					<%end%>
 				</tr>
 	        <%end%>
 		</table>
@@ -198,7 +202,7 @@
 	<br/>	
 	<h3><b><%= link_to 'Call Next Client', nextclient_sale_path(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)%></b></h3><br/>
 	<%if @source=='callclient'%>
-		<h3><b><b><%= link_to 'Client List', clientlist_sales_path,%></b><br/>
+		<h3><b><b><%= link_to 'Client List', clientlist_sales_path%></b><br/>
 </b></h3>
 	<%end%>
 </fieldset>

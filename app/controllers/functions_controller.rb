@@ -115,7 +115,7 @@ class FunctionsController <  ApplicationController
     @days=HomeHelper::DAYS
     @calls=@client.clientcontacts
     @call_info=[]      
-
+    @date5=Date.parse("2013-04-01")
 
     if @function=='callclient'
       if !@calls.nil?

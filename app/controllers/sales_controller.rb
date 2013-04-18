@@ -4,7 +4,33 @@ class SalesController < ApplicationController
   layout "application1"
   protect_from_forgery
 
-  
+  def callprofile
+    @cp_form=CallProfileForm.new
+    cc=Convertcalls.select(:hrid).uniq
+    @caller_options=[]
+    cc.each do |c|
+      if !c.hrid.nil?
+        emp=Employee.name_from_id c.hrid
+        @caller_options<<emp.first.name
+      end
+    end
+    @year_options=HomeHelper::YEARS
+    @month_options=HomeHelper::MONTHS
+    @day_options=HomeHelper::DAYS
+  end
+
+  def callprofile1
+    cp=CallProfileForm.new(params[:call_profile_form])
+    #sdate=Date.parse(cp_form.smonth.to_s +' '+ cp_form.sday.to_s+', '+ cp_form.syear.to_s)
+    #fdate=Date.parse(cp_form.fmonth.to_s +' '+ cp_form.fday.to_s+', '+ cp_form.fyear.to_s)
+    sdate=Date.parse(cp.smonth.to_s+' '+cp.sday.to_s+', '+cp.syear.to_s)
+    fdate=Date.parse(cp.fmonth.to_s+' '+cp.fday.to_s+', '+cp.fyear.to_s)
+    name=cp.caller
+    emps=Employee.find_by_name name
+    puts 'EHEHEHEHEH',emps.first.HRID
+
+  end 
+   
   def findclients
     @find_client_form=FindClientForm.new
     @profile_options=HomeHelper::PROFILE_OPTIONS
@@ -13,6 +39,11 @@ class SalesController < ApplicationController
     cb=CallerBundle.new
     cb.name='Unassigned'
     cb.num=Convertcalls.search_unassigned
+        cb.fourseven=Convertcalls.search_unassigned_fourseven     
+        cb.fourfive=Convertcalls.search_unassigned_fourfive    
+        cb.fourthree=Convertcalls.search_unassigned_fourthree    
+        cb.fourone=Convertcalls.search_unassigned_fourone 
+        cb.lastsummer=Convertcalls.search_unassigned_lastsummer    
     @callers<<cb
     cc.each do |c|
       if !c.hrid.nil?
@@ -20,6 +51,11 @@ class SalesController < ApplicationController
         emp=Employee.name_from_id c.hrid
         cb.name=emp.first.name
         cb.num=Convertcalls.search_assigned_by_holder c.hrid
+        cb.fourseven=Convertcalls.search_assigned_by_holder_fourseven c.hrid    
+        cb.fourfive=Convertcalls.search_assigned_by_holder_fourfive c.hrid    
+        cb.fourthree=Convertcalls.search_assigned_by_holder_fourthree c.hrid    
+        cb.fourone=Convertcalls.search_assigned_by_holder_fourone c.hrid    
+        cb.lastsummer=Convertcalls.search_assigned_by_holder_lastsummer c.hrid    
         @callers<<cb
       end
     end
@@ -253,6 +289,20 @@ class SalesController < ApplicationController
     convcall.summcalls=Clientcontact.num_cfcontacts_summer2013 cfid
     convcall.fallcalls=Clientcontact.num_cfcontacts_fall2013 cfid
     convcall.save!
+  end
+
+  def deletecontact
+# <td><%= link_to 'Delete', delete_sales_path(:id => @cfid, :jobid1=>@jobid1,:source=>@source, :function=>@function)%></td>
+    cfid=params[:id]
+    jobid1=params[:jobid1]
+    source=params[:source]
+    function=params[:function]
+    
+    contacts=Clientcontact.search_cfcontacts cfid
+    contact=contacts.last
+    contact.destroy
+    redirect_to clientprofile_function_url(:id=>cfid, :jobid1=>jobid1, :source => source, :function=>function)
+            
   end
 
   def record_contact(cfid, tstatus, followup,notes)

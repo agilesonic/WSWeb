@@ -20,9 +20,9 @@ class Client < ActiveRecord::Base
 #  @clients=Client.search1(@shortname, @address, @phone, @jobaddress, @cfid, @jobid)
   
   def self.search1(key1, key2, key3, key4, key5, key6)
-    Client.joins(:properties).joins(:jobs).where("cfinfo.lastname like ? or firstname like ? or cfinfo.address like ? or 
+    Client.joins(:properties).joins(:jobs).where("(cfinfo.lastname like ? or firstname like ? or cfinfo.address like ? or 
     cfjobinfo.address like ? or cfinfo.phone like ? or cfinfo.address like ? or cfjobinfo.address like ? or 
-    cfinfo.CFID = ?  or jobs.jobid = ? and cfinfo.validuntil is null",
+    cfinfo.CFID = ?  or jobs.jobid = ?) and cfinfo.validuntil is null",
      "%#{key1}%", "%#{key1}%", "%#{key2}%", "%#{key2}%", "%#{key3}%", "%#{key4}%", "%#{key4}%", "#{key5}", "#{key6}").order("lastname, firstname") 
   end
 

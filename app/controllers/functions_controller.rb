@@ -408,9 +408,19 @@ class FunctionsController <  ApplicationController
     client=Client.find cfid
     ecf=EditClientForm.new(params[:edit_client_form]) 
     client.company=ecf.company
+    client.honorific=ecf.honorific
     client.firstname=ecf.firstname
     client.lastname=ecf.lastname
     client.address=ecf.address
+    client.city=ecf.city
+    client.province  =ecf.province
+    client.postcode  =ecf.postcode
+    client.perly  =ecf.perly
+    client.phone  =ecf.phone
+    client.offphone  =ecf.offphone
+    client.cellphone  =ecf.cellphone
+    client.fax  =ecf.fax
+    client.email  =ecf.email
     client.save!
     redirect_to clientprofile_function_url(:id=>cfid)
   end

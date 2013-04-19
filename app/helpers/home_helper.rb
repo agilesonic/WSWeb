@@ -163,13 +163,34 @@ module HomeHelper
 
     def self.schedule_bean(d1)    
       eights=Job.search_schedule_times(d1,'8:00 AM')
-      lim8=Apptsched.search_limits d1, '8:00 AM'
+      as=Apptsched.search_limits d1, '8:00 AM'
+      if as.nil?||as.empty?
+        lim8='0'
+      else
+        lim8=as.first.lim
+      end
       tens=Job.search_schedule_times(d1,'10:00 AM')
-      lim10=Apptsched.search_limits d1, '10:00 AM'
+      as=Apptsched.search_limits d1, '10:00 AM'
+      if as.nil?||as.empty?
+        lim10='0'
+      else
+        lim10=as.first.lim
+      end
       twelves=Job.search_schedule_times(d1,'12:00 PM')
-      lim12=Apptsched.search_limits d1, '12:00 PM'
+      as=Apptsched.search_limits d1, '12:00 PM'
+      if as.nil?||as.empty?
+        lim12='0'
+      else
+        lim12=as.first.lim
+      end
       anys=Job.search_schedule_times(d1,'Anytime')
-      limany=Apptsched.search_limits d1, 'Anytime'
+      as=Apptsched.search_limits d1, 'Anytime'
+      if as.nil?||as.empty?
+        limany='0'
+      else
+        limany=as.first.lim
+      end
+       puts d1.to_s,lim12,twelves
       sb=ScheduleBundle.new
       sb.date=d1
       sb.eights=eights
@@ -180,25 +201,41 @@ module HomeHelper
       sb.lim12=lim12
       sb.anytimes=anys
       sb.limany=limany
-      if sb.eights.to_i<=lim8.to_i
+      if sb.eights.to_i<lim8.to_i
         sb.lim8='blue'
+        sb.eights=lim8.to_i-sb.eights.to_i
+        sb.eights.to_s
       else  
         sb.lim8='red'
+        sb.eights=lim8.to_i-sb.eights.to_i
+        sb.eights.to_s
       end
-      if sb.tens.to_i<=lim10.to_i
+      if sb.tens.to_i<lim10.to_i
         sb.lim10='blue'
+        sb.tens=lim10.to_i-sb.tens.to_i
+        sb.tens.to_s
       else
         sb.lim10='red'
+        sb.tens=lim10.to_i-sb.tens.to_i
+        sb.tens.to_s
       end
-      if sb.twelves.to_i<=lim12.to_i
+      if sb.twelves.to_i<lim12.to_i
         sb.lim12='blue'
+        sb.twelves=lim12.to_i-sb.twelves.to_i
+        sb.twelves.to_s
       else
         sb.lim12='red'
+        sb.twelves=lim12.to_i-sb.twelves.to_i
+        sb.twelves.to_s
       end
-      if sb.anytimes.to_i<=limany.to_i
+      if sb.anytimes.to_i<limany.to_i
         sb.limany='blue'
+        sb.anytimes=limany.to_i-sb.anytimes.to_i
+        sb.anytimes.to_s
       else
         sb.limany='red'
+        sb.anytimes=limany.to_i-sb.anytimes.to_i
+        sb.anytimes.to_s
       end
       return sb
     end
@@ -207,21 +244,12 @@ module HomeHelper
       if stime.nil?
         stime='eh eh'
       end
-     # if stime.index('8:00 AM')>-1
-     #   stime='8:00 AM'
-     # elsif stime.index('10:00 AM')>-1
-     #   stime='10:00 AM'
-     # elsif stime.index('12:00 PM')>-1
-     #   stime='12:00 PM'
-     # elsif stime.index('Anytime')>-1
-     #   stime='Anytime'
-     # end
       booked=Job.search_schedule_times(date,stime)
-      lim=Apptsched.search_limits(date, stime)
-      if lim.nil?
+      as=Apptsched.search_limits(date, stime)
+      if as.nil? || as.empty?
         return true
       end
-      if booked.to_i<=lim.to_i
+      if booked.to_i<as.first.lim.to_i
         return true
       else  
         return false

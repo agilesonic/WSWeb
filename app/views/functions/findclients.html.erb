@@ -18,7 +18,7 @@
 	<% if @clients.empty? %>
 	<p>No matching clients found.</p>
 	<% else %>
-	        <h2>Search Results[<%=@clients.size%>]</h2>
+	        <h2>Search Results[<%=@clients.length%>]</h2>
 			<table border="1" class="mystyle">
 				<% @clients.each do |client|
 					String date='unknown'

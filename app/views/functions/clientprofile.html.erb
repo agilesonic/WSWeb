@@ -384,8 +384,15 @@
 				<th><b>Date Done</b></th>
 				<th><b>Crew</b></th>
 			</tr>	
-		<%@done_jobs_2013.each do |job|%>
-			<tr class="cell">
+		<%@done_jobs_2013.each do |job|
+			  class5='cell'	
+			  if job.jobdnf=='dnf'
+			  	class5='dnf'
+			  elsif	job.jobdnf=='sat'
+			  	class5='sat'
+			  end	
+		%>
+			<tr class=<%=class5%>>
 				<td><b><%= job.jobid %></b></td>
 				<td><b><%= job.address %></b></td>
 				<td><b><%= job.jobdesc %></b></td>
@@ -393,9 +400,11 @@
 				<td><b><%= job.datebi %></b></td>
 				<td><b><%= job.crewname %></b></td>
 				<td><b><%= job.minutes %></b></td>
-					<td><%= link_to 'Create DNF', makednf_function_path(:jobid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
-				<%if job.sat.nil?%>
-					<td><%= link_to 'Satisfaction Call', satisfaction_from_client_profile_function_path(:id => @cfid, :jobid1=>job.jobid, :source=>'satcall',:function=>'satcall'),{:style=>"color: yellow"}%></td>
+				<%if class5=='cell'%>
+						<td><%= link_to 'Create DNF', makednf_function_path(:jobid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+					<%if job.sat.nil?%>
+						<td><%= link_to 'Satisfaction Call', satisfaction_from_client_profile_function_path(:id => @cfid, :jobid1=>job.jobid, :source=>'satcall',:function=>'satcall'),{:style=>"color: yellow"}%></td>
+					<%end%>
 				<%end%>
 			</tr>	
 		<%end%>

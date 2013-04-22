@@ -3,18 +3,34 @@ class Convertcalls < ActiveRecord::Base
   self.table_name="convertcalls"
   
   belongs_to :client, :foreign_key => "cfid"
+  has_many :properties, :foreign_key => "cfid"
+  has_many :jobs, :through => :properties
 
 
 
 
   def self.search_pendings(hrid, today)
     where("hrid = ? and laststatus=? and (followup is null or followup<= ?)", "#{hrid}", "Pending", today) 
-    
   end
 
   def self.search_profile_nocalls(lowcf, limit, hrid, today)
     where("cfid >= ? and hrid= ? and summcalls= ? and (followup is null or followup<= ?) and (laststatus is null or laststatus<>'Pending')",
          "#{lowcf}","#{hrid}", "0", today).limit(limit) 
+  end
+
+  def self.search_profile_ratingsnewestimates(lowcf, limit, hrid, today)
+    where("cfid >= ? and hrid= ? and (followup is null or followup<= ?) and (laststatus is null or laststatus<>'Pending') and rating = '2.5'",
+         "#{lowcf}","#{hrid}", today).limit(limit) 
+  end
+
+  def self.search_profile_ratingsthreepointsix(lowcf, limit, hrid, today)
+    where("cfid >= ? and hrid= ? and (followup is null or followup<= ?) and (laststatus is null or laststatus<>'Pending') and rating between '3.3' and '3.6'",
+         "#{lowcf}","#{hrid}", today).limit(limit) 
+  end
+
+  def self.search_profile_ratingsthreepointnine(lowcf, limit, hrid, today)
+    where("cfid >= ? and hrid= ? and (followup is null or followup<= ?) and (laststatus is null or laststatus<>'Pending') and rating between '3.7' and '3.9'",
+         "#{lowcf}","#{hrid}", today).limit(limit) 
   end
 
   def self.search_profile_ratingsfourpointone(lowcf, limit, hrid, today)
@@ -48,6 +64,23 @@ class Convertcalls < ActiveRecord::Base
          "#{highcf}","#{hrid}", today).count 
   end 
 
+  def self.count_profile_ratingsnewestimates(highcf, hrid, today)
+    where("cfid >= ? and hrid= ? and (followup is null or followup<= ?) and (laststatus is null or laststatus<>'Pending')  and rating = '2.5'",
+         "#{highcf}","#{hrid}", today).count 
+  end
+   
+  def self.count_profile_ratingsthreepointsix(highcf, hrid, today)
+    where("cfid >= ? and hrid= ? and (followup is null or followup<= ?) and (laststatus is null or laststatus<>'Pending')  and rating between '3.3' and '3.6'",
+         "#{highcf}","#{hrid}", today).count 
+  end 
+
+  def self.count_profile_ratingsthreepointnine(highcf, hrid, today)
+    where("cfid >= ? and hrid= ? and (followup is null or followup<= ?) and (laststatus is null or laststatus<>'Pending')  and rating between '3.7' and '3.9'",
+         "#{highcf}","#{hrid}", today).count 
+  end 
+
+
+#&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
   def self.count_profile_ratingsfourpointone(highcf, hrid, today)
     where("cfid >= ? and hrid= ? and (followup is null or followup<= ?) and (laststatus is null or laststatus<>'Pending')  and rating between '4.0' and '4.1'",
          "#{highcf}","#{hrid}", today).count 
@@ -91,6 +124,7 @@ class Convertcalls < ActiveRecord::Base
     end
     return count
   end
+#'New Estimates','3.3=>3.6 clients','3.7=>3.9 clients'
 
   def self.search_ccrange(lowcf, limit, hrid, profile, today)
     list=[]
@@ -98,6 +132,12 @@ class Convertcalls < ActiveRecord::Base
     profiles=[]
     if profile=='No Calls'
       profiles=search_profile_nocalls(lowcf, limit, hrid, today)
+    elsif profile=='New Estimates'  
+      profiles=search_profile_ratingsnewestimates(lowcf, limit, hrid, today)
+    elsif profile=='3.3=>3.6 clients'  
+      profiles=search_profile_ratingsthreepointsix(lowcf, limit, hrid, today)
+    elsif profile=='3.7=>3.9 clients'  
+      profiles=search_profile_ratingsthreepointnine(lowcf, limit, hrid, today)
     elsif profile=='4.0=>4.1 clients'  
       profiles=search_profile_ratingsfourpointone(lowcf, limit, hrid, today)
     elsif profile=='4.2=>4.3 clients'  
@@ -142,6 +182,18 @@ class Convertcalls < ActiveRecord::Base
     where("hrid is null and rating between '4.0' and '4.1'").count 
   end
 
+  def self.search_unassigned_threenine 
+    where("hrid is null and rating between '3.7' and '3.9'").count 
+  end
+
+  def self.search_unassigned_threesix 
+    where("hrid is null and rating between '3.3' and '3.6'").count 
+  end
+
+  def self.search_unassigned_newestimates 
+    where("hrid is null and rating = '2.5'").count 
+  end
+
   def self.search_unassigned_lastsummer
     where("hrid is null and numjobsls>'0'").count 
   end
@@ -168,10 +220,38 @@ class Convertcalls < ActiveRecord::Base
     where("hrid=? and rating between '4.0' and '4.1'","#{hrid}").count 
   end
 
+  def self.search_assigned_by_holder_threenine hrid
+    where("hrid=? and rating between '3.7' and '3.9'","#{hrid}").count 
+  end
+
+  def self.search_assigned_by_holder_threesix hrid
+    where("hrid=? and rating between '3.3' and '3.6'","#{hrid}").count 
+  end
+
+  def self.search_assigned_by_holder_newestimates hrid
+    where("hrid=? and rating = '2.5'","#{hrid}").count 
+  end
+
+
   def self.search_assigned_by_holder_lastsummer hrid
     where("hrid=? and numjobsls>'0'","#{hrid}").count 
   end
 
+#'New Estimates','3.3=>3.6 clients','3.7=>3.9 clients'
+  def self.available_new_estimates(lowcf, limit)
+    where("cfid >= ? and hrid is null and rating= '2.5'",
+         "#{lowcf}").limit(limit) 
+  end
+
+  def self.available_ratingsthreepointsix(lowcf, limit)
+    where("cfid >= ? and hrid is null and rating between '3.3' and '3.6'",
+         "#{lowcf}").limit(limit) 
+  end
+
+  def self.available_ratingsthreepointnine(lowcf, limit)
+    where("cfid >= ? and hrid is null and rating between '3.7' and '3.9'",
+         "#{lowcf}").limit(limit) 
+  end
 
   def self.available_ratingsfourpointone(lowcf, limit)
     where("cfid >= ? and hrid is null and rating between '4.0' and '4.1'",
@@ -197,6 +277,12 @@ class Convertcalls < ActiveRecord::Base
     where("cfid >= ? and hrid is null and numjobsls>'0'",
          "#{lowcf}").limit(limit) 
   end
+
+  def self.sales_by_assist(datesold1, datesold2, salesid)
+    Convertcalls.joins(:properties).joins(:jobs).where("jobs.datesold between ? and ? and jobs.salesid1= ? and summcalls>'0'",
+     datesold1, datesold2, "#{salesid}").count
+  end
+
   
   
 end

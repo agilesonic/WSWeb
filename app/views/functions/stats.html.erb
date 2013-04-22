@@ -1,0 +1,55 @@
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
+
+<%if !@sbs.nil? && !@sbs.empty? then%>
+		<b>Company Summer Sales</b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>YEAR</b></th>
+					<th><b>Sales Current</b></th>
+					<th><b>Sales YTD</b></th>
+					<th><b>Sales Yesterday</b></th>
+					<th><b>Sales Last Seven Days</b></th>
+					<th><b>Sales Tomorrow</b></th>
+					<th><b>Sales Next Seven Days</b></th>
+				</tr>	
+			<%@sbs.each do |sb|
+			  class5='cell'	
+			%>
+				<tr class=<%=class5%>>
+					<td><b><%= sb.year %></b></td>
+					<td><b><%= sb.salescurr %></b></td>
+					<td><b><%= sb.salesytd %></b></td>
+					<td><b><%= sb.yesterday %></b></td>
+					<td><b><%= sb.lastseven %></b></td>
+					<td><b><%= sb.tomorrow %></b></td>
+					<td><b><%= sb.nextseven %></b></td>
+				</tr>	
+			<%end%>
+		</table>
+<%end%>
+<br/><br/>
+
+
+<%if !@indstats.nil? && !@indstats.empty? then%>
+		<b>Individual Performance</b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Name</b></th>
+					<th><b>Sales</b></th>
+					<th><b>Attempts</b></th>
+					<th><b>Percentage</b></th>
+				</tr>	
+			<%@indstats.each do |k,v|
+			  	
+			%>
+				<tr class='cell'>
+					<td><b><%= v.name5%></b></td>
+					<td><b><%= v.sales %></b></td>
+					<td><b><%= v.atts %></b></td>
+					<td><b><%= v.per %></b></td>
+				</tr>	
+			<%end%>
+		</table>
+<%end%>
+
+

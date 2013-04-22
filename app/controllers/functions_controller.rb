@@ -395,6 +395,8 @@ class FunctionsController <  ApplicationController
      end
       end     
     end
+    @contact_options=HomeHelper::CLIENT_CONTACT_STATUS
+    @selected_contact=@client.contactstatus
   end
 
   def selljob
@@ -405,6 +407,11 @@ class FunctionsController <  ApplicationController
     
   def editclient
     cfid=params[:id]
+    @jobid1=params[:jobid1]
+    
+    @source=params[:source]
+    @function=params[:function]
+    
     client=Client.find cfid
     ecf=EditClientForm.new(params[:edit_client_form]) 
     client.company=ecf.company
@@ -421,8 +428,9 @@ class FunctionsController <  ApplicationController
     client.cellphone  =ecf.cellphone
     client.fax  =ecf.fax
     client.email  =ecf.email
+    client.contactstatus= ecf.contactstatus
     client.save!
-    redirect_to clientprofile_function_url(:id=>cfid)
+    redirect_to clientprofile_function_url(:id=>cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)
   end
 
   def messagelog
@@ -878,6 +886,161 @@ class FunctionsController <  ApplicationController
     sat.SatDate=Date.today
     sat.save!
     redirect_to clientprofile_function_url(:cfid=>@cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function, :cfmess=>@cfmess)
+  end
+  
+  def stats
+    @sbs=[]
+    sb=StatBundle.new
+    today=Date.today
+    @date_2008=Date.parse('2008-01-01')
+    @date_2009=@date_2008 >> 12
+    @date_2010=@date_2009 >> 12
+    @date_2011=@date_2010 >> 12
+    @date_2012=@date_2011 >> 12
+    @date_2013=@date_2012 >> 12
+    
+
+
+    @date_today_2013=today
+    @date_last7_2013=HomeHelper.add_days_to_date @date_today_2013 , -8
+    @date_yesterday_2013=HomeHelper.add_days_to_date @date_today_2013 , -1
+    
+    @date_today_2012=@date_today_2013 << 12
+    @date_today_2012=HomeHelper.add_days_to_date @date_today_2012 , 1
+    @date_last7_2012=HomeHelper.add_days_to_date @date_today_2012 , -8
+    @date_next7_2012=HomeHelper.add_days_to_date @date_today_2012 , 8
+    @date_yesterday_2012=HomeHelper.add_days_to_date @date_today_2012 , -1
+    @date_tomorrow_2012=HomeHelper.add_days_to_date @date_today_2012 , 1
+    
+    @date_today_2011=@date_today_2012 << 12
+    @date_today_2011=HomeHelper.add_days_to_date @date_today_2011 , 2
+    @date_last7_2011=HomeHelper.add_days_to_date @date_today_2011 , -8
+    @date_next7_2011=HomeHelper.add_days_to_date @date_today_2011 , 8
+    @date_yesterday_2011=HomeHelper.add_days_to_date @date_today_2011 , -1
+    @date_tomorrow_2011=HomeHelper.add_days_to_date @date_today_2011 , 1
+    
+    @date_today_2010=@date_today_2011 << 12
+    @date_today_2010=HomeHelper.add_days_to_date @date_today_2010 , -6
+    @date_last7_2010=HomeHelper.add_days_to_date @date_today_2010 , -8
+    @date_next7_2010=HomeHelper.add_days_to_date @date_today_2010 , 8
+    @date_yesterday_2010=HomeHelper.add_days_to_date @date_today_2010 , -1
+    @date_tomorrow_2010=HomeHelper.add_days_to_date @date_today_2010 , 1
+    
+    @date_today_2009=@date_today_2010 << 12
+    @date_today_2009=HomeHelper.add_days_to_date @date_today_2009 , 1
+    @date_last7_2009=HomeHelper.add_days_to_date @date_today_2009 , -8
+    @date_next7_2009=HomeHelper.add_days_to_date @date_today_2009 , 8
+    @date_yesterday_2009=HomeHelper.add_days_to_date @date_today_2009 , -1
+    @date_tomorrow_2009=HomeHelper.add_days_to_date @date_today_2009 , 1
+    
+    @date_today_2008=@date_today_2009 << 12
+    @date_today_2008=HomeHelper.add_days_to_date @date_today_2008 , 1
+    @date_last7_2008=HomeHelper.add_days_to_date @date_today_2008 , -8
+    @date_next7_2008=HomeHelper.add_days_to_date @date_today_2008 , 8
+    @date_yesterday_2008=HomeHelper.add_days_to_date @date_today_2008 , -1
+    @date_tomorrow_2008=HomeHelper.add_days_to_date @date_today_2008 , 1
+    
+    @date_summer_2008=Date.parse('2008-08-31')
+    @date_summer_2009=Date.parse('2009-08-31')
+    @date_summer_2010=Date.parse('2010-08-31')
+    @date_summer_2011=Date.parse('2011-08-31')
+    @date_summer_2012=Date.parse('2012-08-31')
+    @date_summer_2013=Date.parse('2013-08-31')
+    
+
+    sb=StatBundle.new
+    sb.year=@date_2013.to_s[0,4]
+    sb.salesytd=Job.number_jobs_sold @date_2013, @date_today_2013, @date_summer_2013
+    sb.salescurr=Job.number_jobs_sold @date_today_2013, @date_today_2013, @date_summer_2013
+    sb.yesterday=Job.number_jobs_sold @date_yesterday_2013, @date_yesterday_2013, @date_summer_2013
+    sb.lastseven=Job.number_jobs_sold @date_last7_2013, @date_yesterday_2013, @date_summer_2013
+    sb.tomorrow='unknown'
+    sb.nextseven='unknown'
+    @sbs<<sb        
+
+    sb=StatBundle.new
+    sb.year=@date_2012.to_s[0,4]
+    sb.salesytd=Job.number_jobs_sold @date_2012, @date_today_2012, @date_summer_2012
+    sb.salescurr=Job.number_jobs_sold @date_today_2012, @date_today_2012, @date_summer_2012
+    sb.yesterday=Job.number_jobs_sold @date_yesterday_2012, @date_yesterday_2012, @date_summer_2012
+    sb.lastseven=Job.number_jobs_sold @date_last7_2012, @date_yesterday_2012, @date_summer_2012
+    sb.tomorrow=Job.number_jobs_sold @date_tomorrow_2012, @date_tomorrow_2012, @date_summer_2012
+    sb.nextseven=Job.number_jobs_sold @date_tomorrow_2012, @date_next7_2012, @date_summer_2012
+    @sbs<<sb        
+
+    sb=StatBundle.new
+    sb.year=@date_2011.to_s[0,4]
+    sb.salesytd=Job.number_jobs_sold @date_2011, @date_today_2011, @date_summer_2011
+    sb.salescurr=Job.number_jobs_sold @date_today_2011, @date_today_2011, @date_summer_2011
+    sb.yesterday=Job.number_jobs_sold @date_yesterday_2011, @date_yesterday_2011, @date_summer_2011
+    sb.lastseven=Job.number_jobs_sold @date_last7_2011, @date_yesterday_2011, @date_summer_2011
+    sb.tomorrow=Job.number_jobs_sold @date_tomorrow_2011, @date_tomorrow_2011, @date_summer_2011
+    sb.nextseven=Job.number_jobs_sold @date_tomorrow_2011, @date_next7_2011, @date_summer_2011
+    @sbs<<sb        
+
+    sb=StatBundle.new
+    sb.year=@date_2010.to_s[0,4]
+    sb.salesytd=Job.number_jobs_sold @date_2010, @date_today_2010, @date_summer_2010
+    sb.salescurr=Job.number_jobs_sold @date_today_2010, @date_today_2010, @date_summer_2010
+    sb.yesterday=Job.number_jobs_sold @date_yesterday_2010, @date_yesterday_2010, @date_summer_2010
+    sb.lastseven=Job.number_jobs_sold @date_last7_2010, @date_yesterday_2010, @date_summer_2010
+    sb.tomorrow=Job.number_jobs_sold @date_tomorrow_2010, @date_tomorrow_2010, @date_summer_2010
+    sb.nextseven=Job.number_jobs_sold @date_tomorrow_2010, @date_next7_2010, @date_summer_2010
+    @sbs<<sb        
+
+    sb=StatBundle.new
+    sb.year=@date_2009.to_s[0,4]
+    sb.salesytd=Job.number_jobs_sold @date_2009, @date_today_2009, @date_summer_2009
+    sb.salescurr=Job.number_jobs_sold @date_today_2009, @date_today_2009, @date_summer_2009
+    sb.yesterday=Job.number_jobs_sold @date_yesterday_2009, @date_yesterday_2009, @date_summer_2009
+    sb.lastseven=Job.number_jobs_sold  @date_last7_2009, @date_yesterday_2009, @date_summer_2009
+    sb.tomorrow=Job.number_jobs_sold @date_tomorrow_2009, @date_tomorrow_2009, @date_summer_2009
+    sb.nextseven=Job.number_jobs_sold @date_tomorrow_2009, @date_next7_2009, @date_summer_2009
+    @sbs<<sb        
+
+    sb=StatBundle.new
+    sb.year=@date_2008.to_s[0,4]
+    sb.salesytd=Job.number_jobs_sold @date_2008, @date_today_2008, @date_summer_2008
+    sb.salescurr=Job.number_jobs_sold @date_today_2008, @date_today_2008, @date_summer_2008
+    sb.yesterday=Job.number_jobs_sold @date_yesterday_2008, @date_yesterday_2008, @date_summer_2008
+    sb.lastseven=Job.number_jobs_sold @date_last7_2008, @date_yesterday_2008, @date_summer_2008
+    sb.tomorrow=Job.number_jobs_sold @date_tomorrow_2008, @date_tomorrow_2008, @date_summer_2008
+    sb.nextseven=Job.number_jobs_sold @date_tomorrow_2008, @date_next7_2008, @date_summer_2008
+    @sbs<<sb        
+
+    @date_summer1=Date.parse('2013-04-01')
+    @date_summer2=Date.today
+    
+    ids=Job.sales_people
+
+    @indstats={}     
+    personal_bundle=PersonalBundle.new
+    ids.each do |id|
+  #    personal_bundle.
+      personal_bundle=PersonalBundle.new
+      emps=Employee.name_from_id id
+      name=emps.first.name  
+      sales=Convertcalls.sales_by_assist @date_summer1, @date_summer2, id
+      atts=Clientcontact.num_cfcontacts_summer2013_ind id
+      personal_bundle.name5=name
+      personal_bundle.sales=sales
+      personal_bundle.atts=atts
+      if(atts!=0)
+        per=sales*100/atts
+        per5=HomeHelper.pad_num3 per
+        personal_bundle.per=per
+        @indstats[per5.to_s.to_sym]=personal_bundle
+      end
+    end
+    
+    @indstats=@indstats.sort_by{|sales, pb| sales}
+    @indstats=@indstats.reverse!
+    
+    @indstats.each do |k,v|
+      puts k,v
+    end
+
+        
   end
   
 end

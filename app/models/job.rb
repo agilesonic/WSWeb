@@ -15,6 +15,16 @@ class Job < ActiveRecord::Base
     where("jobs.jobid not like ?","JB98%").maximum("JobID")
   end
 
+  def self.number_jobs_sold(date1, date2, date3) 
+    where("datesold between ? and ? and sdate < ?", date1, date2, date3).count 
+  end
+
+  def self.sales_people 
+    #where("datesold between ? and ?", date1, date2)
+    #find_by_sql("select distinct(salesid1) from jobs where datesold>'2013-04-01'").pluck(:salesid1) 
+    where("datesold>'2013-04-01'").uniq.pluck(:salesid1) 
+  end
+
   def self.search_schedule(key, key1) 
     where("sdate between ? and ? and sdate=fdate", key, key1).order("sdate") 
   end

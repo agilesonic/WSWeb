@@ -163,7 +163,7 @@
 					<td><%=call.caller%></td>
 					<td><%=call.notes%></td>
 					<td><%=followup%></td>
-					<%if call.dateatt>@date5%>
+					<%if call.dateatt>@date5 && call.tstatus!='SALE'%>
 						<td><%= link_to 'Delete', deletecontact_sale_path(:id => @cfid, :jobid1=>@jobid1,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
 					<%end%>
 				</tr>
@@ -298,7 +298,6 @@
 <b>Properties</b>
 	<table border="1" class="mystyle">
 			<tr class="cell">
-				<th><b>JobInfoId</b></th>
 				<th><b>Address</b></th>
 				<th><b>Post Code</b></th>
 				<th><b>Perly</b></th>
@@ -308,7 +307,6 @@
 			</tr>	
 		<%@prices_all.each do |pr|%>
 			<tr class="cell">
-				<td><b><%= pr.id %></b></td>
 				<td><b><%= pr.address %></b></td>
 				<td><b><%= pr.post_code %></b></td>
 				<td><b><%= pr.perly %></b></td>
@@ -493,6 +491,8 @@
 			<td><b><%=cc.text_field :email, :value=> @client.email, :size=>"5x1" %></b></td>
 		</tr>	
 		<tr style="padding-top:10px" border="1" class="cell">
+			<td><b><%=cc.label :contactstatus, :value=>'Contact Status'%></b></td>
+			<td><%=cc.select :contactstatus, options_for_select(@contact_options, @selected_contact)%></td>
 			<td>&nbsp;</td>
 			<td><%= cc.submit "Edit Client Info" %></td>
 		</tr>

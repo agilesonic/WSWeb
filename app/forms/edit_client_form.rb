@@ -1,4 +1,4 @@
 class EditClientForm < BaseForm
 	attr_accessor :source, :CFID, :company, :honorific, :firstname, :lastname, :address, :city, :province, :postcode,
-	              :perly, :phone, :offphone, :cellphone, :fax, :email
+	              :perly, :phone, :offphone, :cellphone, :fax, :email, :contactstatus
 end

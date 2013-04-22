@@ -43,6 +43,9 @@ class SalesController < ApplicationController
         cb.fourfive=Convertcalls.search_unassigned_fourfive    
         cb.fourthree=Convertcalls.search_unassigned_fourthree    
         cb.fourone=Convertcalls.search_unassigned_fourone 
+        cb.threenine=Convertcalls.search_unassigned_threenine 
+        cb.threesix=Convertcalls.search_unassigned_threesix 
+        cb.newests=Convertcalls.search_unassigned_newestimates 
         cb.lastsummer=Convertcalls.search_unassigned_lastsummer    
     @callers<<cb
     cc.each do |c|
@@ -55,6 +58,9 @@ class SalesController < ApplicationController
         cb.fourfive=Convertcalls.search_assigned_by_holder_fourfive c.hrid    
         cb.fourthree=Convertcalls.search_assigned_by_holder_fourthree c.hrid    
         cb.fourone=Convertcalls.search_assigned_by_holder_fourone c.hrid    
+        cb.threenine=Convertcalls.search_assigned_by_holder_threenine c.hrid    
+        cb.threesix=Convertcalls.search_assigned_by_holder_threesix c.hrid    
+        cb.newests=Convertcalls.search_assigned_by_holder_newestimates c.hrid    
         cb.lastsummer=Convertcalls.search_assigned_by_holder_lastsummer c.hrid    
         @callers<<cb
       end

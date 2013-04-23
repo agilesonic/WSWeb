@@ -19,6 +19,10 @@ class Job < ActiveRecord::Base
     where("datesold between ? and ? and sdate < ?", date1, date2, date3).count 
   end
 
+  def self.number_jobs_sold_ind_curr(id, date) 
+    where("salesid1 = ? and datesold = ? and sdate < '2013-09-30'", id, date).count 
+  end
+ 
   def self.sales_people 
     #where("datesold between ? and ?", date1, date2)
     #find_by_sql("select distinct(salesid1) from jobs where datesold>'2013-04-01'").pluck(:salesid1) 

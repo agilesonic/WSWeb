@@ -13,7 +13,7 @@ module HomeHelper
     YESNO=['Yes', 'No']
     CONNECTION_OPTIONS=['No Calls', 'New Estimates','3.3=>3.6 clients','3.7=>3.9 clients','4.0=>4.1 clients', '4.2=>4.3 clients', '4.4=>4.5 clients', '4.6=>4.7 clients', 'Used Us Last Summer']
     CALL_OPTIONS=['LMM', 'LMP', 'Pending', 'Pending Summer 2014', 'Pending Fall 2013', 'NC', 'Moved', 'Phone Out Of Service'] 
-    PROFILE_OPTIONS=['New Estimates','3.3=>3.6 clients','3.7=>3.9 clients','4.0=>4.1 clients','4.2=>4.3 clients','4.4=>4.5 clients', '4.6=>4.7 clients', 'Used Us Last Summer']
+    PROFILE_OPTIONS=['New Estimates','3.3=>3.6 clients','3.7=>3.9 clients','4.0=>4.1 clients','4.2=>4.3 clients','4.4=>4.5 clients', '4.6=>4.7 clients']
     CLIENT_CONTACT_STATUS=['Normal Client', 'No Phone Call', 'No Mail', 'No Phone Call and No Mail', 'Ask Client To Pay Promptly',
                            "Client doesn't want us", "We don't want the client"]
     

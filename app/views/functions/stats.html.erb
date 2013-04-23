@@ -38,6 +38,8 @@
 					<th><b>Sales</b></th>
 					<th><b>Attempts</b></th>
 					<th><b>Percentage</b></th>
+					<th><b>Attempts Today</b></th>
+					<th><b>Sales Today</b></th>
 				</tr>	
 			<%@indstats.each do |k,v|
 			  	
@@ -47,6 +49,8 @@
 					<td><b><%= v.sales %></b></td>
 					<td><b><%= v.atts %></b></td>
 					<td><b><%= v.per %></b></td>
+					<td><b><%= v.attscurr %></b></td>
+					<td><b><%= v.salescurr %></b></td>
 				</tr>	
 			<%end%>
 		</table>

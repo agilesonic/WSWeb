@@ -81,6 +81,7 @@ WSWeb::Application.routes.draw do
       get 'nextclient'
       get 'previousclient'
       get 'deletecontact'
+      get 'deletesale'
     end
   end
   #resources :sales

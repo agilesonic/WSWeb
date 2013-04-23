@@ -340,6 +340,7 @@
 				<td><b><%= job.type %></b></td>
 				<td><b><%= job.sdate %></b></td>
 				<td><%= link_to 'Edit Sale', modifysale_sale_path(:jobid => job.jobid, :jobid1=>@jobid1,  :source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+				<td><%= link_to 'Delete Sale', deletesale_sale_path(:id=>@cfid, :jobid => job.jobid, :jobid1=>@jobid1,  :source=>@source, :function=>@function),:style=>"color: yellow"%></td>
 			</tr>	
 		<%end%>
 	</table>

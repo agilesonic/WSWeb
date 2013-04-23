@@ -46,7 +46,6 @@ class SalesController < ApplicationController
         cb.threenine=Convertcalls.search_unassigned_threenine 
         cb.threesix=Convertcalls.search_unassigned_threesix 
         cb.newests=Convertcalls.search_unassigned_newestimates 
-        cb.lastsummer=Convertcalls.search_unassigned_lastsummer    
     @callers<<cb
     cc.each do |c|
       if !c.hrid.nil?
@@ -345,7 +344,6 @@ class SalesController < ApplicationController
   end
 
   def deletecontact
-# <td><%= link_to 'Delete', delete_sales_path(:id => @cfid, :jobid1=>@jobid1,:source=>@source, :function=>@function)%></td>
     cfid=params[:id]
     jobid1=params[:jobid1]
     source=params[:source]
@@ -355,7 +353,19 @@ class SalesController < ApplicationController
     contact=contacts.last
     contact.destroy
     redirect_to clientprofile_function_url(:id=>cfid, :jobid1=>jobid1, :source => source, :function=>function)
-            
+  end
+
+  def deletesale
+    #       <td><%= link_to 'Delete Sale', deletesale_sale_path(:jobid => job.jobid, :jobid1=>@jobid1,  :source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+    cfid=params[:id]
+    jobid=params[:jobid]
+    jobid1=params[:jobid1]
+    source=params[:source]
+    function=params[:function]
+    job=Job.find jobid
+    job.destroy
+    cfmess='Job Deleted Successfully!!!'
+    redirect_to clientprofile_function_url(:id=>cfid, :jobid1=>jobid1, :source => source, :function=>function, :cfmess=>cfmess)
   end
 
   def record_contact(cfid, tstatus, followup,notes)

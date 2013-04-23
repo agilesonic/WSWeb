@@ -191,7 +191,7 @@ class Convertcalls < ActiveRecord::Base
   end
 
   def self.search_unassigned_newestimates 
-    where("hrid is null and rating = '2.5'").count 
+    where("hrid is null and cfid>='CF00039366' rating = '2.5'").count 
   end
 
   def self.search_unassigned_lastsummer

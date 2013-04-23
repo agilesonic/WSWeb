@@ -940,12 +940,12 @@ class FunctionsController <  ApplicationController
     @date_yesterday_2008=HomeHelper.add_days_to_date @date_today_2008 , -1
     @date_tomorrow_2008=HomeHelper.add_days_to_date @date_today_2008 , 1
     
-    @date_summer_2008=Date.parse('2008-08-31')
-    @date_summer_2009=Date.parse('2009-08-31')
-    @date_summer_2010=Date.parse('2010-08-31')
-    @date_summer_2011=Date.parse('2011-08-31')
-    @date_summer_2012=Date.parse('2012-08-31')
-    @date_summer_2013=Date.parse('2013-08-31')
+    @date_summer_2008=Date.parse('2008-09-30')
+    @date_summer_2009=Date.parse('2009-09-30')
+    @date_summer_2010=Date.parse('2010-09-30')
+    @date_summer_2011=Date.parse('2011-09-30')
+    @date_summer_2012=Date.parse('2012-09-30')
+    @date_summer_2013=Date.parse('2013-09-30')
     
 
     sb=StatBundle.new
@@ -1022,14 +1022,20 @@ class FunctionsController <  ApplicationController
       name=emps.first.name  
       sales=Convertcalls.sales_by_assist @date_summer1, @date_summer2, id
       atts=Clientcontact.num_cfcontacts_summer2013_ind id
+      attscurr=Clientcontact.num_cfcontacts_summer2013_ind_curr id, @date_summer2
+      salescurr=Job.number_jobs_sold_ind_curr id, @date_summer2          
+      #, :attscurr, :salesallcurr
       personal_bundle.name5=name
       personal_bundle.sales=sales
       personal_bundle.atts=atts
+      personal_bundle.attscurr=attscurr
+      personal_bundle.salescurr=salescurr
+      
       if(atts!=0)
         per=sales*100/atts
         per5=HomeHelper.pad_num3 per
         personal_bundle.per=per
-        @indstats[per5.to_s.to_sym]=personal_bundle
+        @indstats[(per5+id).to_s.to_sym]=personal_bundle
       end
     end
     

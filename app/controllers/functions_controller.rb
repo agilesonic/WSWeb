@@ -17,7 +17,8 @@ class FunctionsController <  ApplicationController
     pass=login_form[:password]
     @user=InternalUser.search(name,pass)  #@user is an array of InternalUser
     user=@user[0]
-    puts "******************",pass,@user
+    @username=user.username
+    puts "******************",pass,@username
     if !@user.empty? 
       @l='ok'
       session[:hrid]=user.HRID

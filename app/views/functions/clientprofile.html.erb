@@ -271,8 +271,8 @@
 	<%end%>	
 	<br/>	
 	<%if @source=='satcall'%>
-		<h3><b><%= link_to 'Call Next Satisfaction Client', nextsatclient_function_path(:jobid1=>@jobid1, :source=>@source, :function=>@function)%></b></h3><br/>
-		<h3><b><%= link_to 'Satisfaction Calls', satisfaction_functions_path,%></b></h3><br/>
+		<h3><b><%= link_to 'Call Next Satisfaction Client', nextsatclient_function_path(:cfid => @cfid,:jobid1=>@jobid1, :source=>@source, :function=>@function)%></b></h3><br/>
+		<h3><b><%= link_to 'Satisfaction Calls', satisfaction1_functions_path,%></b></h3><br/>
 	<%end%>
 </fieldset>
 </div>

@@ -3,9 +3,12 @@ class Satisfaction < ActiveRecord::Base
   
   belongs_to :job, :foreign_key => "jobid"
 
+  def self.max_jobid
+    maximum("jobid")
+  end
 
-  def self.search_sats(key1)
-    Satisfaction.joins(:job).where("jobs.datebi >= ? ",key1).order("jobs.jobid") 
+  def self.search_sats(jobid1, jobid2)
+    Satisfaction.joins(:job).where("jobs.jobid between ? and ? ",jobid1, jobid2).order("jobs.jobid")
   end
 
 

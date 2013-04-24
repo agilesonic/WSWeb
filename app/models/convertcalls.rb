@@ -6,6 +6,9 @@ class Convertcalls < ActiveRecord::Base
   has_many :properties, :foreign_key => "cfid"
   has_many :jobs, :through => :properties
 
+  def self.max_CFID 
+    maximum("cfid") 
+  end
 
 
 

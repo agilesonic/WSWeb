@@ -42,8 +42,8 @@ class Job < ActiveRecord::Base
     where("sdate between ? and ? and sdate=fdate", key, key1).order("sdate") 
   end
 
-  def self.search_jobs_for_sats(key) 
-    where("datebi >= ?", key).order("jobid") 
+  def self.search_jobs_for_sats(sdate, fdate) 
+    where("datebi between ? and ?",sdate, fdate).order("jobid") 
   end
 
 

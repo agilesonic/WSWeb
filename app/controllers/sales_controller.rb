@@ -819,6 +819,25 @@ class SalesController < ApplicationController
     end
   end
 
+  def screenconvertcalls
+    cfid1=Client.max_CFID
+    cfid=Convertcalls.max_CFID
+    puts cfid,cfid1
+    clients=Client.range_for_convertcalls cfid,cfid1 
+    clients.each do |client|
+      cc=Convertcalls.new
+      cc.cfid=client.CFID
+      cc.numjobsls='0'
+      cc.numjobslf='0'
+      cc.fallcalls='0'
+      cc.summcalls='0'
+      cc.package='0'
+      cc.rating='2.5'
+      cc.save!
+    end
+    redirect_to login1_functions_url 
+  end
+
 
  end
 

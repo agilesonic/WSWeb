@@ -35,7 +35,9 @@ WSWeb::Application.routes.draw do
       get 'messagelog'
       get 'logmessage'
       post 'screenmessage'
-      get 'satisfaction'
+      get 'loadsatisfaction'
+      post 'satisfaction'
+      get 'satisfaction1'
       get 'login1'
       get 'stats'
     end
@@ -67,7 +69,8 @@ WSWeb::Application.routes.draw do
       get 'callprofile' 
       post 'searchclients'
       post 'assclients' 
-      post 'callprofile1' 
+      post 'callprofile1'
+      get 'screenconvertcalls' 
     end
     member do
 #      get 'loadclient'  # /clients/:id/changeAddress   helper_method: changeAddress_client_path(:id)

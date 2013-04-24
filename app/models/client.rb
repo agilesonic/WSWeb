@@ -12,6 +12,15 @@ class Client < ActiveRecord::Base
   has_many :done_jobs_2013, :class_name => "Job", :through => :properties, :conditions => "datebi>='2013-01-01'", :order=>"datebi desc", :source => :jobs
   has_many :upcoming_jobs, :class_name => "Job", :through => :properties, :conditions => "sdate is not null and datebi is null", :order=>"sdate", :source => :jobs
   
+  def self.max_CFID 
+    maximum("cfid") 
+  end
+
+  def self.range_for_convertcalls(cfid1, cfid2) 
+    where("cfid > ? and cfid<= ? and (contactstatus='Normal Client' or contactstatus is null)","#{cfid1}","#{cfid2}").order("cfid") 
+  end
+
+
   def self.search(key) 
     where("lastname like ? or firstname like ? or address like ? or phone like ?", "%#{key}%", "%#{key}%", "%#{key}%", "%#{key}%").order("lastname, firstname") 
   end

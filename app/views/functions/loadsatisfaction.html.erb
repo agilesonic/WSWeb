@@ -1,0 +1,28 @@
+<%= form_for @sat_form, :url => satisfaction_functions_url  do |cc| %>
+	<fieldset class="mystyle">
+		<legend>Load Satisfaction</legend>
+		<table border="1" class="mystyle">
+
+			<tr border="1" class="cell">
+				<td><%=cc.label 'Start Date' %></td>
+				<td>
+					<%=cc.select :syear, options_for_select(@syear_options, @selected_syear)%>
+					<%=cc.select :smonth, options_for_select(@smonth_options, @selected_smonth)%>
+					<%=cc.select :sday, options_for_select(@sday_options, @selected_sday)%>
+				</td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%=cc.label 'Finish Date' %></td>
+				<td>
+					<%=cc.select :fyear, options_for_select(@fyear_options, @selected_fyear)%>
+					<%=cc.select :fmonth, options_for_select(@fmonth_options, @selected_fmonth)%>
+					<%=cc.select :fday, options_for_select(@fday_options, @selected_fday)%>
+				</td>
+			</tr>
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td colspan=3, align=center><%= cc.submit "Load" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>	

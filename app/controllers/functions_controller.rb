@@ -18,6 +18,7 @@ class FunctionsController <  ApplicationController
     @user=InternalUser.search(name,pass)  #@user is an array of InternalUser
     user=@user[0]
     @username=user.username
+    session[:username]=@username
     puts "******************",pass,@username
     if !@user.empty? 
       @l='ok'
@@ -28,6 +29,7 @@ class FunctionsController <  ApplicationController
   end
   
   def login1
+    @username=session[:username]
     render 'login'
   end
   
@@ -749,17 +751,44 @@ class FunctionsController <  ApplicationController
     redirect_to clientprofile_function_url(:cfid=>@cfid,:jobid1=>@jobid1, :source=>@source, :function=>@function, :cfmess=>cfmess)
   end
   
-  def generate_sat_list
-    date=Date.parse('2013-03-01')
+  def loadsatisfaction
+    @sat_form=SatForm.new
+    jobid=Satisfaction.maximum('jobid')
+    puts 'JOBID',jobid
+    job=Job.find jobid
+    datebi=job.Datebi.to_s
+    year=datebi[0,4]
+    month=datebi[5,2]
+    day=datebi[8,2]
+#    puts syear, smonth, sday
+    month=HomeHelper.get_month_from_num month
+    
+    @syear_options=HomeHelper::YEARS
+    @smonth_options=HomeHelper::MONTHS
+    @sday_options=HomeHelper::DAYS
+    @selected_syear='2013'
+    @selected_smonth='Apr'
+    @selected_sday='01'
+    @fyear_options=HomeHelper::YEARS
+    @fmonth_options=HomeHelper::MONTHS
+    @fday_options=HomeHelper::DAYS
+    @selected_fyear=year
+    @selected_fmonth=month
+    @selected_fday=day
+ end
+  
+  def generate_sat_list(sdate, fdate)
     sat_jobids=[]
     job_jobids=[]
-    sats=Satisfaction.search_sats date
-    sats.each do |sat|
-      sat_jobids<<sat.JobID  
-    end
-    jobs=Job.search_jobs_for_sats date
+    jobs=Job.search_jobs_for_sats sdate, fdate
     jobs.each do |job|
       job_jobids<<job.JobID  
+    end
+    jobid1=job_jobids.first
+    jobid2=job_jobids.last
+    sats=Satisfaction.search_sats jobid1, jobid2
+    sats.each do |sat|
+      sat_jobids<<sat.JobID  
     end
     need_sat_jobids=job_jobids-sat_jobids
     done_jobs=[]
@@ -816,15 +845,63 @@ class FunctionsController <  ApplicationController
   
     
   def satisfaction
-    @done_jobs=generate_sat_list
+    sf=CreateDNFForm.new(params[:sat_form])
+    syear=sf.syear
+    smonth=sf.smonth
+    smonth=HomeHelper.get_num_from_month(smonth)
+    sday=sf.sday
+    fyear=sf.fyear
+    fmonth=sf.fmonth
+    fmonth=HomeHelper.get_num_from_month(fmonth)
+    fday=sf.fday
+    session[:syear]=syear
+    session[:smonth]=smonth
+    session[:sday]=sday
+    session[:fyear]=fyear
+    session[:fmonth]=fmonth
+    session[:fday]=fday
+    
+    sdate=Date.parse(syear+'-'+smonth+'-'+sday)
+    fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
+ 
+
+    @done_jobs=generate_sat_list sdate, fdate
     @source='satcall'
     @function='satcall'
   end
 
+  def satisfaction1
+    syear=session[:syear]
+    smonth=session[:smonth]
+    sday=session[:sday]
+    fyear=session[:fyear]
+    fmonth=session[:fmonth]
+    fday=session[:fday]
+    
+    sdate=Date.parse(syear+'-'+smonth+'-'+sday)
+    fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
+ 
+
+    @done_jobs=generate_sat_list sdate, fdate
+    @source='satcall'
+    @function='satcall'
+  end
+
+
   def satisfaction_from_client_profile
     id=params[:id]
     jobid1=params[:jobid1]
-    @done_jobs=generate_sat_list
+    syear=session[:syear]
+    smonth=session[:smonth]
+    sday=session[:sday]
+    fyear=session[:fyear]
+    fmonth=session[:fmonth]
+    fday=session[:fday]
+    
+    sdate=Date.parse(syear+'-'+smonth+'-'+sday)
+    fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
+    @done_jobs=generate_sat_list sdate, fdate
+
     source=params[:source]
     function=params[:function]
     redirect_to clientprofile_function_url(:cfid=>id,:jobid1=>jobid1, :source=>source, :function=>function)
@@ -833,41 +910,64 @@ class FunctionsController <  ApplicationController
 
   def nextsatclient
     jobid5=params[:jobid1]
+    @cfid=params[:cfid]
     @source=params[:source]
     @function=params[:function]
     jobid5=params[:jobid1]
-    date=Date.parse('2013-03-01')
     sat_jobids=[]
     job_jobids=[]
-    sats=Satisfaction.search_sats date
-    sats.each do |sat|
-      sat_jobids<<sat.JobID  
-    end
-    jobs=Job.search_jobs_for_sats date
-    jobs.each do |job|
-      job_jobids<<job.JobID
-    end
+    syear=session[:syear]
+    smonth=session[:smonth]
+    sday=session[:sday]
+    fyear=session[:fyear]
+    fmonth=session[:fmonth]
+    fday=session[:fday]
     
-    need_sat_jobids=job_jobids-sat_jobids
-    i=0
-    next_jobid=jobid5
-    job=Job.find next_jobid
-    prop=job.property
-    cfid=prop.CFID
-    need_sat_jobids.each do |jobid|
+    sdate=Date.parse(syear+'-'+smonth+'-'+sday)
+    fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
+    @done_jobs=generate_sat_list sdate, fdate
+  #  @done_jobs=generate_sat_list sdate, fdate
+   next_jobid=jobid5
+   @done_jobs.each do |job|
+      jobid=job.jobid
       if jobid>jobid5
-          next_jobid=need_sat_jobids[i]
-          job=Job.find next_jobid
-          prop=job.property
-          cfid=prop.CFID
+          next_jobid=jobid
           break
       end      
-      i+=1
     end
-    redirect_to clientprofile_function_path(:id => cfid, :jobid1=>next_jobid, :source=>@source, :function=>@function)
+    redirect_to clientprofile_function_path(:id => @cfid, :jobid1=>next_jobid, :source=>@source, :function=>@function)
+ 
+
+
+
+  #  sats=Satisfaction.search_sats sdate, fdate
+  #  sats.each do |sat|
+  #    sat_jobids<<sat.JobID  
+  #  end
+  #  jobs=Job.search_jobs_for_sats sdate, fdate
+  #  jobs.each do |job|
+  #    job_jobids<<job.JobID
+  #  end
+  #  
+  #  need_sat_jobids=job_jobids-sat_jobids
+  #  i=0
+  #  next_jobid=jobid5
+  #  job=Job.find next_jobid
+  #  prop=job.property
+  #  cfid=prop.CFID
+  #  need_sat_jobids.each do |jobid|
+  #    if jobid>jobid5
+  #        next_jobid=need_sat_jobids[i]
+  #        job=Job.find next_jobid
+  #        prop=job.property
+  #        cfid=prop.CFID
+  #        break
+  #    end      
+  #    i+=1
+  #  end
+  #  redirect_to clientprofile_function_path(:id => cfid, :jobid1=>next_jobid, :source=>@source, :function=>@function)
   end
 
-#<td><%= link_to 'Make Sat Call', satisfaction1_function_path(:id=@cfid, :jobid => job.jobid, :jobid1=>@jobid1,  :source=>@source, :function=>@function),:style=>"color: yellow"%></td>
 
 
   

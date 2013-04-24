@@ -877,14 +877,10 @@ class FunctionsController <  ApplicationController
     fyear=session[:fyear]
     fmonth=session[:fmonth]
     fday=session[:fday]
-    
     sdate=Date.parse(syear+'-'+smonth+'-'+sday)
     fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
- 
-
     @done_jobs=generate_sat_list sdate, fdate
-    @source='satcall'
-    @function='satcall'
+    render 'satisfaction'
   end
 
 

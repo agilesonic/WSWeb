@@ -2,6 +2,43 @@
 <b><%= link_to 'Load Next Batch Of Clients', nextbatch_sales_path%></b><br/><br/><br/>
 
 
+
+<% if !@cb.nil? %>
+	        <h2>Profile</h2>
+			<table border='1' class="mystyle">
+				
+			    	<tr border="1" class="cell"> 
+						<th>Holder</th>
+						<th>Number</th>
+						<th>Rating 4.6-4.7</th>
+						<th>Rating 4.4-4.5</th>
+						<th>Rating 4.2-4.3</th>
+						<th>Rating 4.0-4.1</th>
+						<th>Rating 3.7-3.9</th>
+						<th>Rating 3.3-3.6</th>
+						<th>New Estimates</th>
+					</tr>
+				
+				
+		    		<tr border="1" class="cell">
+						<td><%= @cb.name %></td>
+						<td><%= @cb.num %></td>
+						<td><%= @cb.fourseven %></td>
+						<td><%= @cb.fourfive %></td>
+						<td><%= @cb.fourthree %></td>
+						<td><%= @cb.fourone %></td>
+						<td><%= @cb.threenine %></td>
+						<td><%= @cb.threesix %></td>
+						<td><%= @cb.newests %></td>
+					</tr>
+			</table>
+<% end %>
+<br/><br/>
+
+
+
+
+
 <%= form_for @sales_form, :url => loadclients_sales_url do |sales| %>
 	<fieldset class="mystyle">
 		<legend>Load Clients</legend>

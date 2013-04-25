@@ -78,8 +78,9 @@
 <b><%= link_to 'Back To Sales List', sales_path%></b><br/>
 <br/><br/>
 
-<%if !@client_header.nil?%>
-<h2><%=@client_header%></h2>
+<%if !@client_header1.nil?%>
+<h2><%=@client_header1%>&nbsp;&nbsp;&nbsp;<%=@client_header2%>&nbsp;&nbsp;&nbsp;<%=@client_header4%></h2>
+<h2><%=@client_header5%>&nbsp;&nbsp;<%=@client_header6%></h2>
 <%end%>
 
 <%if !@function.nil?
@@ -246,6 +247,7 @@
 					<td><b><%= job.minutes %></b></td>
 					<td><b><%= job.datebi %></b></td>
 					<td><b><%= job.daystopay %></b></td>
+					<td><%= link_to 'Create DNF', makednf_function_path(:jobid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
 				</tr>	
 			<%end%>
 		</table>

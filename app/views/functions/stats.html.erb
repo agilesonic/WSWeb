@@ -5,12 +5,16 @@
 		<table border="1" class="mystyle">
 				<tr class="cell">
 					<th><b>YEAR</b></th>
-					<th><b>Sales Current</b></th>
-					<th><b>Sales YTD</b></th>
-					<th><b>Sales Yesterday</b></th>
-					<th><b>Sales Last Seven Days</b></th>
-					<th><b>Sales Tomorrow</b></th>
-					<th><b>Sales Next Seven Days</b></th>
+					<th><b>Current</b></th>
+					<th><b>YTD</b></th>
+					<th><b>Yesterday</b></th>
+					<th><b>Last Seven Days</b></th>
+					<th><b>Tomorrow</b></th>
+					<th><b>2 Days Out</b></th>
+					<th><b>3 Days Out</b></th>
+					<th><b>4 Days Out</b></th>
+					<th><b>5 Days Out</b></th>
+					<th><b>Next Seven Days</b></th>
 				</tr>	
 			<%@sbs.each do |sb|
 			  class5='cell'	
@@ -22,6 +26,10 @@
 					<td><b><%= sb.yesterday %></b></td>
 					<td><b><%= sb.lastseven %></b></td>
 					<td><b><%= sb.tomorrow %></b></td>
+					<td><b><%= sb.two %></b></td>
+					<td><b><%= sb.three %></b></td>
+					<td><b><%= sb.four %></b></td>
+					<td><b><%= sb.five %></b></td>
 					<td><b><%= sb.nextseven %></b></td>
 				</tr>	
 			<%end%>

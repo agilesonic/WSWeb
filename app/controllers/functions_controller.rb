@@ -93,8 +93,18 @@ class FunctionsController <  ApplicationController
     @function=params[:function]
     @jobid=params[:jobid]
     @jobid1=params[:jobid1]
-    @client_header= @client.full_name+'   '+@client.phone
-    
+    crs=Clientrate.find_rating @cfid
+    cr=crs.first
+    @client_header1= @client.CFID
+    @client_header2=@client.full_name
+    @client_header3=@client.address
+    @client_header4=@client.phone
+    @client_header5='Rating:'+cr.overallrate.to_s
+    if @client.registerdate.nil? || @client.registerdate==''
+      @client_header6='Date Registered: unknown'
+    else 
+      @client_header6='Date Registered:'+@client.registerdate.to_formatted_s(:long_ordinal)
+    end
     @call_client_form=CallClientForm.new
     @sat_call_form=SatCallForm.new
     @tstatus_options=HomeHelper::CALL_OPTIONS
@@ -931,43 +941,11 @@ class FunctionsController <  ApplicationController
           break
       end      
     end
-    redirect_to clientprofile_function_path(:id => @cfid, :jobid1=>next_jobid, :source=>@source, :function=>@function)
- 
-
-
-
-  #  sats=Satisfaction.search_sats sdate, fdate
-  #  sats.each do |sat|
-  #    sat_jobids<<sat.JobID  
-  #  end
-  #  jobs=Job.search_jobs_for_sats sdate, fdate
-  #  jobs.each do |job|
-  #    job_jobids<<job.JobID
-  #  end
-  #  
-  #  need_sat_jobids=job_jobids-sat_jobids
-  #  i=0
-  #  next_jobid=jobid5
-  #  job=Job.find next_jobid
-  #  prop=job.property
-  #  cfid=prop.CFID
-  #  need_sat_jobids.each do |jobid|
-  #    if jobid>jobid5
-  #        next_jobid=need_sat_jobids[i]
-  #        job=Job.find next_jobid
-  #        prop=job.property
-  #        cfid=prop.CFID
-  #        break
-  #    end      
-  #    i+=1
-  #  end
-  #  redirect_to clientprofile_function_path(:id => cfid, :jobid1=>next_jobid, :source=>@source, :function=>@function)
+    job=Job.find next_jobid
+    prop=Property.find job.JobInfoID
+    redirect_to clientprofile_function_path(:id => prop.CFID, :jobid1=>next_jobid, :source=>@source, :function=>@function)
   end
-
-
-
   
-#    <%= form_for @sat_call_form, :url => satcall_function_url(:id => @cfid, :source=>'satcall', :function=>'satcall') do |cc| %>
   def savesatcall
     @cfmess='Satisfaction Call Recorded Successfully!!!'
     @source=params[:source]
@@ -1008,6 +986,10 @@ class FunctionsController <  ApplicationController
     @date_next7_2012=HomeHelper.add_days_to_date @date_today_2012 , 8
     @date_yesterday_2012=HomeHelper.add_days_to_date @date_today_2012 , -1
     @date_tomorrow_2012=HomeHelper.add_days_to_date @date_today_2012 , 1
+    @date_two_2012=HomeHelper.add_days_to_date @date_today_2012 , 2
+    @date_three_2012=HomeHelper.add_days_to_date @date_today_2012 , 3
+    @date_four_2012=HomeHelper.add_days_to_date @date_today_2012 , 4
+    @date_five_2012=HomeHelper.add_days_to_date @date_today_2012 , 5
     
     @date_today_2011=@date_today_2012 << 12
     @date_today_2011=HomeHelper.add_days_to_date @date_today_2011 , 2
@@ -1015,6 +997,11 @@ class FunctionsController <  ApplicationController
     @date_next7_2011=HomeHelper.add_days_to_date @date_today_2011 , 8
     @date_yesterday_2011=HomeHelper.add_days_to_date @date_today_2011 , -1
     @date_tomorrow_2011=HomeHelper.add_days_to_date @date_today_2011 , 1
+    @date_two_2011=HomeHelper.add_days_to_date @date_today_2011 , 2
+    @date_three_2011=HomeHelper.add_days_to_date @date_today_2011 , 3
+    @date_four_2011=HomeHelper.add_days_to_date @date_today_2011 , 4
+    @date_five_2011=HomeHelper.add_days_to_date @date_today_2011 , 5
+    
     
     @date_today_2010=@date_today_2011 << 12
     @date_today_2010=HomeHelper.add_days_to_date @date_today_2010 , -6
@@ -1022,6 +1009,10 @@ class FunctionsController <  ApplicationController
     @date_next7_2010=HomeHelper.add_days_to_date @date_today_2010 , 8
     @date_yesterday_2010=HomeHelper.add_days_to_date @date_today_2010 , -1
     @date_tomorrow_2010=HomeHelper.add_days_to_date @date_today_2010 , 1
+    @date_two_2010=HomeHelper.add_days_to_date @date_today_2010 , 2
+    @date_three_2010=HomeHelper.add_days_to_date @date_today_2010 , 3
+    @date_four_2010=HomeHelper.add_days_to_date @date_today_2010 , 4
+    @date_five_2010=HomeHelper.add_days_to_date @date_today_2010 , 5
     
     @date_today_2009=@date_today_2010 << 12
     @date_today_2009=HomeHelper.add_days_to_date @date_today_2009 , 1
@@ -1029,6 +1020,11 @@ class FunctionsController <  ApplicationController
     @date_next7_2009=HomeHelper.add_days_to_date @date_today_2009 , 8
     @date_yesterday_2009=HomeHelper.add_days_to_date @date_today_2009 , -1
     @date_tomorrow_2009=HomeHelper.add_days_to_date @date_today_2009 , 1
+    @date_two_2009=HomeHelper.add_days_to_date @date_today_2009 , 2
+    @date_three_2009=HomeHelper.add_days_to_date @date_today_2009 , 3
+    @date_four_2009=HomeHelper.add_days_to_date @date_today_2009 , 4
+    @date_five_2009=HomeHelper.add_days_to_date @date_today_2009 , 5
+    
     
     @date_today_2008=@date_today_2009 << 12
     @date_today_2008=HomeHelper.add_days_to_date @date_today_2008 , 1
@@ -1036,6 +1032,11 @@ class FunctionsController <  ApplicationController
     @date_next7_2008=HomeHelper.add_days_to_date @date_today_2008 , 8
     @date_yesterday_2008=HomeHelper.add_days_to_date @date_today_2008 , -1
     @date_tomorrow_2008=HomeHelper.add_days_to_date @date_today_2008 , 1
+    @date_two_2008=HomeHelper.add_days_to_date @date_today_2008 , 2
+    @date_three_2008=HomeHelper.add_days_to_date @date_today_2008 , 3
+    @date_four_2008=HomeHelper.add_days_to_date @date_today_2008 , 4
+    @date_five_2008=HomeHelper.add_days_to_date @date_today_2008 , 5
+    
     
     @date_summer_2008=Date.parse('2008-09-30')
     @date_summer_2009=Date.parse('2009-09-30')
@@ -1052,6 +1053,10 @@ class FunctionsController <  ApplicationController
     sb.yesterday=Job.number_jobs_sold @date_yesterday_2013, @date_yesterday_2013, @date_summer_2013
     sb.lastseven=Job.number_jobs_sold @date_last7_2013, @date_yesterday_2013, @date_summer_2013
     sb.tomorrow='unknown'
+    sb.two='unknown'
+    sb.three='unknown'
+    sb.four='unknown'
+    sb.five='unknown'
     sb.nextseven='unknown'
     @sbs<<sb        
 
@@ -1062,6 +1067,10 @@ class FunctionsController <  ApplicationController
     sb.yesterday=Job.number_jobs_sold @date_yesterday_2012, @date_yesterday_2012, @date_summer_2012
     sb.lastseven=Job.number_jobs_sold @date_last7_2012, @date_yesterday_2012, @date_summer_2012
     sb.tomorrow=Job.number_jobs_sold @date_tomorrow_2012, @date_tomorrow_2012, @date_summer_2012
+    sb.two=Job.number_jobs_sold @date_two_2012, @date_two_2012, @date_summer_2012
+    sb.three=Job.number_jobs_sold @date_three_2012, @date_three_2012, @date_summer_2012
+    sb.four=Job.number_jobs_sold @date_four_2012, @date_four_2012, @date_summer_2012
+    sb.five=Job.number_jobs_sold @date_five_2012, @date_five_2012, @date_summer_2012
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2012, @date_next7_2012, @date_summer_2012
     @sbs<<sb        
 
@@ -1072,6 +1081,10 @@ class FunctionsController <  ApplicationController
     sb.yesterday=Job.number_jobs_sold @date_yesterday_2011, @date_yesterday_2011, @date_summer_2011
     sb.lastseven=Job.number_jobs_sold @date_last7_2011, @date_yesterday_2011, @date_summer_2011
     sb.tomorrow=Job.number_jobs_sold @date_tomorrow_2011, @date_tomorrow_2011, @date_summer_2011
+    sb.two=Job.number_jobs_sold @date_two_2011, @date_two_2011, @date_summer_2011
+    sb.three=Job.number_jobs_sold @date_three_2011, @date_three_2011, @date_summer_2011
+    sb.four=Job.number_jobs_sold @date_four_2011, @date_four_2011, @date_summer_2011
+    sb.five=Job.number_jobs_sold @date_five_2011, @date_five_2011, @date_summer_2011
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2011, @date_next7_2011, @date_summer_2011
     @sbs<<sb        
 
@@ -1082,6 +1095,10 @@ class FunctionsController <  ApplicationController
     sb.yesterday=Job.number_jobs_sold @date_yesterday_2010, @date_yesterday_2010, @date_summer_2010
     sb.lastseven=Job.number_jobs_sold @date_last7_2010, @date_yesterday_2010, @date_summer_2010
     sb.tomorrow=Job.number_jobs_sold @date_tomorrow_2010, @date_tomorrow_2010, @date_summer_2010
+    sb.two=Job.number_jobs_sold @date_two_2010, @date_two_2010, @date_summer_2010
+    sb.three=Job.number_jobs_sold @date_three_2010, @date_three_2010, @date_summer_2010
+    sb.four=Job.number_jobs_sold @date_four_2010, @date_four_2010, @date_summer_2010
+    sb.five=Job.number_jobs_sold @date_five_2010, @date_five_2010, @date_summer_2010
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2010, @date_next7_2010, @date_summer_2010
     @sbs<<sb        
 
@@ -1092,6 +1109,10 @@ class FunctionsController <  ApplicationController
     sb.yesterday=Job.number_jobs_sold @date_yesterday_2009, @date_yesterday_2009, @date_summer_2009
     sb.lastseven=Job.number_jobs_sold  @date_last7_2009, @date_yesterday_2009, @date_summer_2009
     sb.tomorrow=Job.number_jobs_sold @date_tomorrow_2009, @date_tomorrow_2009, @date_summer_2009
+    sb.two=Job.number_jobs_sold @date_two_2009, @date_two_2009, @date_summer_2009
+    sb.three=Job.number_jobs_sold @date_three_2009, @date_three_2009, @date_summer_2009
+    sb.four=Job.number_jobs_sold @date_four_2009, @date_four_2009, @date_summer_2009
+    sb.five=Job.number_jobs_sold @date_five_2009, @date_five_2009, @date_summer_2009
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2009, @date_next7_2009, @date_summer_2009
     @sbs<<sb        
 
@@ -1102,6 +1123,10 @@ class FunctionsController <  ApplicationController
     sb.yesterday=Job.number_jobs_sold @date_yesterday_2008, @date_yesterday_2008, @date_summer_2008
     sb.lastseven=Job.number_jobs_sold @date_last7_2008, @date_yesterday_2008, @date_summer_2008
     sb.tomorrow=Job.number_jobs_sold @date_tomorrow_2008, @date_tomorrow_2008, @date_summer_2008
+    sb.two=Job.number_jobs_sold @date_two_2008, @date_two_2008, @date_summer_2008
+    sb.three=Job.number_jobs_sold @date_three_2008, @date_three_2008, @date_summer_2008
+    sb.four=Job.number_jobs_sold @date_four_2008, @date_four_2008, @date_summer_2008
+    sb.five=Job.number_jobs_sold @date_five_2008, @date_five_2008, @date_summer_2008
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2008, @date_next7_2008, @date_summer_2008
     @sbs<<sb        
 
@@ -1112,6 +1137,15 @@ class FunctionsController <  ApplicationController
 
     @indstats={}     
     personal_bundle=PersonalBundle.new
+    total_bundle=PersonalBundle.new
+    total_bundle.name5='Total'
+    total_bundle.sales='0'
+    total_bundle.atts='0'
+    total_bundle.attscurr='0'
+    total_bundle.salescurr='0'
+
+    
+    
     ids.each do |id|
   #    personal_bundle.
       personal_bundle=PersonalBundle.new
@@ -1124,9 +1158,20 @@ class FunctionsController <  ApplicationController
       #, :attscurr, :salesallcurr
       personal_bundle.name5=name
       personal_bundle.sales=sales
+      totsales=total_bundle.sales.to_i+sales.to_i
+      total_bundle.sales=totsales.to_s
+      
       personal_bundle.atts=atts
+      totatts=total_bundle.atts.to_i+atts.to_i
+      total_bundle.atts=totatts.to_s
+      
       personal_bundle.attscurr=attscurr
+      totattscurr=total_bundle.attscurr.to_i+attscurr.to_i
+      total_bundle.attscurr=totattscurr.to_s
+
       personal_bundle.salescurr=salescurr
+      totsalescurr=total_bundle.salescurr.to_i+salescurr.to_i
+      total_bundle.salescurr=totsalescurr.to_s
       
       if(atts!=0)
         per=sales*100/atts
@@ -1135,6 +1180,17 @@ class FunctionsController <  ApplicationController
         @indstats[(per5+id).to_s.to_sym]=personal_bundle
       end
     end
+
+      if(total_bundle.atts!=0)
+        sales=total_bundle.sales
+        atts=total_bundle.atts
+        puts 'sales atts',sales,atts
+        per=sales.to_i*100/atts.to_i
+        per5=HomeHelper.pad_num3 per
+        puts 'per',per.to_s
+        total_bundle.per=per.to_s
+        @indstats[(-1).to_s.to_sym]=total_bundle
+      end
     
     @indstats=@indstats.sort_by{|sales, pb| sales}
     @indstats=@indstats.reverse!

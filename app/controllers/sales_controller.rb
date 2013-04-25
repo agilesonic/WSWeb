@@ -138,6 +138,21 @@ class SalesController < ApplicationController
   end   
   
   def index
+    hrid=session[:hrid]    
+    @cb=CallerBundle.new
+    emp=Employee.name_from_id hrid
+    @cb.name=emp.first.name
+    @cb.num=Convertcalls.search_assigned_by_holder hrid
+    @cb.fourseven=Convertcalls.search_assigned_by_holder_fourseven hrid    
+    @cb.fourfive=Convertcalls.search_assigned_by_holder_fourfive hrid    
+    @cb.fourthree=Convertcalls.search_assigned_by_holder_fourthree hrid    
+    @cb.fourone=Convertcalls.search_assigned_by_holder_fourone hrid    
+    @cb.threenine=Convertcalls.search_assigned_by_holder_threenine hrid    
+    @cb.threesix=Convertcalls.search_assigned_by_holder_threesix hrid    
+    @cb.newests=Convertcalls.search_assigned_by_holder_newestimates hrid    
+    @cb.lastsummer=Convertcalls.search_assigned_by_holder_lastsummer hrid    
+   
+    
     @sales_form=SalesForm.new
     @profile_options=HomeHelper::CONNECTION_OPTIONS
     @lowcf=session[:lowcf]

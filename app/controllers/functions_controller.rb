@@ -97,13 +97,12 @@ class FunctionsController <  ApplicationController
     cr=crs.first
     @client_header1= @client.CFID
     @client_header2=@client.full_name
-    @client_header3=@client.address
-    @client_header4=@client.phone
-    @client_header5='Rating:'+cr.overallrate.to_s
+    @client_header3=@client.address+' '+@client.phone
+    @client_header4='Rating:'+cr.overallrate.to_s
     if @client.registerdate.nil? || @client.registerdate==''
-      @client_header6='Date Registered: unknown'
+      @client_header5='Date Registered: unknown'
     else 
-      @client_header6='Date Registered:'+@client.registerdate.to_formatted_s(:long_ordinal)
+      @client_header5='Date Registered:'+@client.registerdate.to_formatted_s(:long_ordinal)
     end
     @call_client_form=CallClientForm.new
     @sat_call_form=SatCallForm.new

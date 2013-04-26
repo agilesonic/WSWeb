@@ -78,9 +78,12 @@
 <b><%= link_to 'Back To Sales List', sales_path%></b><br/>
 <br/><br/>
 
+
 <%if !@client_header1.nil?%>
-<h2><%=@client_header1%>&nbsp;&nbsp;&nbsp;<%=@client_header2%>&nbsp;&nbsp;&nbsp;<%=@client_header4%></h2>
-<h2><%=@client_header5%>&nbsp;&nbsp;<%=@client_header6%></h2>
+<h2><%=@client_header1%></h2>
+<h2><%=@client_header2%></h2>
+<h2><%=@client_header3%></h2>
+<h2><%=@client_header4%>&nbsp;&nbsp;<%=@client_header5%></h2>
 <%end%>
 
 <%if !@function.nil?
@@ -201,7 +204,7 @@
 		</table>
 	<%end%>	
 	<br/>	
-	<h3><b><%= link_to 'Call Next Client', nextclient_sale_path(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)%>&nbsp;&nbsp;&nbsp;<%= link_to 'Call Previous Client', previousclient_sale_path(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)%></b></h3><br/>&nbsp;&nbsp;&nbsp;
+	<h3><b><%= link_to '<<<Call Previous Client', previousclient_sale_path(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)%>&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;<%= link_to 'Call Next Client>>>', nextclient_sale_path(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)%></b></h3><br/></br>
 	<%if @source=='callclient'%>
 		<h3><b><b><%= link_to 'Client List', clientlist_sales_path%></b><br/>
 </b></h3>

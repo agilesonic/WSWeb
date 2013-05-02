@@ -11,6 +11,7 @@
 			<table border='1' class="mystyle">
 				
 			    	<tr border="1" class="cell"> 
+						<th>Num</th>
 						<th>CFID</th>
 						<th>Name</th>
 						<th>Rating</th>
@@ -21,24 +22,20 @@
 					</tr>
 				
 				
-				<% @cc.each do |c|
-					String date='unknown'
-					if !c.followup.nil?
-						date=c.followup.to_formatted_s(:long_ordinal)
-					end	
-			    %>
+				<% @cc.each do |c| %>
 			        <% if c.laststatus=='Pending'%>
 			    		<tr border="1" class="redcell">
 			        <%else%>
 			    		<tr border="1" class="cell">
 			    	<%end%>	 
-						<td><%= c.client.CFID %></td>
-						<td><%= c.client.full_name %></td>
+						<td><%= c.num %></td>
+						<td><%= c.cfid %></td>
+						<td><%= c.name %></td>
 						<td><%= c.rating %></td>
 						<td><%= c.summcalls %></td>
 						<td><%= c.laststatus %></td>
-						<td><%=  date %></td>
-						<td><%= link_to 'Call Client', clientprofile_function_path(:id => c.client.CFID,:source=>'callclient',:function=>'callclient'),:style=>"color: yellow"%></td>
+						<td><%= c.followup %></td>
+						<td><%= link_to 'Call Client', clientprofile_function_path(:id => c.cfid,:source=>'callclient',:function=>'callclient'),:style=>"color: yellow"%></td>
 					</tr>
 				<% end %>
 			</table>

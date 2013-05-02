@@ -12,7 +12,11 @@ class Job < ActiveRecord::Base
   
 
   def self.max_id
-    where("jobs.jobid not like ?","JB98%").maximum("JobID")
+    where("jobid not like ?","JB98%").maximum("JobID")
+  end
+
+  def self.max_id_prop(jobinfoid)
+    where("jobid not like ? and jobinfoid = ?","JB98%","#{jobinfoid}").maximum("JobID")
   end
 
   def self.number_jobs_sold(date1, date2, date3) 

@@ -84,7 +84,7 @@ class FunctionsController <  ApplicationController
     @source=ssf[:source]
   end
   
-  def clientprofile
+  def clientprofile1
     @cfid=params[:id]
     @client=Client.find(@cfid)
     @nosale=params[:nosale]
@@ -409,7 +409,278 @@ class FunctionsController <  ApplicationController
     end
     @contact_options=HomeHelper::CLIENT_CONTACT_STATUS
     @selected_contact=@client.contactstatus
+    @call_info=@call_info.uniq
   end
+
+
+#    donejobs=@client.done_jobs
+#    donejobs2013=@client.done_jobs_2013
+#    upcomingjobs=@client.upcoming_jobs
+
+  def clientprofile_jobs(client)
+    jobs=[]
+    @date_2013=Date.parse("2013-01-01")
+    donejobs=client.done_jobs
+    donejobs.each do |job|
+      job_bundle=JobBundle.new
+      job_bundle.typedesc='donejob'
+      job_bundle.jobdnf='job'
+      if !job.satisfaction.nil?
+        job_bundle.sat='ok'
+      end
+      job_bundle.jobid=job.JobID
+      job_bundle.address=job.property.address
+      job_bundle.jobdesc=job.JobDesc
+      job_bundle.price=job.Price
+      partner="".to_s
+      empList=Employee.find_by_name(job.CrewName)
+      emp=empList.last
+      if(!emp.nil?)
+        ocList=OC.find_partner  emp.HRID, job.Datebi
+        oc=ocList.first
+        if(!oc.nil?)
+          emp2List=Employee.find_by_hrid oc.partner
+          emp=emp2List.last
+          if(!emp.nil?)
+            partner="/" + emp.name.to_s
+          end
+        end
+      end
+      job_bundle.crewname=job.CrewName.to_s + partner.to_s
+      job_bundle.minutes=job.Minutes
+      job_bundle.datebi=job.Datebi
+
+      if job.Datebi>=@date_2013
+        job_bundle.datetag='2013'
+      else  
+        job_bundle.datetag='pre2013'
+      end
+ 
+      if !job.Recstatus.nil? && !job.Recstatus.index('Receiv').nil? && job.Recstatus.index('Receiv')>-1
+         job_bundle.daystopay=job.Recstatus
+         jobs << job_bundle
+      else       
+        trandate=Transactions.date_paid job.JobID
+        paid_date=trandate
+        job_date=job.Datebi
+        if(paid_date.nil? || job_date.nil?)
+          job_bundle.daystopay='unknown'    
+          jobs << job_bundle
+        else  
+          days=(paid_date-job_date).to_i
+          job_bundle.daystopay=days    
+          jobs << job_bundle
+        end
+    end
+    
+
+    dnfs=Jobdnf.search_completed_dnfs(job.JobID)
+    if !dnfs.nil?
+       dnfs.each do |dnf|
+       jdb=JobBundle.new
+       jdb.typedesc='donednf'
+       jdb.jobdnf='dnf'
+       jdb.jobid='DNF for:'+job.JobID
+       jdb.address=job.property.address
+       jdb.jobdesc=dnf.DnfDesc
+       jdb.crewname=dnf.CrewName
+       if !dnf.Datebi.nil?  
+         partner="".to_s
+         empList=Employee.find_by_name(dnf.CrewName)
+         emp=empList.last
+         if(!emp.nil?)
+           ocList=OC.find_partner  emp.HRID, dnf.Datebi
+           oc=ocList.first
+           if(!oc.nil?)
+             emp2List=Employee.find_by_hrid oc.partner
+             emp=emp2List.last
+             if(!emp.nil?)
+               partner="/" + emp.name.to_s
+             end
+           end
+         end
+         jdb.crewname=job.CrewName.to_s + partner.to_s
+       else
+         jdb.crewname=''
+       end
+       jdb.minutes=dnf.Minutes
+       jdb.datebi=dnf.Datebi
+      if jdb.datebi>=@date_2013
+        jdb.datetag='2013'
+      else  
+        jdb.datetag='pre2013'
+      end
+       jdb.daystopay='n/a'    
+       jobs << jdb
+       end
+      end
+      
+      #________
+      upcomingdnfs=Jobdnf.search_incomplete_dnfs job.JobID
+      upcomingdnfs.each do |dnf|
+        job_bundle=JobBundle.new
+        job_bundle.typedesc='upcomingdnf'
+        job_bundle.jobdnf='dnf'
+        job_bundle.jobid=dnf.DNFID+'['+job.JobID+']'
+        job_bundle.address=job.property.address
+        job_bundle.jobdesc=dnf.DnfDesc
+        if(dnf.Sdate==dnf.Fdate)
+          job_bundle.type='Appt('+dnf.Stime+')'
+        else  
+          job_bundle.type='Fltr'
+        end
+        job_bundle.sdate=dnf.Sdate
+        job_bundle.datetag='2013'
+        jobs << job_bundle
+      end
+
+      
+      #__________
+      sat=job.satisfaction
+      if !sat.nil?
+        sb=JobBundle.new
+        sb.typedesc='satjob'
+        sb.jobdnf='sat'
+        sb.jobid='Sat for:'+job.JobID
+        sb.address=job.property.address
+        sb.jobdesc=sat.Comments
+        emp=Employee.find(sat.Caller)
+        if(!emp.nil?)
+          sb.crewname=emp.name
+        end
+        sb.minutes='n/a'
+        sb.datebi=sat.SatDate
+        if sat.SatDate>=@date_2013
+          sb.datetag='2013'
+        else  
+          sb.datetag='pre2013'
+        end
+
+        sb.daystopay='n/a'    
+        jobs << sb
+      end     
+    end
+  
+    upcomingjobs=client.upcoming_jobs
+    upcomingjobs.each do |job|
+      job_bundle=JobBundle.new
+      job_bundle.typedesc='upcomingjob'
+      job_bundle.jobdnf='job'
+      job_bundle.jobid=job.JobID
+      job_bundle.address=job.property.address
+      job_bundle.jobdesc=job.JobDesc
+      job_bundle.price=job.Price
+      if(job.Sdate==job.Fdate)
+        job_bundle.type='Appt('+job.Stime+')'
+      else  
+        job_bundle.type='Fltr'
+      end
+      job_bundle.sdate=job.Sdate
+      job_bundle.datetag='2013'
+
+      jobs << job_bundle
+    end      
+  
+    return jobs
+  end
+  
+
+  def clientprofile
+    @cfid=params[:id]
+    @client=Client.find(@cfid)
+    @nosale=params[:nosale]
+    @cfmess=params[:cfmess]
+    @source=params[:source]
+    @function=params[:function]
+    @jobid=params[:jobid]
+    @jobid1=params[:jobid1]
+    crs=Clientrate.find_rating @cfid
+    overallrate='2.5'
+    cr=crs.first
+    if !cr.nil?
+      overallrate=cr.overallrate
+    end
+    @client_header1= @client.CFID
+    @client_header2=@client.full_name
+    @client_header3=@client.address+' '+@client.phone
+    @client_header4='Rating:'+overallrate.to_s
+    if @client.registerdate.nil? || @client.registerdate==''
+      @client_header5='Date Registered: unknown'
+    else 
+      @client_header5='Date Registered:'+@client.registerdate.to_formatted_s(:long_ordinal)
+    end
+    @call_client_form=CallClientForm.new
+    @sat_call_form=SatCallForm.new
+    @tstatus_options=HomeHelper::CALL_OPTIONS
+ 
+    date=HomeHelper.add_days_to_current_date(1)
+    date10=HomeHelper.add_days_to_date date,10
+    date10s=date10.to_s
+    
+    @selected_foll_year=date10s[0,4]
+    @selected_foll_month=HomeHelper.get_month_from_num(date10s[5,2]) 
+    @selected_foll_day=date10s[8,2]
+ 
+    @year10=date10s[0,4]
+    @month10=HomeHelper.get_month_from_num(date10s[5,2]) 
+    @day10=date10s[8,2]
+    
+    
+    @sat_options=HomeHelper::SAT_TYPES
+    @years=HomeHelper::YEARS
+    @months=HomeHelper::MONTHS
+    @days=HomeHelper::DAYS
+    @calls=@client.clientcontacts
+    @call_info=[]      
+    @date5=Date.parse("2013-04-01")
+
+    if @function=='callclient'
+      if !@calls.nil?
+        @calls.each do |call|
+          name='unknown'
+          if !call.caller.nil?
+            e=Employee.find(call.caller)
+          end
+          if !e.nil?
+            call.caller=e.name
+          else
+            call.caller=name
+          end  
+        end
+      end
+    end
+
+
+    @jobs=clientprofile_jobs(@client)  
+    @jobs_2013=[]
+    @jobs_all=[]
+    @jobs_upcoming=[]
+    
+    @jobs.each do |job|
+      puts job.typedesc
+      if job.datetag=='2013' && ((job.typedesc!='upcomingjob') && (job.typedesc!='upcomingdnf')) 
+        @jobs_2013<<job    
+      end
+      if (job.typedesc=='upcomingjob' || job.typedesc=='upcomingdnf')
+        @jobs_upcoming<<job
+      end
+      @jobs_all<<job
+    end
+    
+# Various Lists
+
+
+
+    
+    
+   
+    @edit_client_form=EditClientForm.new
+    @prices_all=HomeHelper::get_props_and_prices(@client)
+    @contact_options=HomeHelper::CLIENT_CONTACT_STATUS
+    @selected_contact=@client.contactstatus
+#    @call_info=@call_info.uniq
+  end
+
 
   def selljob
     @test="sell HI HO"
@@ -430,7 +701,7 @@ class FunctionsController <  ApplicationController
     client.honorific=ecf.honorific
     client.firstname=ecf.firstname
     client.lastname=ecf.lastname
-    client.address=ecf.address
+    #client.address=ecf.address
     client.city=ecf.city
     client.province  =ecf.province
     client.postcode  =ecf.postcode
@@ -442,6 +713,11 @@ class FunctionsController <  ApplicationController
     client.email  =ecf.email
     client.contactstatus= ecf.contactstatus
     client.save!
+    
+    cc=Convertcalls.find cfid
+    cc.clientstatus=ecf.contactstatus
+    cc.save!
+    
     redirect_to clientprofile_function_url(:id=>cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)
   end
 
@@ -1151,6 +1427,7 @@ class FunctionsController <  ApplicationController
       emps=Employee.name_from_id id
       name=emps.first.name  
       sales=Convertcalls.sales_by_assist @date_summer1, @date_summer2, id
+      puts 'NAME############',name,sales
       atts=Clientcontact.num_cfcontacts_summer2013_ind id
       attscurr=Clientcontact.num_cfcontacts_summer2013_ind_curr id, @date_summer2
       salescurr=Job.number_jobs_sold_ind_curr id, @date_summer2          
@@ -1197,7 +1474,7 @@ class FunctionsController <  ApplicationController
     @indstats.each do |k,v|
       puts k,v
     end
-
+    puts 'DAATTTEEEE', Date.today
         
   end
   

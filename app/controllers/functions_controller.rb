@@ -635,6 +635,7 @@ class FunctionsController <  ApplicationController
     @date5=Date.parse("2013-04-01")
 
     if @function=='callclient'
+      session[:num]=params[:num]
       if !@calls.nil?
         @calls.each do |call|
           name='unknown'
@@ -1426,13 +1427,17 @@ class FunctionsController <  ApplicationController
       personal_bundle=PersonalBundle.new
       emps=Employee.name_from_id id
       name=emps.first.name  
-      sales=Convertcalls.sales_by_assist @date_summer1, @date_summer2, id
+      salesass=Convertcalls.sales_by_assist @date_summer1, @date_summer2, id
+      salesdir=Convertcalls.sales_by_direct @date_summer1, @date_summer2, id
+      sales=salesass.to_i+salesdir.to_i
       puts 'NAME############',name,sales
       atts=Clientcontact.num_cfcontacts_summer2013_ind id
       attscurr=Clientcontact.num_cfcontacts_summer2013_ind_curr id, @date_summer2
       salescurr=Job.number_jobs_sold_ind_curr id, @date_summer2          
       #, :attscurr, :salesallcurr
       personal_bundle.name5=name
+      personal_bundle.salesass=salesass
+      personal_bundle.salesdir=salesdir
       personal_bundle.sales=sales
       totsales=total_bundle.sales.to_i+sales.to_i
       total_bundle.sales=totsales.to_s

@@ -190,7 +190,7 @@ class SalesController < ApplicationController
       @count=Convertcalls.count_ccrange cc.cfid, hrid, sf.profile, Date.today
     end
     @cc=[]
-    i=1
+    i=0
     @ccalls.each do |call|
       ccb=ConvertcallBundle.new
         
@@ -218,7 +218,7 @@ class SalesController < ApplicationController
     profile=session[:profile]
     @ccalls=Convertcalls.search_ccrange(lowcf, limit, hrid, profile, Date.today)
     @cc=[]
-    i=1
+    i=0
     @ccalls.each do |call|
       ccb=ConvertcallBundle.new
         
@@ -241,16 +241,6 @@ class SalesController < ApplicationController
   end
 
   def nextbatch
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
     @sales_form=SalesForm.new
     @profile_options=HomeHelper::CONNECTION_OPTIONS
     
@@ -279,9 +269,10 @@ class SalesController < ApplicationController
     highcf=session[:highcf]
     hrid=session[:hrid]
     profile=session[:profile]
+    num=session[:num]
     @ccalls=Convertcalls.search_ccrange_prevnext(lowcf, highcf, hrid, profile, Date.today)
     @cc=[]
-    i=1
+    i=0
     @ccalls.each do |call|
       ccb=ConvertcallBundle.new
       ccb.num=i.to_s
@@ -299,21 +290,16 @@ class SalesController < ApplicationController
       @cc<<ccb
       i+=1
     end
-    i=0
-    newclient=@cc[0]
-    @cc.each do |client|
-      if client.cfid==cfid
-        newclient=@cc[client.num.to_i]
-        break
-      end
-      i+=1
-    end
-    next_client=newclient
+    
+    num=num.to_i+1
+    session[:num]=num.to_s
+    next_client=@cc[num]
+
     if next_client.nil?
       redirect_to sales_path
       return
     end
-    redirect_to clientprofile_function_path(:id => next_client.cfid, :jobid1=>@jobid1, :source=>@source,:function=>@function)
+    redirect_to clientprofile_function_path(:id => next_client.cfid, :num=>num.to_s, :jobid1=>@jobid1, :source=>@source,:function=>@function)
   end
 
   def previousclient
@@ -326,10 +312,10 @@ class SalesController < ApplicationController
     limit=session[:limit]
     hrid=session[:hrid]
     profile=session[:profile]
-
+    num=session[:num]
     @ccalls=Convertcalls.search_ccrange_prevnext(lowcf, highcf, hrid, profile, Date.today)
     @cc=[]
-    i=1
+    i=0
     @ccalls.each do |call|
       ccb=ConvertcallBundle.new
       ccb.num=i.to_s
@@ -347,21 +333,18 @@ class SalesController < ApplicationController
       @cc<<ccb
       i+=1
     end
-    i=0
-    newclient=@cc[0]
-    @cc.each do |client|
-      if client.cfid==cfid
-        newclient=@cc[client.num.to_i-2]
-        break
-      end
-      i+=1
-    end
-    next_client=newclient
+    
+    puts 'FIRST NUM',num
+    num=num.to_i-1
+    session[:num]=num.to_s
+    puts 'SECOND NUM',num
+
+    next_client=@cc[num]
     if next_client.nil?
       redirect_to sales_path
       return
     end
-    redirect_to clientprofile_function_path(:id => next_client.cfid, :jobid1=>@jobid1, :source=>@source,:function=>@function)
+    redirect_to clientprofile_function_path(:id => next_client.cfid, :num=>num.to_s, :jobid1=>@jobid1, :source=>@source,:function=>@function)
   end
 
 

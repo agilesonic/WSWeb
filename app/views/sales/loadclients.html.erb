@@ -35,7 +35,7 @@
 						<td><%= c.summcalls %></td>
 						<td><%= c.laststatus %></td>
 						<td><%= c.followup %></td>
-						<td><%= link_to 'Call Client', clientprofile_function_path(:id => c.cfid,:source=>'callclient',:function=>'callclient'),:style=>"color: yellow"%></td>
+						<td><%= link_to 'Call Client', clientprofile_function_path(:id => c.cfid, :num=>c.num, :source=>'callclient',:function=>'callclient'),:style=>"color: yellow"%></td>
 					</tr>
 				<% end %>
 			</table>

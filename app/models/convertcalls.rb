@@ -89,7 +89,7 @@ class Convertcalls < ActiveRecord::Base
 
   def self.search_profile_nocalls_prevnext(lowcf, highcf, hrid, today)
     where("cfid between ? and ? and clientstatus='Normal Client' and hrid= ? and summcalls= ? and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE'))",
-         "#{lowcf}", "#{highcf}","#{hrid}", "0", today) 
+         "#{lowcf}", "#{highcf}","#{hrid}", "0") 
   end
 
   def self.search_profile_ratings_prevnext(lowcf, highcf, hrid, today, r1, r2)
@@ -239,5 +239,13 @@ class Convertcalls < ActiveRecord::Base
   Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between '"+datesold1.to_s+"' and '"+datesold2.to_s+"' and cc.hrid= '"+"#{salesid}"+"' and cc.summcalls>'0'").count
     end
   
+  def self.sales_by_direct(datesold1, datesold2, salesid)
+  #  Convertcalls.joins(:properties).joins(:jobs).where("jobs.Sdate between '2013-04-01' and '2013-09-30' and jobs.Datesold between ? and ? and convertcalls.hrid= ? and convertcalls.summcalls>'0'",
+   #  datesold1, datesold2, "#{salesid}").count
+#   Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between "+datesold1.to_s+" and "+datesold2.to_s+" and cc.hrid= "+"#{salesid}"+" and cc.summcalls>'0'",
+#   datesold1, datesold2, "#{salesid}").count
+  Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between '"+datesold1.to_s+"' and '"+datesold2.to_s+"' and cc.hrid=j.salesid1 and j.salesid1= '"+"#{salesid}"+"'").count
+    end
+
   
 end

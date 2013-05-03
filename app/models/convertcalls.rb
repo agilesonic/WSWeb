@@ -93,8 +93,8 @@ class Convertcalls < ActiveRecord::Base
   end
 
   def self.search_profile_ratings_prevnext(lowcf, highcf, hrid, today, r1, r2)
-    where("cfid between ? and ? and hrid= ? and (lastjob is null or lastjob<'2013-04-01') and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and rating between ? and ?",
-         "#{lowcf}","#{highcf}","#{hrid}","#{r1}","#{r2}") 
+    where("cfid between ? and ? and hrid= ? and (followup is null or followup<= ?) and (lastjob is null or lastjob<'2013-04-01') and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and rating between ? and ?",
+         "#{lowcf}","#{highcf}","#{hrid}",today,"#{r1}","#{r2}") 
   end
 
 
@@ -128,17 +128,20 @@ class Convertcalls < ActiveRecord::Base
     elsif profile=='Used Us Last Summer'  
       profiles=search_profile_lastsummer_prevnext(lowcf, highcf, hrid, today)
     end
-    if pendings.nil? && profiles.nil?
-      return list
-    elsif pendings.nil? && !profiles.nil?
-      return profiles
-    elsif !pendings.nil? && profiles.nil?
-      return pendings
-    elsif !pendings.nil? && !profiles.nil?
-      return pendings+profiles
-    else
-      return list  
-    end
+#    if pendings.nil? && profiles.nil?
+#      return list
+#    elsif pendings.nil? && !profiles.nil?
+#      return profiles
+#    elsif !pendings.nil? && profiles.nil?
+#      return pendings
+#    elsif !pendings.nil? && !profiles.nil?
+#      return pendings+profiles
+#    else
+#      return list  
+#    end
+    return profiles
+
+
   end
 
 
@@ -170,17 +173,18 @@ class Convertcalls < ActiveRecord::Base
     elsif profile=='Used Us Last Summer'  
       profiles=search_profile_lastsummer(lowcf, limit, hrid, today)
     end
-    if pendings.nil? && profiles.nil?
-      return list
-    elsif pendings.nil? && !profiles.nil?
-      return profiles
-    elsif !pendings.nil? && profiles.nil?
-      return pendings
-    elsif !pendings.nil? && !profiles.nil?
-      return pendings+profiles
-    else
-      return list  
-    end
+#    if pendings.nil? && profiles.nil?
+#      return list
+#    elsif pendings.nil? && !profiles.nil?
+#      return profiles
+#    elsif !pendings.nil? && profiles.nil?
+#      return pendings
+#    elsif !pendings.nil? && !profiles.nil?
+#      return pendings+profiles
+#    else
+#      return list
+#    end
+     return profiles    
   end
 
   def self.search_unassigned_all

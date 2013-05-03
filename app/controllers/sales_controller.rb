@@ -202,9 +202,10 @@ class SalesController < ApplicationController
     @ccalls=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today
     puts @ccalls.size
     if !@ccalls.empty?
+      cc1=@ccalls.first
       cc=@ccalls.last
       session[:profile] = sf.profile
-      session[:lowcf] = sf.lowcf
+      session[:lowcf] = cc1.cfid
       session[:highcf] = cc.cfid
       session[:limit] = sf.limit
       session[:selected_profile] = sf.profile
@@ -291,6 +292,7 @@ class SalesController < ApplicationController
     hrid=session[:hrid]
     profile=session[:profile]
     num=session[:num]
+    puts 'PARAMETERS',lowcf, highcf, hrid, profile, Date.today
     @ccalls=Convertcalls.search_ccrange_prevnext(lowcf, highcf, hrid, profile, Date.today)
     @cc=[]
     i=0

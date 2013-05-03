@@ -71,6 +71,7 @@ WSWeb::Application.routes.draw do
       post 'assclients' 
       post 'callprofile1'
       get 'screenconvertcalls' 
+      get 'screensales' 
     end
     member do
 #      get 'loadclient'  # /clients/:id/changeAddress   helper_method: changeAddress_client_path(:id)

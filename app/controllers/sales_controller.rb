@@ -4,6 +4,27 @@ class SalesController < ApplicationController
   layout "application1"
   protect_from_forgery
 
+  def screensales
+    maxdate=Convertcalls.max_datesold
+    #maxdate1=Date.parse('2013-04-01')
+    #maxdate2=Date.parse('2013-04-02')
+    jobs=Job.jobs_sold_after(maxdate)
+    jobs.each do |job|
+      c=job.client
+      puts c.CFID
+      ccs=Convertcalls.find_by_cfid c.CFID
+      cc=ccs.first
+      if !cc.nil?
+        cc.lastjob=job.Datesold
+        cc.save!
+      end   
+    end
+    redirect_to login1_functions_url    
+  end
+
+
+
+
   def callprofile
     @cp_form=CallProfileForm.new
     cc=Convertcalls.select(:hrid).uniq
@@ -902,6 +923,7 @@ class SalesController < ApplicationController
     clients.each do |client|
       cc=Convertcalls.new
       cc.cfid=client.CFID
+      
       cc.numjobsls='0'
       cc.numjobslf='0'
       cc.fallcalls='0'

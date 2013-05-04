@@ -194,16 +194,18 @@ class SalesController < ApplicationController
   
   
   def loadclients
+    
     sf=SalesForm.new(params[:sales_form])
     hrid=session[:hrid]
     if sf.lowcf!=''
       sf.lowcf=HomeHelper.pad_id_num('CF',sf.lowcf)
     end
-    @ccalls=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today
-    puts @ccalls.size
-    if !@ccalls.empty?
-      cc1=@ccalls.first
-      cc=@ccalls.last
+    
+    @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today
+    puts @cc.size
+    if !@cc.empty?
+      cc1=@cc.first
+      cc=@cc.last
       session[:profile] = sf.profile
       session[:lowcf] = cc1.cfid
       session[:highcf] = cc.cfid
@@ -211,26 +213,26 @@ class SalesController < ApplicationController
       session[:selected_profile] = sf.profile
       @count=Convertcalls.count_ccrange cc.cfid, hrid, sf.profile, Date.today
     end
-    @cc=[]
-    i=0
-    @ccalls.each do |call|
-      ccb=ConvertcallBundle.new
-        
-      ccb.num=i.to_s
-      ccb.cfid=call.cfid
-      client=Client.find call.cfid
-      ccb.name=client.full_name
-      ccb.rating=call.rating
-      ccb.summcalls=call.summcalls
-      ccb.laststatus=call.laststatus
-      if call.followup.nil?
-        ccb.followup="unknown"
-      else
-        ccb.followup=call.followup.to_formatted_s(:long_ordinal)
-      end
-      @cc<<ccb
-      i+=1
-    end
+#    @cc=[]
+#    i=0
+#    @ccalls.each do |call|
+#      ccb=ConvertcallBundle.new
+#        
+#      ccb.num=i.to_s
+#      ccb.cfid=call.cfid
+#      client=Client.find call.cfid
+#      ccb.name=client.full_name
+#      ccb.rating=call.rating
+#      ccb.summcalls=call.summcalls
+#      ccb.laststatus=call.laststatus
+#      if call.followup.nil?
+#        ccb.followup="unknown"
+#      else
+#        ccb.followup=call.followup.to_formatted_s(:long_ordinal)
+#      end
+#      @cc<<ccb
+#      i+=1
+#    end
   end   
 
   def clientlist
@@ -293,26 +295,7 @@ class SalesController < ApplicationController
     profile=session[:profile]
     num=session[:num]
     puts 'PARAMETERS',lowcf, highcf, hrid, profile, Date.today
-    @ccalls=Convertcalls.search_ccrange_prevnext(lowcf, highcf, hrid, profile, Date.today)
-    @cc=[]
-    i=0
-    @ccalls.each do |call|
-      ccb=ConvertcallBundle.new
-      ccb.num=i.to_s
-      ccb.cfid=call.cfid
-      client=Client.find call.cfid
-      ccb.name=client.full_name
-      ccb.rating=call.rating
-      ccb.summcalls=call.summcalls
-      ccb.laststatus=call.laststatus
-      if call.followup.nil?
-        ccb.followup="unknown"
-      else
-        ccb.followup=call.followup.to_formatted_s(:long_ordinal)
-      end
-      @cc<<ccb
-      i+=1
-    end
+    @cc=Convertcalls.search_ccrange_prevnext(lowcf, highcf, hrid, profile, Date.today)
     
     num=num.to_i+1
     session[:num]=num.to_s
@@ -336,26 +319,7 @@ class SalesController < ApplicationController
     hrid=session[:hrid]
     profile=session[:profile]
     num=session[:num]
-    @ccalls=Convertcalls.search_ccrange_prevnext(lowcf, highcf, hrid, profile, Date.today)
-    @cc=[]
-    i=0
-    @ccalls.each do |call|
-      ccb=ConvertcallBundle.new
-      ccb.num=i.to_s
-      ccb.cfid=call.cfid
-      client=Client.find call.cfid
-      ccb.name=client.full_name
-      ccb.rating=call.rating
-      ccb.summcalls=call.summcalls
-      ccb.laststatus=call.laststatus
-      if call.followup.nil?
-        ccb.followup="unknown"
-      else
-        ccb.followup=call.followup.to_formatted_s(:long_ordinal)
-      end
-      @cc<<ccb
-      i+=1
-    end
+    @cc=Convertcalls.search_ccrange_prevnext(lowcf, highcf, hrid, profile, Date.today)
     
     puts 'FIRST NUM',num
     num=num.to_i-1

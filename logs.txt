@@ -1,0 +1,101 @@
+2013-05-04T00:55:50.848958+00:00 app[web.1]: #<PersonalBundle:0x00000005b956b8>
+2013-05-04T00:55:50.848958+00:00 app[web.1]: #<PersonalBundle:0x000000059c4118>
+2013-05-04T00:55:50.849209+00:00 app[web.1]: 011HR00005404
+2013-05-04T00:55:50.849277+00:00 app[web.1]: #<PersonalBundle:0x00000004512c10>
+2013-05-04T00:55:50.849422+00:00 app[web.1]: DAATTTEEEE
+2013-05-04T00:55:50.878143+00:00 app[web.1]: Processing by FunctionsController#stats as HTML
+2013-05-04T00:55:50.854842+00:00 heroku[router]: at=info method=GET path=/functions/stats host=office.whiteshark.ca fwd="173.248.195.86" dyno=web.1 connect=0ms service=26170ms status=304 bytes=0
+2013-05-04T00:55:52.597760+00:00 app[web.1]: NAME############
+2013-05-04T00:55:52.598477+00:00 app[web.1]: 0
+2013-05-04T00:55:52.598373+00:00 app[web.1]: www.whiteshark.ca
+2013-05-04T00:55:53.071591+00:00 app[web.1]: NAME############
+2013-05-04T00:55:53.071591+00:00 app[web.1]: Joshua Roes
+2013-05-04T00:55:53.071591+00:00 app[web.1]: 0
+2013-05-04T00:55:53.944684+00:00 app[web.1]: NAME############
+2013-05-04T00:55:53.944684+00:00 app[web.1]: Shanti Ramcharan
+2013-05-04T00:55:53.944684+00:00 app[web.1]: 68
+2013-05-04T00:55:54.394491+00:00 app[web.1]: Derek Boyd
+2013-05-04T00:55:54.394491+00:00 app[web.1]: NAME############
+2013-05-04T00:55:54.394491+00:00 app[web.1]: 0
+2013-05-04T00:55:55.402051+00:00 app[web.1]: NAME############
+2013-05-04T00:55:55.402051+00:00 app[web.1]: Natasha D Angelo
+2013-05-04T00:55:55.402584+00:00 app[web.1]: 110
+2013-05-04T00:55:56.287148+00:00 app[web.1]: NAME############
+2013-05-04T00:55:56.287148+00:00 app[web.1]: Mackenzie Thomson
+2013-05-04T00:55:56.287224+00:00 app[web.1]: 86
+2013-05-04T00:55:56.736027+00:00 app[web.1]: NAME############
+2013-05-04T00:55:56.736274+00:00 app[web.1]: George Patsas
+2013-05-04T00:55:56.736394+00:00 app[web.1]: 0
+2013-05-04T00:55:57.272092+00:00 heroku[router]: at=error code=H12 desc="Request timeout" method=GET path=/functions/stats host=office.whiteshark.ca fwd="173.248.195.86" dyno=web.1 connect=0ms service=30000ms status=503 bytes=0
+2013-05-04T00:55:58.009871+00:00 app[web.1]: Nicole Robitaille
+2013-05-04T00:55:58.009664+00:00 app[web.1]: NAME############
+2013-05-04T00:55:58.009970+00:00 app[web.1]: 161
+2013-05-04T00:55:59.260470+00:00 app[web.1]: Melodie Seto
+2013-05-04T00:55:59.260271+00:00 app[web.1]: NAME############
+2013-05-04T00:55:59.260570+00:00 app[web.1]: 162
+2013-05-04T00:56:00.643567+00:00 app[web.1]: NAME############
+2013-05-04T00:56:00.643567+00:00 app[web.1]: Diana Price
+2013-05-04T00:56:00.643567+00:00 app[web.1]: 180
+2013-05-04T00:56:01.615801+00:00 app[web.1]: Neil S Samchand
+2013-05-04T00:56:01.615801+00:00 app[web.1]: NAME############
+2013-05-04T00:56:01.615801+00:00 app[web.1]: 107
+2013-05-04T00:56:02.737446+00:00 app[web.1]: NAME############
+2013-05-04T00:56:02.737446+00:00 app[web.1]: 130
+2013-05-04T00:56:02.737446+00:00 app[web.1]: Cameron Bernier
+2013-05-04T00:56:03.481096+00:00 app[web.1]: NAME############
+2013-05-04T00:56:03.481096+00:00 app[web.1]: Megan Atkinson
+2013-05-04T00:56:03.481096+00:00 app[web.1]: 58
+2013-05-04T00:56:03.673505+00:00 app[web.1]: sales atts
+2013-05-04T00:56:03.673505+00:00 app[web.1]: 5740
+2013-05-04T00:56:03.674545+00:00 app[web.1]: #<PersonalBundle:0x000000068f13e8>
+2013-05-04T00:56:03.673505+00:00 app[web.1]: 046HR00000429
+2013-05-04T00:56:03.674352+00:00 app[web.1]: 028HR00005414
+2013-05-04T00:56:03.675384+00:00 app[web.1]: -1
+2013-05-04T00:56:03.674855+00:00 app[web.1]: 011HR00005404
+2013-05-04T00:56:03.675384+00:00 app[web.1]: 2013-05-03
+2013-05-04T00:56:03.674759+00:00 app[web.1]: #<PersonalBundle:0x00000005c67bb8>
+2013-05-04T00:56:03.674855+00:00 app[web.1]: #<PersonalBundle:0x000000065f72f0>
+2013-05-04T00:56:03.674412+00:00 app[web.1]: 023HR00005405
+2013-05-04T00:56:03.674545+00:00 app[web.1]: 021HR00005392
+2013-05-04T00:56:03.673505+00:00 app[web.1]: 1062
+2013-05-04T00:56:03.673505+00:00 app[web.1]: 18
+2013-05-04T00:56:03.674450+00:00 app[web.1]: #<PersonalBundle:0x000000060eaaf0>
+2013-05-04T00:56:03.674450+00:00 app[web.1]: 021HR00005403
+2013-05-04T00:56:03.674640+00:00 app[web.1]: #<PersonalBundle:0x00000006521678>
+2013-05-04T00:56:03.677196+00:00 app[web.1]:   Rendered functions/stats.html.erb within layouts/application1 (1.0ms)
+2013-05-04T00:56:03.675384+00:00 app[web.1]: #<PersonalBundle:0x0000000485f7d8>
+2013-05-04T00:56:03.674817+00:00 app[web.1]: #<PersonalBundle:0x00000006175ee8>
+2013-05-04T00:56:03.674712+00:00 app[web.1]: 017HR00005398
+2013-05-04T00:56:03.674298+00:00 app[web.1]: #<PersonalBundle:0x00000004785e20>
+2013-05-04T00:56:03.673505+00:00 app[web.1]: per
+2013-05-04T00:56:03.675384+00:00 app[web.1]: DAATTTEEEE
+2013-05-04T00:56:03.674352+00:00 app[web.1]: #<PersonalBundle:0x00000005b2c640>
+2013-05-04T00:56:03.674759+00:00 app[web.1]: 013HR00005399
+2013-05-04T00:56:03.674507+00:00 app[web.1]: #<PersonalBundle:0x000000054eb218>
+2013-05-04T00:56:03.674603+00:00 app[web.1]: 018HR00005391
+2013-05-04T00:56:03.679688+00:00 app[web.1]: Completed 200 OK in 12801ms (Views: 4.1ms | ActiveRecord: 12389.2ms)
+2013-05-04T00:56:03.680352+00:00 app[web.1]: Started GET "/functions/login1" for 174.115.86.185 at 2013-05-03 20:56:03 -0400
+2013-05-04T00:56:03.703834+00:00 app[web.1]: Processing by FunctionsController#login1 as HTML
+2013-05-04T00:56:03.708152+00:00 app[web.1]:   Rendered functions/login.html.erb within layouts/application1 (3.6ms)
+2013-05-04T00:56:03.710718+00:00 app[web.1]: Started GET "/" for 173.248.195.86 at 2013-05-03 20:56:03 -0400
+2013-05-04T00:56:03.709969+00:00 app[web.1]: Completed 200 OK in 6ms (Views: 5.8ms | ActiveRecord: 0.0ms)
+2013-05-04T00:56:03.734448+00:00 app[web.1]: Processing by FunctionsController#new as HTML
+2013-05-04T00:56:03.737694+00:00 app[web.1]:   Rendered functions/new.html.erb within layouts/application1 (1.7ms)
+2013-05-04T00:56:03.739272+00:00 app[web.1]: Completed 200 OK in 5ms (Views: 4.4ms | ActiveRecord: 0.0ms)
+2013-05-04T00:56:03.740121+00:00 app[web.1]: Started GET "/" for 173.248.195.86 at 2013-05-03 20:56:03 -0400
+2013-05-04T00:56:03.743118+00:00 heroku[router]: at=info method=GET path=/ host=office.whiteshark.ca fwd="173.248.195.86" dyno=web.1 connect=0ms service=26224ms status=304 bytes=0
+2013-05-04T00:56:03.766442+00:00 app[web.1]:   Rendered functions/new.html.erb within layouts/application1 (1.4ms)
+2013-05-04T00:56:03.764367+00:00 app[web.1]: Processing by FunctionsController#new as HTML
+2013-05-04T00:56:03.767935+00:00 app[web.1]: Completed 200 OK in 3ms (Views: 3.2ms | ActiveRecord: 0.0ms)
+2013-05-04T00:56:03.768836+00:00 app[web.1]: Started GET "/functions/login1" for 174.115.86.185 at 2013-05-03 20:56:03 -0400
+2013-05-04T00:56:03.770017+00:00 heroku[router]: at=info method=GET path=/ host=office.whiteshark.ca fwd="173.248.195.86" dyno=web.1 connect=8ms service=18986ms status=304 bytes=0
+2013-05-04T00:56:03.792273+00:00 app[web.1]: Processing by FunctionsController#login1 as HTML
+2013-05-04T00:56:03.794764+00:00 app[web.1]:   Rendered functions/login.html.erb within layouts/application1 (1.9ms)
+2013-05-04T00:56:03.796236+00:00 app[web.1]: Completed 200 OK in 4ms (Views: 3.8ms | ActiveRecord: 0.0ms)
+2013-05-04T00:56:03.797653+00:00 heroku[router]: at=info method=GET path=/functions/login1 host=office.whiteshark.ca fwd="174.115.86.185" dyno=web.1 connect=0ms service=2992ms status=200 bytes=1357
+2013-05-04T00:56:03.850167+00:00 app[web.1]: Started GET "/functions/login1" for 174.115.86.185 at 2013-05-03 20:56:03 -0400
+2013-05-04T00:56:03.873910+00:00 app[web.1]: Processing by FunctionsController#login1 as HTML
+2013-05-04T00:56:03.875748+00:00 app[web.1]:   Rendered functions/login.html.erb within layouts/application1 (1.4ms)
+2013-05-04T00:56:03.877130+00:00 app[web.1]: Completed 200 OK in 3ms (Views: 3.1ms | ActiveRecord: 0.0ms)
+2013-05-04T00:56:03.878438+00:00 heroku[router]: at=info method=GET path=/functions/login1 host=office.whiteshark.ca fwd="174.115.86.185" dyno=web.1 connect=2ms service=30ms status=304 bytes=0
+2013-05-04T00:55:37.784212+00:00 heroku[router]: at=info method=GET path=/functions/stats host=office.whiteshark.ca fwd="173.248.195.86" dyno=web.1 connect=6ms service=25658ms status=304 bytes=0

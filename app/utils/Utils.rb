@@ -1,13 +1,20 @@
 class Utils
+  @@stats={}
+  
   def self.log(message)
     puts Date.new.to_s + " " + message
   end
   
+  def self.log1(stats1)  
+    @@stats=stats1
+    puts Date.new.to_s + " " + message
+  end
+    
   def self.format_postal_code(s)
     postal_code = ''
     if !s.nil?
       s.each_char do |c|
-        case postal_code.size
+       case postal_code.size
           when 0, 5
             postal_code << c.upcase if letter?(c)
           when 2

@@ -1239,8 +1239,22 @@ class FunctionsController <  ApplicationController
     redirect_to clientprofile_function_url(:cfid=>@cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function, :cfmess=>@cfmess)
   end
   
+  def stats1
+    stats=Utils.stats
+    stats.each do |value|
+      sb=value
+      puts sb.year,
+      sb.salesytd,
+      sb.salescurr,
+      sb.yesterday,
+      sb.lastseven
+    end
+    render 'stats'
+  end
+  
   def stats
     @sbs=[]
+    stats={}
     sb=StatBundle.new
     today=Date.today
     @date_2008=Date.parse('2008-01-01')
@@ -1335,6 +1349,7 @@ class FunctionsController <  ApplicationController
     sb.five='unknown'
     sb.nextseven='unknown'
     @sbs<<sb        
+    stats['2013']=sb
 
     sb=StatBundle.new
     sb.year=@date_2012.to_s[0,4]
@@ -1349,6 +1364,7 @@ class FunctionsController <  ApplicationController
     sb.five=Job.number_jobs_sold @date_five_2012, @date_five_2012, @date_summer_2012
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2012, @date_next7_2012, @date_summer_2012
     @sbs<<sb        
+    stats['2012']=sb
 
     sb=StatBundle.new
     sb.year=@date_2011.to_s[0,4]
@@ -1363,6 +1379,7 @@ class FunctionsController <  ApplicationController
     sb.five=Job.number_jobs_sold @date_five_2011, @date_five_2011, @date_summer_2011
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2011, @date_next7_2011, @date_summer_2011
     @sbs<<sb        
+    stats['2011']=sb
 
     sb=StatBundle.new
     sb.year=@date_2010.to_s[0,4]
@@ -1377,6 +1394,7 @@ class FunctionsController <  ApplicationController
     sb.five=Job.number_jobs_sold @date_five_2010, @date_five_2010, @date_summer_2010
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2010, @date_next7_2010, @date_summer_2010
     @sbs<<sb        
+    stats['2010']=sb
 
     sb=StatBundle.new
     sb.year=@date_2009.to_s[0,4]
@@ -1391,6 +1409,7 @@ class FunctionsController <  ApplicationController
     sb.five=Job.number_jobs_sold @date_five_2009, @date_five_2009, @date_summer_2009
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2009, @date_next7_2009, @date_summer_2009
     @sbs<<sb        
+    stats['2009']=sb
 
     sb=StatBundle.new
     sb.year=@date_2008.to_s[0,4]
@@ -1405,7 +1424,26 @@ class FunctionsController <  ApplicationController
     sb.five=Job.number_jobs_sold @date_five_2008, @date_five_2008, @date_summer_2008
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2008, @date_next7_2008, @date_summer_2008
     @sbs<<sb        
-
+    stats['2008']=sb
+    
+    
+    stats.each do |key,value|
+      sb=value
+      puts 'OOOHHH  NNNOOOOO',key,
+      sb.year,
+      sb.salesytd,
+      sb.salescurr,
+      sb.yesterday,
+      sb.lastseven
+    end
+    
+    x=Utils.format_postal_code "m5r 2l4"
+    puts x
+    
+    
+    #Utils.log1 "test"
+    Utils.log1 stats
+    
     @date_summer1=Date.parse('2013-04-01')
     @date_summer2=Date.today
     

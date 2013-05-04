@@ -40,6 +40,7 @@ WSWeb::Application.routes.draw do
       get 'satisfaction1'
       get 'login1'
       get 'stats'
+      get 'stats1'
     end
     member do
       get 'new'

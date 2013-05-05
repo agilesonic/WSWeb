@@ -230,6 +230,8 @@
 					<th><b>Address</b></th>
 					<th><b>Job Desc</b></th>
 					<th><b>Price</b></th>
+					<th><b>Sold By</b></th>
+					<th><b>Date Sold</b></th>
 					<th><b>Crew</b></th>
 					<th><b>Minutes</b></th>
 					<th><b>Date Done</b></th>
@@ -248,6 +250,8 @@
 					<td><b><%= job.address %></b></td>
 					<td><b><%= job.jobdesc %></b></td>
 					<td><b><%= number_to_currency job.price %></b></td>
+					<td><b><%= job.salesp %></b></td>
+					<td><b><%= job.datesold %></b></td>
 					<td><b><%= job.crewname %></b></td>
 					<td><b><%= job.minutes %></b></td>
 					<td><b><%= job.datebi %></b></td>
@@ -335,6 +339,8 @@
 				<th><b>Job ID</b></th>
 				<th><b>Address</b></th>
 				<th><b>Job Desc</b></th>
+				<th><b>Sold By</b></th>
+				<th><b>Date Sold</b></th>
 				<th><b>Price</b></th>
 				<th><b>Type</b></th>
 				<th><b>Start Date</b></th>
@@ -352,6 +358,8 @@
 				<td><b><%= job.address %></b></td>
 				<td><b><%= job.jobdesc %></b></td>
 				<td><b><%= number_to_currency job.price %></b></td>
+				<td><b><%= job.salesp %></b></td>
+				<td><b><%= job.datesold %></b></td>
 				<td><b><%= job.type %></b></td>
 				<td><b><%= job.sdate %></b></td>
 				<%if job.jobdnf=='job'%>
@@ -375,6 +383,8 @@
 				<th><b>Address</b></th>
 				<th><b>Job Desc</b></th>
 				<th><b>Price</b></th>
+				<th><b>Sold By</b></th>
+				<th><b>Date Sold</b></th>
 				<th><b>Date Done</b></th>
 				<th><b>Crew</b></th>
 				<th><b>Minutes</b></th>
@@ -392,6 +402,8 @@
 				<td><b><%= job.address %></b></td>
 				<td><b><%= job.jobdesc %></b></td>
 				<td><b><%= number_to_currency job.price %></b></td>
+				<td><b><%= job.salesp %></b></td>
+				<td><b><%= job.datesold %></b></td>
 				<td><b><%= job.datebi %></b></td>
 				<td><b><%= job.crewname %></b></td>
 				<td><b><%= job.minutes %></b></td>
@@ -423,6 +435,8 @@
 					<th><b>Address</b></th>
 					<th><b>Job Desc</b></th>
 					<th><b>Price</b></th>
+					<th><b>Sold By</b></th>
+					<th><b>Date Sold</b></th>
 					<th><b>Crew</b></th>
 					<th><b>Minutes</b></th>
 					<th><b>Date Done</b></th>
@@ -441,6 +455,8 @@
 					<td><b><%= job.address %></b></td>
 					<td><b><%= job.jobdesc %></b></td>
 					<td><b><%= number_to_currency job.price %></b></td>
+					<td><b><%= job.salesp %></b></td>
+					<td><b><%= job.datesold %></b></td>
 					<td><b><%= job.crewname %></b></td>
 					<td><b><%= job.minutes %></b></td>
 					<td><b><%= job.datebi %></b></td>

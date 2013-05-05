@@ -6,10 +6,10 @@
 <b><%= link_to 'Messages', messagelog_functions_path%></b><br/>
 <b><%= link_to 'Create Message', logmessage_functions_path%></b><br/>
 <b><%= link_to 'Satisfaction Calls', loadsatisfaction_functions_path%></b><br/>
-<b><%= link_to 'Stats', stats_functions_path%></b><br/><br/><br/>
-<b><%= link_to 'Stats1', stats1_functions_path%></b><br/><br/><br/>
+<b><%= link_to 'Read Stats', stats1_functions_path%></b><br/><br/><br/>
 
 <%if @username=='Roger' || @username=='Shantz'%>
+	<b><%= link_to 'Make Stats', stats_functions_path%></b><br/>
 	<b><%= link_to 'Find Clients', findclients_sales_path%></b><br/>
 	<b><%= link_to 'Call Profile', callprofile_sales_path%></b><br/>
 	<b><%= link_to 'Add New Estimates to Call List (EHEH)', screenconvertcalls_sales_path%></b><br/>

@@ -406,7 +406,7 @@ class SalesController < ApplicationController
     jobid1=params[:jobid1]
     source=params[:source]
     function=params[:function]
-    
+    num=params[:num]
     contacts=Clientcontact.search_cfcontacts cfid
     num=contacts.size
     contact1=contacts[num-2]
@@ -427,7 +427,7 @@ class SalesController < ApplicationController
     a=cc.summcalls.to_i-1
     cc.summcalls=a.to_s
     cc.save!
-    redirect_to clientprofile_function_url(:id=>cfid, :jobid1=>jobid1, :source => source, :function=>function)
+    redirect_to clientprofile_function_url(:id=>cfid, :jobid1=>jobid1, :num=>num, :source => source, :function=>function)
   end
 
   def deletesale
@@ -466,7 +466,8 @@ class SalesController < ApplicationController
     record_contact(cfid, ccf.tstatus, fu, ccf.notes)
     update_convertcall(cfid, ccf.tstatus, fu)
     cfmess='Client Call Recorded Successfully!!!'
-    redirect_to clientprofile_function_path(:id => cfid,:source=>'callclient',:function=>'callclient',:cfmess=>cfmess)
+    num=session[:num]
+    redirect_to clientprofile_function_path(:id => cfid, :source=>'callclient', :num=>num.to_s, :function=>'callclient', :cfmess=>cfmess)
   end
  
   def makesale

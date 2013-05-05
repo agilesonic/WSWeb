@@ -432,6 +432,10 @@ class FunctionsController <  ApplicationController
       job_bundle.address=job.property.address
       job_bundle.jobdesc=job.JobDesc
       job_bundle.price=job.Price
+      empList=Employee.find_by_hrid(job.SalesID1)
+      emp=empList.last
+      job_bundle.salesp=emp.name
+      job_bundle.datesold=job.Datesold.to_formatted_s(:long_ordinal)
       partner="".to_s
       empList=Employee.find_by_name(job.CrewName)
       emp=empList.last
@@ -448,13 +452,14 @@ class FunctionsController <  ApplicationController
       end
       job_bundle.crewname=job.CrewName.to_s + partner.to_s
       job_bundle.minutes=job.Minutes
-      job_bundle.datebi=job.Datebi
 
       if job.Datebi>=@date_2013
         job_bundle.datetag='2013'
       else  
         job_bundle.datetag='pre2013'
       end
+      
+      job_bundle.datebi=job.Datebi.to_formatted_s(:long_ordinal)
  
       if !job.Recstatus.nil? && !job.Recstatus.index('Receiv').nil? && job.Recstatus.index('Receiv')>-1
          job_bundle.daystopay=job.Recstatus
@@ -483,6 +488,12 @@ class FunctionsController <  ApplicationController
        jdb.jobid='DNF for:'+job.JobID
        jdb.address=job.property.address
        jdb.jobdesc=dnf.DnfDesc
+       
+       empList=Employee.find_by_hrid(dnf.register)
+       emp=empList.last
+       job_bundle.salesp=emp.name
+       job_bundle.datesold=job.Dnfdate.to_formatted_s(:long_ordinal)
+ 
        jdb.crewname=dnf.CrewName
        if !dnf.Datebi.nil?  
          partner="".to_s
@@ -524,6 +535,11 @@ class FunctionsController <  ApplicationController
         job_bundle.jobid=dnf.DNFID+'['+job.JobID+']'
         job_bundle.address=job.property.address
         job_bundle.jobdesc=dnf.DnfDesc
+         empList=Employee.find_by_hrid(dnf.register)
+         emp=empList.last
+         job_bundle.salesp=emp.name
+         job_bundle.datesold=job.Dnfdate.to_formatted_s(:long_ordinal)
+ 
         if(dnf.Sdate==dnf.Fdate)
           job_bundle.type='Appt('+dnf.Stime+')'
         else  
@@ -570,6 +586,11 @@ class FunctionsController <  ApplicationController
       job_bundle.address=job.property.address
       job_bundle.jobdesc=job.JobDesc
       job_bundle.price=job.Price
+       empList=Employee.find_by_hrid(job.SalesID1)
+       emp=empList.last
+       job_bundle.salesp=emp.name
+       job_bundle.datesold=job.Datesold.to_formatted_s(:long_ordinal)
+ 
       if(job.Sdate==job.Fdate)
         job_bundle.type='Appt('+job.Stime+')'
       else  
@@ -1080,6 +1101,9 @@ class FunctionsController <  ApplicationController
     done_jobs=[]
     i=0
     need_sat_jobids.each do |jobid|
+      if i==10
+        break
+      end
       job=Job.find jobid
       prop=job.property
       cfid=prop.CFID
@@ -1240,8 +1264,8 @@ class FunctionsController <  ApplicationController
   end
   
   def stats1
-    stats=Utils.stats
-    stats.each do |value|
+    @sbs=Utils.withdraw_stats
+    @sbs.each do |value|
       sb=value
       puts sb.year,
       sb.salesytd,
@@ -1249,12 +1273,13 @@ class FunctionsController <  ApplicationController
       sb.yesterday,
       sb.lastseven
     end
+    @indstats=Utils.withdraw_indstats
     render 'stats'
   end
   
   def stats
     @sbs=[]
-    stats={}
+    stats=[]
     sb=StatBundle.new
     today=Date.today
     @date_2008=Date.parse('2008-01-01')
@@ -1349,7 +1374,7 @@ class FunctionsController <  ApplicationController
     sb.five='unknown'
     sb.nextseven='unknown'
     @sbs<<sb        
-    stats['2013']=sb
+    stats<<sb
 
     sb=StatBundle.new
     sb.year=@date_2012.to_s[0,4]
@@ -1364,7 +1389,7 @@ class FunctionsController <  ApplicationController
     sb.five=Job.number_jobs_sold @date_five_2012, @date_five_2012, @date_summer_2012
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2012, @date_next7_2012, @date_summer_2012
     @sbs<<sb        
-    stats['2012']=sb
+    stats<<sb
 
     sb=StatBundle.new
     sb.year=@date_2011.to_s[0,4]
@@ -1379,7 +1404,7 @@ class FunctionsController <  ApplicationController
     sb.five=Job.number_jobs_sold @date_five_2011, @date_five_2011, @date_summer_2011
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2011, @date_next7_2011, @date_summer_2011
     @sbs<<sb        
-    stats['2011']=sb
+    stats<<sb
 
     sb=StatBundle.new
     sb.year=@date_2010.to_s[0,4]
@@ -1394,7 +1419,7 @@ class FunctionsController <  ApplicationController
     sb.five=Job.number_jobs_sold @date_five_2010, @date_five_2010, @date_summer_2010
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2010, @date_next7_2010, @date_summer_2010
     @sbs<<sb        
-    stats['2010']=sb
+    stats<<sb
 
     sb=StatBundle.new
     sb.year=@date_2009.to_s[0,4]
@@ -1409,7 +1434,7 @@ class FunctionsController <  ApplicationController
     sb.five=Job.number_jobs_sold @date_five_2009, @date_five_2009, @date_summer_2009
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2009, @date_next7_2009, @date_summer_2009
     @sbs<<sb        
-    stats['2009']=sb
+    stats<<sb
 
     sb=StatBundle.new
     sb.year=@date_2008.to_s[0,4]
@@ -1424,13 +1449,12 @@ class FunctionsController <  ApplicationController
     sb.five=Job.number_jobs_sold @date_five_2008, @date_five_2008, @date_summer_2008
     sb.nextseven=Job.number_jobs_sold @date_tomorrow_2008, @date_next7_2008, @date_summer_2008
     @sbs<<sb        
-    stats['2008']=sb
+    stats<<sb
     
     
-    stats.each do |key,value|
+    stats.each do |value|
       sb=value
-      puts 'OOOHHH  NNNOOOOO',key,
-      sb.year,
+      puts sb.year,
       sb.salesytd,
       sb.salescurr,
       sb.yesterday,
@@ -1442,7 +1466,7 @@ class FunctionsController <  ApplicationController
     
     
     #Utils.log1 "test"
-    Utils.log1 stats
+    Utils.deposit_stats stats
     
     @date_summer1=Date.parse('2013-04-01')
     @date_summer2=Date.today
@@ -1518,6 +1542,7 @@ class FunctionsController <  ApplicationController
       puts k,v
     end
     puts 'DAATTTEEEE', Date.today
+    Utils.deposit_indstats @indstats
         
   end
   

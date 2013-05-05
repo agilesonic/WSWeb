@@ -1,13 +1,25 @@
 class Utils
-  @@stats={}
+  @@stats=[]
+  @@indstats=[]
   
   def self.log(message)
     puts Date.new.to_s + " " + message
   end
   
-  def self.log1(stats1)  
+  def self.deposit_stats(stats1)  
     @@stats=stats1
-    puts Date.new.to_s + " " + message
+  end
+
+  def self.withdraw_stats  
+    @@stats
+  end
+
+  def self.deposit_indstats(stats1)  
+    @@indstats=stats1
+  end
+
+  def self.withdraw_indstats  
+    @@indstats
   end
     
   def self.format_postal_code(s)

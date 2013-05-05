@@ -285,6 +285,7 @@ class SalesController < ApplicationController
 
   
   def nextclient
+    puts 'NEXT CLIENT START ',Time.now.to_s
     cfid=params[:id]
     @jobid1=params[:jobid1]
     @source=params[:source]
@@ -306,6 +307,7 @@ class SalesController < ApplicationController
       return
     end
     redirect_to clientprofile_function_path(:id => next_client.cfid, :num=>num.to_s, :jobid1=>@jobid1, :source=>@source,:function=>@function)
+    puts 'NEXT CLIENT FINISH ',Time.now.to_s
   end
 
   def previousclient
@@ -406,8 +408,25 @@ class SalesController < ApplicationController
     function=params[:function]
     
     contacts=Clientcontact.search_cfcontacts cfid
+    num=contacts.size
+    contact1=contacts[num-2]
     contact=contacts.last
     contact.destroy
+    cc=Convertcalls.find cfid
+    cc.lastcall=contact1.dateatt
+    cc.followup=contact1.followup
+    tstatus=contact1.tstatus
+    if tstatus=='Pending Summer 2014' || tstatus=='Pending Fall 2013'
+      tstatus='Pending'
+    end
+    if tstatus=='Phone Out Of Service'
+      tstatus='Phone OOS'
+    end
+
+    cc.laststatus=tstatus
+    a=cc.summcalls.to_i-1
+    cc.summcalls=a.to_s
+    cc.save!
     redirect_to clientprofile_function_url(:id=>cfid, :jobid1=>jobid1, :source => source, :function=>function)
   end
 
@@ -444,11 +463,8 @@ class SalesController < ApplicationController
     day=t.to_s[4..5]
     curr=Date.parse(month+' '+day+', '+year)
     fu=Date.parse(ccf.month.to_s+' '+ccf.day.to_s+', '+ccf.year.to_s)
-    
     record_contact(cfid, ccf.tstatus, fu, ccf.notes)
     update_convertcall(cfid, ccf.tstatus, fu)
-
-
     cfmess='Client Call Recorded Successfully!!!'
     redirect_to clientprofile_function_path(:id => cfid,:source=>'callclient',:function=>'callclient',:cfmess=>cfmess)
   end

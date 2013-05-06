@@ -408,8 +408,8 @@ class SalesController < ApplicationController
     function=params[:function]
     num=params[:num]
     contacts=Clientcontact.search_cfcontacts cfid
-    num=contacts.size
-    contact1=contacts[num-2]
+    num5=contacts.size
+    contact1=contacts[num5-2]
     contact=contacts.last
     contact.destroy
     cc=Convertcalls.find cfid

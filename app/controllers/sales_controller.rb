@@ -286,28 +286,48 @@ class SalesController < ApplicationController
   
   def nextclient
     puts 'NEXT CLIENT START ',Time.now.to_s
+    puts 'IN NEXT CLIENT I...',session[:num]
+
     cfid=params[:id]
     @jobid1=params[:jobid1]
     @source=params[:source]
     @function=params[:function]
     lowcf=session[:lowcf]
+    limit=session[:limit]
+
     highcf=session[:highcf]
     hrid=session[:hrid]
     profile=session[:profile]
     num=session[:num]
     puts 'PARAMETERS',lowcf, highcf, hrid, profile, Date.today
-    @cc=Convertcalls.search_ccrange_prevnext(lowcf, highcf, hrid, profile, Date.today)
+    @cc=Convertcalls.search_ccrange_prevnext(lowcf, limit, hrid, profile, Date.today)
     
     num=num.to_i+1
     session[:num]=num.to_s
     next_client=@cc[num]
 
+
+    jobid=Job.max_id
+    jobid=jobid[2,jobid.size]
+    jobid=jobid.to_i
+    jobid+=1
+    jobid=HomeHelper.pad_id_num('JB',jobid)
+
+
+
+
     if next_client.nil?
+      highcf=highcf[2,highcf.size]
+      highcf=highcf.to_i
+      highcf+=1
+      highcf=HomeHelper.pad_id_num('CF',highcf)
+      session[:lowcf]=highcf
       redirect_to sales_path
       return
     end
-    redirect_to clientprofile_function_path(:id => next_client.cfid, :num=>num.to_s, :jobid1=>@jobid1, :source=>@source,:function=>@function)
+    redirect_to clientprofile_function_path(:id => next_client.cfid, :jobid1=>@jobid1, :source=>@source,:function=>@function)
     puts 'NEXT CLIENT FINISH ',Time.now.to_s
+    puts 'IN NEXT CLIENT II...',session[:num]
   end
 
   def previousclient
@@ -321,7 +341,7 @@ class SalesController < ApplicationController
     hrid=session[:hrid]
     profile=session[:profile]
     num=session[:num]
-    @cc=Convertcalls.search_ccrange_prevnext(lowcf, highcf, hrid, profile, Date.today)
+    @cc=Convertcalls.search_ccrange_prevnext(lowcf, limit, hrid, profile, Date.today)
     
     puts 'FIRST NUM',num
     num=num.to_i-1
@@ -333,7 +353,7 @@ class SalesController < ApplicationController
       redirect_to sales_path
       return
     end
-    redirect_to clientprofile_function_path(:id => next_client.cfid, :num=>num.to_s, :jobid1=>@jobid1, :source=>@source,:function=>@function)
+    redirect_to clientprofile_function_path(:id => next_client.cfid, :jobid1=>@jobid1, :source=>@source,:function=>@function)
   end
 
 
@@ -386,7 +406,7 @@ class SalesController < ApplicationController
   
   def update_convertcall(cfid, tstatus, followup)
     convcall=Convertcalls.find cfid
-    if tstatus=='Pending Summer 2014' || tstatus=='Pending Fall 2013'
+    if tstatus=='Pending Summer 2013' ||tstatus=='Pending Summer 2014' || tstatus=='Pending Fall 2013'|| tstatus=='Pending Fall 2014'
       tstatus='Pending'
     end
     if tstatus=='Phone Out Of Service'
@@ -402,32 +422,39 @@ class SalesController < ApplicationController
   end
 
   def deletecontact
+    puts 'IN DELETE CONTACT I...',session[:num]
     cfid=params[:id]
     jobid1=params[:jobid1]
     source=params[:source]
     function=params[:function]
-    num=params[:num]
     contacts=Clientcontact.search_cfcontacts cfid
     num5=contacts.size
-    contact1=contacts[num5-2]
+    contact1=contacts[num5.to_i-2]
     contact=contacts.last
     contact.destroy
     cc=Convertcalls.find cfid
-    cc.lastcall=contact1.dateatt
-    cc.followup=contact1.followup
-    tstatus=contact1.tstatus
-    if tstatus=='Pending Summer 2013' ||tstatus=='Pending Summer 2014' || tstatus=='Pending Fall 2013'||tstatus=='Pending Fall 2014'
-      tstatus='Pending'
+    if num5.to_i-2<0
+      cc.lastcall=nil
+      cc.followup=nil
+      cc.laststatus=nil
+    else
+      cc.lastcall=contact1.dateatt
+      cc.followup=contact1.followup
+      tstatus=contact1.tstatus
+      if tstatus=='Pending Summer 2013' ||tstatus=='Pending Summer 2014' || tstatus=='Pending Fall 2013'||tstatus=='Pending Fall 2014'
+        tstatus='Pending'
+      end
+      if tstatus=='Phone Out Of Service'
+        tstatus='Phone OOS'
+      end
+      cc.laststatus=tstatus
     end
-    if tstatus=='Phone Out Of Service'
-      tstatus='Phone OOS'
-    end
-
-    cc.laststatus=tstatus
+    
     a=cc.summcalls.to_i-1
     cc.summcalls=a.to_s
     cc.save!
-    redirect_to clientprofile_function_url(:id=>cfid, :jobid1=>jobid1, :num=>num, :source => source, :function=>function)
+    redirect_to clientprofile_function_url(:id=>cfid, :jobid1=>jobid1, :source => source, :function=>function)
+    puts 'IN DELETE CONTACT II...',session[:num]
   end
 
   def deletesale
@@ -466,8 +493,7 @@ class SalesController < ApplicationController
     record_contact(cfid, ccf.tstatus, fu, ccf.notes)
     update_convertcall(cfid, ccf.tstatus, fu)
     cfmess='Client Call Recorded Successfully!!!'
-    num=session[:num]
-    redirect_to clientprofile_function_path(:id => cfid, :source=>'callclient', :num=>num.to_s, :function=>'callclient', :cfmess=>cfmess)
+    redirect_to clientprofile_function_path(:id => cfid, :source=>'callclient', :function=>'callclient', :cfmess=>cfmess)
   end
  
   def makesale
@@ -646,7 +672,7 @@ class SalesController < ApplicationController
          if !HomeHelper.check_schedule sdate, stime
            nosale='Edit Sale Not Processed. Invalid Date/Time'
            #redirect_to clientprofile_function_url(:id=>cfid, :nosale=>nosale, :jobid=>@jobid, :jobid1=>@jobid1,  :source=>@source, :function=>@function)
-           redirect_to modifysale_sale_path(:jobid => @jobid, :jobid1=>@jobid1, :nosale=>nosale,  :source=>@source, :function=>@function)
+           redirect_to modifysale_sale_path(:jobid => @jobid, :jobid1=>@jobid1, :nosale=>nosale, :source=>@source, :function=>@function)
            return
          end
       end

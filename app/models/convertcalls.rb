@@ -92,9 +92,13 @@ class Convertcalls < ActiveRecord::Base
          "#{lowcf}", "#{highcf}", today, "#{hrid}", "0") 
   end
 
-  def self.search_profile_ratings_prevnext(lowcf, highcf, hrid, today, r1, r2)
-    where("cfid between ? and ? and hrid= ? and (followup is null or followup<= ? or lastcall= ?) and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and rating between ? and ?",
-         "#{lowcf}","#{highcf}","#{hrid}",today, today, "#{r1}", "#{r2}") 
+  def self.search_profile_ratings_prevnext(lowcf, limit, hrid, today, r1, r2)
+#    where("cfid between ? and ? and hrid= ? and (followup is null or followup<= ? or lastcall= ?) and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and rating between ? and ?",
+ #        "#{lowcf}","#{highcf}","#{hrid}",today, today, "#{r1}", "#{r2}")
+         
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and (followup is null or followup<= ? or lastcall = ?) and rating between ? and ?",
+         "#{lowcf}","#{hrid}", today, today, "#{r1}", "#{r2}").limit(limit) 
+          
   end
 
 
@@ -105,26 +109,26 @@ class Convertcalls < ActiveRecord::Base
 #_______________________________________________________________________________________________________________
 
 
-  def self.search_ccrange_prevnext(lowcf, highcf, hrid, profile, today)
+  def self.search_ccrange_prevnext(lowcf, limit, hrid, profile, today)
     list=[]
     pendings=search_pendings(hrid, today)
     profiles=[]
     if profile=='No Calls'
       profiles=search_profile_nocalls_prevnext(lowcf, highcf, hrid, today)
     elsif profile=='New Estimates'  
-      profiles=search_profile_ratings_prevnext(lowcf, highcf, hrid, today, '2.5', '2.5')
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today, '2.5', '2.5')
     elsif profile=='3.3=>3.6 clients'  
-      profiles=search_profile_ratings_prevnext(lowcf, highcf, hrid, today,'3.3', '3.6')
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'3.3', '3.6')
     elsif profile=='3.7=>3.9 clients'  
-      profiles=search_profile_ratings_prevnext(lowcf, highcf, hrid, today,'3.7', '3.9')
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'3.7', '3.9')
     elsif profile=='4.0=>4.1 clients'  
-      profiles=search_profile_ratings_prevnext(lowcf, highcf, hrid, today,'4.0', '4.1')
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'4.0', '4.1')
     elsif profile=='4.2=>4.3 clients'  
-      profiles=search_profile_ratings_prevnext(lowcf, highcf, hrid, today,'4.2', '4.3')
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'4.2', '4.3')
     elsif profile=='4.4=>4.5 clients'  
-      profiles=search_profile_ratings_prevnext(lowcf, highcf, hrid, today,'4.4', '4.5')
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'4.4', '4.5')
     elsif profile=='4.6=>4.7 clients'  
-      profiles=search_profile_ratings_prevnext(lowcf, highcf, hrid, today,'4.6', '4.7')
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'4.6', '4.7')
     elsif profile=='Used Us Last Summer'  
       profiles=search_profile_lastsummer_prevnext(lowcf, highcf, hrid, today)
     end

@@ -631,6 +631,11 @@ class FunctionsController <  ApplicationController
     @function=params[:function]
     @jobid=params[:jobid]
     @jobid1=params[:jobid1]
+    num=params[:num]
+    if !num.nil?
+      session[:num]=num
+    end
+    
     crs=Clientrate.find_rating @cfid
     overallrate='2.5'
     cr=crs.first
@@ -672,7 +677,6 @@ class FunctionsController <  ApplicationController
     @date5=Date.parse("2013-04-01")
 
     if @function=='callclient'
-      session[:num]=params[:num]
       if !@calls.nil?
         @calls.each do |call|
           name='unknown'
@@ -687,7 +691,6 @@ class FunctionsController <  ApplicationController
         end
       end
     end
-
 
     @jobs=clientprofile_jobs(@client)  
     @jobs_2013=[]
@@ -705,13 +708,6 @@ class FunctionsController <  ApplicationController
       @jobs_all<<job
     end
     
-# Various Lists
-
-
-
-    
-    
-   
     @edit_client_form=EditClientForm.new
     @prices_all=HomeHelper::get_props_and_prices(@client)
     @contact_options=HomeHelper::CLIENT_CONTACT_STATUS
@@ -732,7 +728,6 @@ class FunctionsController <  ApplicationController
     
     @source=params[:source]
     @function=params[:function]
-    
     client=Client.find cfid
     ecf=EditClientForm.new(params[:edit_client_form]) 
     client.company=ecf.company
@@ -914,6 +909,7 @@ class FunctionsController <  ApplicationController
     @jobid=params[:jobid]
     @source=params[:source]
     @function=params[:function]
+    @num=params[:num]
     job=Job.find @jobid
     props=Property.get_property_from_jobinfoid job.JobInfoID
     prop=props[0]
@@ -993,13 +989,14 @@ class FunctionsController <  ApplicationController
     jobdnf.Fdate=fdate
     jobdnf.save!
     cfmess='DNF created successfully!!!'
-    redirect_to clientprofile_function_url(:cfid=>cfid, :cfmess=>cfmess)
+    redirect_to clientprofile_function_url(:cfid=>cfid, :source=>@source, :function=>@function, :cfmess=>cfmess)
   end
 
   def modifydnf
     @jobid1=params[:jobid1]
     @source=params[:source]
     @function=params[:function]
+    @num=params[:num]
     @dnfid=params[:dnfid]
     @dnf=Jobdnf.find @dnfid
     @jobid=@dnf.JobID
@@ -1045,7 +1042,6 @@ class FunctionsController <  ApplicationController
     @jobid1=params[:jobid1]
     @source=params[:source]
     @function=params[:function]
-    
     dnf=Jobdnf.find edf.dnfid
     stime=edf.stime
     register=session[:hrid]

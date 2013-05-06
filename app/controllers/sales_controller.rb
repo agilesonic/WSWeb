@@ -416,7 +416,7 @@ class SalesController < ApplicationController
     cc.lastcall=contact1.dateatt
     cc.followup=contact1.followup
     tstatus=contact1.tstatus
-    if tstatus=='Pending Summer 2014' || tstatus=='Pending Fall 2013'
+    if tstatus=='Pending Summer 2013' ||tstatus=='Pending Summer 2014' || tstatus=='Pending Fall 2013'||tstatus=='Pending Fall 2014'
       tstatus='Pending'
     end
     if tstatus=='Phone Out Of Service'

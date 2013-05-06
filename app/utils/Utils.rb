@@ -1,10 +1,19 @@
 class Utils
   @@stats=[]
   @@indstats=[]
+  @@stat_time
   
   def self.log(message)
     puts Date.new.to_s + " " + message
   end
+  
+  def self.record_stat_time(ts)
+    @@stat_time=ts
+  end 
+  
+  def self.get_stat_time
+    @@stat_time
+  end 
   
   def self.deposit_stats(stats1)  
     @@stats=stats1

@@ -434,7 +434,11 @@ class FunctionsController <  ApplicationController
       job_bundle.price=job.Price
       empList=Employee.find_by_hrid(job.SalesID1)
       emp=empList.last
-      job_bundle.salesp=emp.name
+      name="unknown"
+      if !emp.nil?
+        name=emp.name
+      end
+      job_bundle.salesp=name
       job_bundle.datesold=job.Datesold.to_formatted_s(:long_ordinal)
       partner="".to_s
       empList=Employee.find_by_name(job.CrewName)
@@ -491,7 +495,11 @@ class FunctionsController <  ApplicationController
        
        empList=Employee.find_by_hrid(dnf.register)
        emp=empList.last
-       job_bundle.salesp=emp.name
+       name="unknown"
+       if !emp.nil?
+         name=emp.name
+       end
+       job_bundle.salesp=name
        job_bundle.datesold=dnf.Dnfdate.to_formatted_s(:long_ordinal)
  
        jdb.crewname=dnf.CrewName
@@ -537,7 +545,11 @@ class FunctionsController <  ApplicationController
         job_bundle.jobdesc=dnf.DnfDesc
          empList=Employee.find_by_hrid(dnf.register)
          emp=empList.last
-         job_bundle.salesp=emp.name
+         name="unknown"
+         if !emp.nil?
+           name=emp.name
+         end
+         job_bundle.salesp=name
          job_bundle.datesold=dnf.Dnfdate.to_formatted_s(:long_ordinal)
  
         if(dnf.Sdate==dnf.Fdate)
@@ -588,7 +600,11 @@ class FunctionsController <  ApplicationController
       job_bundle.price=job.Price
        empList=Employee.find_by_hrid(job.SalesID1)
        emp=empList.last
-       job_bundle.salesp=emp.name
+       name="unknown"
+       if !emp.nil?
+         name=emp.name
+       end
+       job_bundle.salesp=name
        job_bundle.datesold=job.Datesold.to_formatted_s(:long_ordinal)
  
       if(job.Sdate==job.Fdate)
@@ -1265,15 +1281,8 @@ class FunctionsController <  ApplicationController
   
   def stats1
     @sbs=Utils.withdraw_stats
-    @sbs.each do |value|
-      sb=value
-      puts sb.year,
-      sb.salesytd,
-      sb.salescurr,
-      sb.yesterday,
-      sb.lastseven
-    end
     @indstats=Utils.withdraw_indstats
+    @ts=Utils.get_stat_time   
     render 'stats'
   end
   
@@ -1543,7 +1552,8 @@ class FunctionsController <  ApplicationController
     end
     puts 'DAATTTEEEE', Date.today
     Utils.deposit_indstats @indstats
-        
+    ts=Time.now.to_s 
+    Utils.record_stat_time ts   
   end
   
 end

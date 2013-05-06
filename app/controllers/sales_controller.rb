@@ -187,6 +187,7 @@ class SalesController < ApplicationController
     
     @sales_form=SalesForm.new
     @profile_options=HomeHelper::CONNECTION_OPTIONS
+    @num_calls_options=HomeHelper::NUM_CALLS_OPTIONS
     @lowcf=session[:lowcf]
     @limit=session[:limit] 
     @selected_profile=session[:selected_profile] 
@@ -201,7 +202,7 @@ class SalesController < ApplicationController
       sf.lowcf=HomeHelper.pad_id_num('CF',sf.lowcf)
     end
     
-    @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today
+    @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today, sf.numcalls
     puts @cc.size
     if !@cc.empty?
       cc1=@cc.first
@@ -210,8 +211,9 @@ class SalesController < ApplicationController
       session[:lowcf] = cc1.cfid
       session[:highcf] = cc.cfid
       session[:limit] = sf.limit
+      session[:numcalls]= sf.numcalls
       session[:selected_profile] = sf.profile
-      @count=Convertcalls.count_ccrange cc.cfid, hrid, sf.profile, Date.today
+      @count=Convertcalls.count_ccrange cc.cfid, hrid, sf.profile, Date.today, sf.numcalls
     end
 #    @cc=[]
 #    i=0
@@ -278,7 +280,8 @@ class SalesController < ApplicationController
     session[:lowcf]=cfid
     @lowcf=cfid
     @limit=session[:limit] 
-    @selected_profile=session[:selected_profile] 
+    @selected_profile=session[:selected_profile]
+    @selected_num_calls=session[:numcalls] 
     render 'index'
   end
 
@@ -294,13 +297,13 @@ class SalesController < ApplicationController
     @function=params[:function]
     lowcf=session[:lowcf]
     limit=session[:limit]
-
+    numcalls=session[:numcalls]
     highcf=session[:highcf]
     hrid=session[:hrid]
     profile=session[:profile]
     num=session[:num]
     puts 'PARAMETERS',lowcf, highcf, hrid, profile, Date.today
-    @cc=Convertcalls.search_ccrange_prevnext(lowcf, limit, hrid, profile, Date.today)
+    @cc=Convertcalls.search_ccrange_prevnext(lowcf, limit, hrid, profile, Date.today, numcalls)
     
     num=num.to_i+1
     session[:num]=num.to_s
@@ -341,7 +344,8 @@ class SalesController < ApplicationController
     hrid=session[:hrid]
     profile=session[:profile]
     num=session[:num]
-    @cc=Convertcalls.search_ccrange_prevnext(lowcf, limit, hrid, profile, Date.today)
+    numcalls=session[:numcalls]
+    @cc=Convertcalls.search_ccrange_prevnext(lowcf, limit, hrid, profile, Date.today, numcalls)
     
     puts 'FIRST NUM',num
     num=num.to_i-1

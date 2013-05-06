@@ -642,9 +642,22 @@ class FunctionsController <  ApplicationController
     if !cr.nil?
       overallrate=cr.overallrate
     end
+    cfid=@client.CFID
+    name='unknown'
+    if !@client.full_name.nil?
+      name=@client.full_name
+    end
+    address='unknown'
+    if !@client.address.nil?
+      address=@client.address
+    end
+    phone='unknown'
+    if !@client.phone.nil?
+      phone=@client.phone
+    end
     @client_header1= @client.CFID
-    @client_header2=@client.full_name
-    @client_header3=@client.address+' '+@client.phone
+    @client_header2=name
+    @client_header3=address+' '+phone
     @client_header4='Rating:'+overallrate.to_s
     if @client.registerdate.nil? || @client.registerdate==''
       @client_header5='Date Registered: unknown'

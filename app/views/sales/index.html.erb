@@ -50,6 +50,12 @@
 				</td>
 			</tr>
 			<tr border="1" class="cell">
+				<td><%= sales.label :profile, "# Calls Before Today: " %></td>
+				<td> 
+					<%=sales.select :numcalls, options_for_select(@num_calls_options, @selected_num_calls)%>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
 				<td><%= sales.label :lowcf, "Low CF: " %></td>
 				<td>
 					<%= sales.text_field :lowcf, :value=>@lowcf, :size => 30 %>

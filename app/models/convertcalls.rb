@@ -18,62 +18,53 @@ class Convertcalls < ActiveRecord::Base
 
 #_______________________________________________________________________________________________________________
 
-  def self.search_profile_nocalls(lowcf, limit, hrid, today)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and summcalls= ? and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and (followup is null or followup<= ? or lastcall = ?)",
-         "#{lowcf}","#{hrid}", "0", today, today).limit(limit) 
-  end
-
-  def self.search_profile_ratings(lowcf, limit, hrid, today, r1, r2)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and (followup is null or followup<= ? or lastcall = ?) and rating between ? and ?",
-         "#{lowcf}","#{hrid}", today, today, "#{r1}", "#{r2}").limit(limit) 
+  def self.search_profile_ratings(lowcf, limit, hrid, today, r1, r2, numcalls)
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
+    " (followup is null or followup<= ? or (lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?)) and rating between ? and ?",
+         "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").limit(limit) 
   end
 
 
-  def self.search_profile_lastsummer(lowcf, limit, hrid, today)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and (followup is null or followup<= ? or lastcall = ?) and numjobsls>'0'",
-         "#{lowcf}","#{hrid}", today, today).limit(limit) 
+  def self.search_profile_lastsummer(lowcf, limit, hrid, today, numcalls)
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
+    " (followup is null or followup<= ? or (lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?)) and numjobsls>'0'",
+    "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
   end
 #_______________________________________________________________________________________________________________
 
 
       
-  def self.count_profile_nocalls(highcf, hrid, today)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and (followup is null or followup<= ? or lastcall = ?) and summcalls='0'",
-         "#{highcf}","#{hrid}", today, today).count 
-  end 
-
-  def self.count_profile_ratings(highcf, hrid, today, r1, r2)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and (followup is null or followup<= ? or lastcall = ?) and rating between ? and ?",
-         "#{highcf}","#{hrid}", today, today, "#{r1}", "#{r2}").count 
+ 
+  def self.count_profile_ratings(highcf, hrid, today, r1, r2, numcalls)
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and (followup is null or followup<= ? or (lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?)) and rating between ? and ?",
+         "#{highcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").count 
   end
    
 
-  def self.count_profile_lastsummer(highcf, hrid, today)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and (followup is null or followup<= ? or lastcall = ?) and numjobsls>'0'",
-         "#{highcf}","#{hrid}", today, today).count 
+  def self.count_profile_lastsummer(highcf, hrid, today, numcalls)
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and (followup is null or followup<= ? or (lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?)) and numjobsls>'0'",
+         "#{highcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today,"#{numcalls}").count 
   end 
 
 
-  def self.count_ccrange(highcf, hrid, profile, today)
+  def self.count_ccrange(highcf, hrid, profile, today, numcalls)
     count=0
-    if profile=='No Calls'
-      count=count_profile_nocalls(highcf, hrid, today)
-    elsif profile=='New Estimates'  
-      count=count_profile_ratings(highcf, hrid, today,'2.5','2.5')
+    if profile=='New Estimates'  
+      count=count_profile_ratings(highcf, hrid, today,'2.5','2.5',numcalls)
     elsif profile=='3.3=>3.6 clients'  
-      count=count_profile_ratings(highcf, hrid, today,'3.3','3.6')
+      count=count_profile_ratings(highcf, hrid, today,'3.3','3.6',numcalls)
     elsif profile=='3.7=>3.9 clients'  
-      count=count_profile_ratings(highcf, hrid, today,'3.7','3.9')
+      count=count_profile_ratings(highcf, hrid, today,'3.7','3.9',numcalls)
     elsif profile=='4.0=>4.1 clients'  
-      count=count_profile_ratings(highcf, hrid, today,'4.0','4.1')
+      count=count_profile_ratings(highcf, hrid, today,'4.0','4.1',numcalls)
     elsif profile=='4.2=>4.3 clients'  
-      count=count_profile_ratings(highcf, hrid, today,'4.2','4.3')
+      count=count_profile_ratings(highcf, hrid, today,'4.2','4.3',numcalls)
     elsif profile=='4.4=>4.5 clients'  
-      count=count_profile_ratings(highcf, hrid, today,'4.4','4.5')
+      count=count_profile_ratings(highcf, hrid, today,'4.4','4.5',numcalls)
     elsif profile=='4.6=>4.7 clients'  
-      count=count_profile_ratings(highcf, hrid, today,'4.6','4.7')
+      count=count_profile_ratings(highcf, hrid, today,'4.6','4.7',numcalls)
     elsif profile=='Used Us Last Summer'  
-      count=count_profile_lastsummer(highcf, limit, hrid, today)
+      count=count_profile_lastsummer(highcf, limit, hrid, today,numcalls)
     end
     return count
   end
@@ -87,52 +78,41 @@ class Convertcalls < ActiveRecord::Base
     where("hrid = ? and laststatus=? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (followup is null or followup<= ? or lastcall = ?)", "#{hrid}", "Pending", today, today) 
   end
 
-  def self.search_profile_nocalls_prevnext(lowcf, limit, hrid, today)
-    #where("cfid between ? and ? and (lastjob is null or lastjob<'2013-02-15') and (followup is null or followup<= ? or lastcall= ?) and clientstatus='Normal Client' and hrid= ? and summcalls= ? and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE'))",
-    #     "#{lowcf}", "#{highcf}", today, "#{hrid}", "0") 
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and (followup is null or followup<= ? or lastcall= ?) and clientstatus='Normal Client' and summcalls= '0' and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE'))",
-         "#{lowcf}", "#{hrid}", today, today,  "0").limit(limit) 
-  end
 
-  def self.search_profile_ratings_prevnext(lowcf, limit, hrid, today, r1, r2)
-#    where("cfid between ? and ? and hrid= ? and (followup is null or followup<= ? or lastcall= ?) and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and rating between ? and ?",
- #        "#{lowcf}","#{highcf}","#{hrid}",today, today, "#{r1}", "#{r2}")
-         
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and (followup is null or followup<= ? or lastcall = ?) and rating between ? and ?",
-         "#{lowcf}","#{hrid}", today, today, "#{r1}", "#{r2}").limit(limit) 
-          
+  def self.search_profile_ratings_prevnext(lowcf, limit, hrid, today, r1, r2, numcalls)
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
+    " and (followup is null or followup<= ? or (lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?)) and rating between ? and ? ",
+         "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").limit(limit) 
   end
 
 
-  def self.search_profile_lastsummer_prevnext(lowcf, limit, hrid, today)
-    where("cfid >= ? and hrid= ? and (followup is null or followup<= ? or lastcall= ?) and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus<>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved' and laststatus <>'SALE')) and numjobsls>'0'",
-         "#{lowcf}","#{hrid}", today, today).limit(limit) 
+  def self.search_profile_lastsummer_prevnext(lowcf, limit, hrid, today,numcalls)
+    where("cfid >= ? and hrid= ? and (followup is null or followup<= ? or (lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?)) and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and numjobsls>'0'",
+         "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
   end
 #_______________________________________________________________________________________________________________
 
 
-  def self.search_ccrange_prevnext(lowcf, limit, hrid, profile, today)
+  def self.search_ccrange_prevnext(lowcf, limit, hrid, profile, today, numcalls)
     list=[]
     pendings=search_pendings(hrid, today)
     profiles=[]
-    if profile=='No Calls'
-      profiles=search_profile_nocalls_prevnext(lowcf, limit, hrid, today)
-    elsif profile=='New Estimates'  
-      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today, '2.5', '2.5')
+    if profile=='New Estimates'  
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today, '2.5', '2.5', numcalls)
     elsif profile=='3.3=>3.6 clients'  
-      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'3.3', '3.6')
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'3.3', '3.6', numcalls)
     elsif profile=='3.7=>3.9 clients'  
-      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'3.7', '3.9')
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'3.7', '3.9', numcalls)
     elsif profile=='4.0=>4.1 clients'  
-      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'4.0', '4.1')
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'4.0', '4.1', numcalls)
     elsif profile=='4.2=>4.3 clients'  
-      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'4.2', '4.3')
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'4.2', '4.3', numcalls)
     elsif profile=='4.4=>4.5 clients'  
-      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'4.4', '4.5')
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'4.4', '4.5', numcalls)
     elsif profile=='4.6=>4.7 clients'  
-      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'4.6', '4.7')
+      profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'4.6', '4.7', numcalls)
     elsif profile=='Used Us Last Summer'  
-      profiles=search_profile_lastsummer_prevnext(lowcf, highcf, hrid, today)
+      profiles=search_profile_lastsummer_prevnext(lowcf, highcf, hrid, today, numcalls)
     end
 #    if pendings.nil? && profiles.nil?
 #      return list
@@ -156,28 +136,26 @@ class Convertcalls < ActiveRecord::Base
 
 #============================================================================================================================
 
-  def self.search_ccrange(lowcf, limit, hrid, profile, today)
+  def self.search_ccrange(lowcf, limit, hrid, profile, today,numcalls)
     list=[]
     pendings=search_pendings(hrid, today)
     profiles=[]
-    if profile=='No Calls'
-      profiles=search_profile_nocalls(lowcf, limit, hrid, today)
-    elsif profile=='New Estimates'  
-      profiles=search_profile_ratings(lowcf, limit, hrid, today, '2.5', '2.5')
+    if profile=='New Estimates'  
+      profiles=search_profile_ratings(lowcf, limit, hrid, today, '2.5', '2.5',numcalls)
     elsif profile=='3.3=>3.6 clients'  
-      profiles=search_profile_ratings(lowcf, limit, hrid, today,'3.3', '3.6')
+      profiles=search_profile_ratings(lowcf, limit, hrid, today,'3.3', '3.6',numcalls)
     elsif profile=='3.7=>3.9 clients'  
-      profiles=search_profile_ratings(lowcf, limit, hrid, today,'3.7', '3.9')
+      profiles=search_profile_ratings(lowcf, limit, hrid, today,'3.7', '3.9',numcalls)
     elsif profile=='4.0=>4.1 clients'  
-      profiles=search_profile_ratings(lowcf, limit, hrid, today,'4.0', '4.1')
+      profiles=search_profile_ratings(lowcf, limit, hrid, today,'4.0', '4.1',numcalls)
     elsif profile=='4.2=>4.3 clients'  
-      profiles=search_profile_ratings(lowcf, limit, hrid, today,'4.2', '4.3')
+      profiles=search_profile_ratings(lowcf, limit, hrid, today,'4.2', '4.3',numcalls)
     elsif profile=='4.4=>4.5 clients'  
-      profiles=search_profile_ratings(lowcf, limit, hrid, today,'4.4', '4.5')
+      profiles=search_profile_ratings(lowcf, limit, hrid, today,'4.4', '4.5',numcalls)
     elsif profile=='4.6=>4.7 clients'  
-      profiles=search_profile_ratings(lowcf, limit, hrid, today,'4.6', '4.7')
+      profiles=search_profile_ratings(lowcf, limit, hrid, today,'4.6', '4.7',numcalls)
     elsif profile=='Used Us Last Summer'  
-      profiles=search_profile_lastsummer(lowcf, limit, hrid, today)
+      profiles=search_profile_lastsummer(lowcf, limit, hrid, today,numcalls)
     end
 #    if pendings.nil? && profiles.nil?
 #      return list

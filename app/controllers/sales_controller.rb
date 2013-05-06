@@ -428,19 +428,19 @@ class SalesController < ApplicationController
     source=params[:source]
     function=params[:function]
     contacts=Clientcontact.search_cfcontacts cfid
-    num5=contacts.size
-    contact1=contacts[num5.to_i-2]
     contact=contacts.last
     contact.destroy
     cc=Convertcalls.find cfid
-    if num5.to_i-2<0
+    contacts=Clientcontact.search_cfcontacts cfid
+    if contacts.nil?
       cc.lastcall=nil
       cc.followup=nil
       cc.laststatus=nil
     else
-      cc.lastcall=contact1.dateatt
-      cc.followup=contact1.followup
-      tstatus=contact1.tstatus
+      contact=contacts.last
+      cc.lastcall=contact.dateatt
+      cc.followup=contact.followup
+      tstatus=contact.tstatus
       if tstatus=='Pending Summer 2013' ||tstatus=='Pending Summer 2014' || tstatus=='Pending Fall 2013'||tstatus=='Pending Fall 2014'
         tstatus='Pending'
       end

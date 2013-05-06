@@ -492,7 +492,7 @@ class FunctionsController <  ApplicationController
        empList=Employee.find_by_hrid(dnf.register)
        emp=empList.last
        job_bundle.salesp=emp.name
-       job_bundle.datesold=job.Dnfdate.to_formatted_s(:long_ordinal)
+       job_bundle.datesold=dnf.Dnfdate.to_formatted_s(:long_ordinal)
  
        jdb.crewname=dnf.CrewName
        if !dnf.Datebi.nil?  
@@ -538,7 +538,7 @@ class FunctionsController <  ApplicationController
          empList=Employee.find_by_hrid(dnf.register)
          emp=empList.last
          job_bundle.salesp=emp.name
-         job_bundle.datesold=job.Dnfdate.to_formatted_s(:long_ordinal)
+         job_bundle.datesold=dnf.Dnfdate.to_formatted_s(:long_ordinal)
  
         if(dnf.Sdate==dnf.Fdate)
           job_bundle.type='Appt('+dnf.Stime+')'

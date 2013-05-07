@@ -3,7 +3,7 @@
 <%= form_for @login_form, :url => login_functions_url do |log| %>
 	<fieldset class="mystyle">
 		<legend>Log In Internal</legend>
-		<b>Ruby Version 1.29 &nbsp;&nbsp;May 6&nbsp;1:45 pm</b><br/>
+		<b>Ruby Version 1.30 &nbsp;&nbsp;May 7&nbsp;9:15 am</b><br/>
  		<table class="mystyle" border="1">
 			<tr  class="cell" border="1">
 				<td><%=log.label :name %></td>
@@ -24,5 +24,12 @@
 				<td><%= log.submit "Log In" %></td>
 			</tr>
 		</table>
+	<br/><br/>
+	<b>Changes to this version>>></b><br/>
+	<b>The pendings are back in</b><br/>
+	<b>Client List works from Client Profile</b><br/>
+	<b>Load Next Batch works</b><br/>
+	<b>**Not that is you 'run' off your list or load next batch the program sets the CFID at the next id</b><br/>
+	<b>after your highest CFID and the last limit you used. You just have to hit load.</b><br/>
 	</fieldset>
 <% end%>

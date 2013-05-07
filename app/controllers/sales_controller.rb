@@ -242,47 +242,36 @@ class SalesController < ApplicationController
     limit=session[:limit]
     hrid=session[:hrid]
     profile=session[:profile]
-    @ccalls=Convertcalls.search_ccrange(lowcf, limit, hrid, profile, Date.today)
-    @cc=[]
-    i=0
-    @ccalls.each do |call|
-      ccb=ConvertcallBundle.new
-        
-      ccb.num=i.to_s
-      ccb.cfid=call.cfid
-      client=Client.find call.cfid
-      ccb.name=client.full_name
-      ccb.rating=call.rating
-      ccb.summcalls=call.summcalls
-      ccb.laststatus=call.laststatus
-      if call.followup.nil?
-        ccb.followup="unknown"
-      else
-        ccb.followup=call.followup.to_formatted_s(:long_ordinal)
-      end
-      @cc<<ccb
-      i+=1
-    end
+    numcalls=session[:numcalls]
+    @cc=Convertcalls.search_ccrange(lowcf, limit, hrid, profile, Date.today, numcalls)
     render 'loadclients'
   end
 
   def nextbatch
-    @sales_form=SalesForm.new
-    @profile_options=HomeHelper::CONNECTION_OPTIONS
+#    @sales_form=SalesForm.new
+ #   @profile_options=HomeHelper::CONNECTION_OPTIONS
+ #   
+ #   cfid=session[:highcf]
     
-    cfid=session[:highcf]
-    
-    cfid=cfid[2,cfid.size]
-    cfid=cfid.to_i
-    cfid+=1
-    cfid=HomeHelper.pad_id_num('CF', cfid)
+ #   cfid=cfid[2,cfid.size]
+ #   cfid=cfid.to_i
+ #   cfid+=1
+ #   cfid=HomeHelper.pad_id_num('CF', cfid)
 
-    session[:lowcf]=cfid
-    @lowcf=cfid
-    @limit=session[:limit] 
-    @selected_profile=session[:selected_profile]
-    @selected_num_calls=session[:numcalls] 
-    render 'index'
+ #   session[:lowcf]=cfid
+ #   @lowcf=cfid
+ #   @limit=session[:limit] 
+ #   @selected_profile=session[:selected_profile]
+ #   @selected_num_calls=session[:numcalls] 
+ #   render 'index'
+    
+     highcf=session[:highcf]
+     highcf=highcf[2,highcf.size]
+     highcf=highcf.to_i
+     highcf+=1
+     highcf=HomeHelper.pad_id_num('CF',highcf)
+     session[:lowcf]=highcf
+     redirect_to sales_path
   end
 
 
@@ -315,9 +304,6 @@ class SalesController < ApplicationController
     jobid=jobid.to_i
     jobid+=1
     jobid=HomeHelper.pad_id_num('JB',jobid)
-
-
-
 
     if next_client.nil?
       highcf=highcf[2,highcf.size]

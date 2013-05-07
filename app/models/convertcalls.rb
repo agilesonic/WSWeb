@@ -13,7 +13,7 @@ class Convertcalls < ActiveRecord::Base
 
 
   def self.search_pendings(hrid, today)
-    where("hrid = ? and laststatus=? and (followup is null or followup<= ? or lastcall = ?)", "#{hrid}", "Pending", today, today) 
+    where("hrid = ? and laststatus=? and lastcall>'2013-04-01' and (followup is null or followup<= ? or lastcall = ?)", "#{hrid}", "Pending", today, today) 
   end
 
 #_______________________________________________________________________________________________________________
@@ -75,7 +75,8 @@ class Convertcalls < ActiveRecord::Base
 #_______________________________________________________________________________________________________________
 
   def self.search_pendings_prevnext(hrid, today)
-    where("hrid = ? and laststatus=? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (followup is null or followup<= ? or lastcall = ?)", "#{hrid}", "Pending", today, today) 
+    where("hrid = ? and laststatus=? and lastcall>'2013-04-01' and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (followup is null or followup<= ? or lastcall = ?)",
+     "#{hrid}", "Pending", today, today) 
   end
 
 
@@ -114,17 +115,17 @@ class Convertcalls < ActiveRecord::Base
     elsif profile=='Used Us Last Summer'  
       profiles=search_profile_lastsummer_prevnext(lowcf, highcf, hrid, today, numcalls)
     end
-#    if pendings.nil? && profiles.nil?
-#      return list
-#    elsif pendings.nil? && !profiles.nil?
-#      return profiles
-#    elsif !pendings.nil? && profiles.nil?
-#      return pendings
-#    elsif !pendings.nil? && !profiles.nil?
-#      return pendings+profiles
-#    else
-#      return list  
-#    end
+    if pendings.nil? && profiles.nil?
+      return list
+    elsif pendings.nil? && !profiles.nil?
+      return profiles
+    elsif !pendings.nil? && profiles.nil?
+      return pendings
+    elsif !pendings.nil? && !profiles.nil?
+      return pendings+profiles
+    else
+      return list  
+    end
     return profiles
 
 
@@ -157,18 +158,18 @@ class Convertcalls < ActiveRecord::Base
     elsif profile=='Used Us Last Summer'  
       profiles=search_profile_lastsummer(lowcf, limit, hrid, today,numcalls)
     end
-#    if pendings.nil? && profiles.nil?
-#      return list
-#    elsif pendings.nil? && !profiles.nil?
-#      return profiles
-#    elsif !pendings.nil? && profiles.nil?
-#      return pendings
-#    elsif !pendings.nil? && !profiles.nil?
-#      return pendings+profiles
-#    else
-#      return list
-#    end
-     return profiles    
+    if pendings.nil? && profiles.nil?
+      return list
+    elsif pendings.nil? && !profiles.nil?
+      return profiles
+    elsif !pendings.nil? && profiles.nil?
+      return pendings
+    elsif !pendings.nil? && !profiles.nil?
+      return pendings+profiles
+    else
+      return list
+    end
+    return profiles    
   end
 
   def self.search_unassigned_all

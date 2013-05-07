@@ -184,7 +184,70 @@ class SalesController < ApplicationController
     @cb.newests=Convertcalls.search_assigned_by_holder hrid, '2.5', '2.5'    
     @cb.lastsummer=Convertcalls.search_assigned_by_holder_lastsummer hrid    
    
+    ccs=Convertcalls.search__highcf hrid, '4.6', '4.7', Date.today
+    if ccs.nil? || ccs.size==0
+      @cb.fourseven_highcf='nil'
+    else  
+        cc=ccs.last
+        @cb.fourseven_highcf=cc.cfid
+    end      
+
+    ccs=Convertcalls.search__highcf hrid, '4.4', '4.5', Date.today
+    if ccs.nil? || ccs.size==0
+      @cb.fourfive_highcf='nil'
+    else  
+        cc=ccs.last
+        @cb.fourfive_highcf=cc.cfid
+    end      
     
+    ccs=Convertcalls.search__highcf hrid, '4.2', '4.3', Date.today
+    if ccs.nil? || ccs.size==0
+      @cb.fourthree_highcf='nil'
+    else  
+        cc=ccs.last
+        @cb.fourthree_highcf=cc.cfid
+    end      
+
+    ccs=Convertcalls.search__highcf hrid, '4.0', '4.1', Date.today
+    if ccs.nil? || ccs.size==0
+      @cb.fourone_highcf='nil'
+    else  
+        cc=ccs.last
+        @cb.fourone_highcf=cc.cfid
+    end      
+
+    ccs=Convertcalls.search__highcf hrid, '3.7', '3.9', Date.today
+    if ccs.nil? || ccs.size==0
+      @cb.threenine_highcf='nil'
+    else  
+      cc=ccs.last
+      @cb.threenine_highcf=cc.cfid
+    end      
+    
+    ccs=Convertcalls.search__highcf hrid, '3.3', '3.6', Date.today
+    if ccs.nil? || ccs.size==0
+      @cb.threesix_highcf='nil'
+    else  
+      cc=ccs.last
+      @cb.threesix_highcf=cc.cfid
+    end      
+    
+    ccs=Convertcalls.search__highcf hrid, '2.5', '2.5', Date.today
+    if ccs.nil? || ccs.size==0
+      @cb.newests_highcf='nil'
+    else  
+      cc=ccs.last
+      @cb.newests_highcf=cc.cfid
+    end      
+    
+    ccs=Convertcalls.search__highcf_lastsummer hrid, Date.today
+    if ccs.nil? || ccs.size==0
+      @cb.lastsummer_highcf='nil'
+    else  
+      cc=ccs.last
+      @cb.lastsummer_highcf=cc.cfid
+    end      
+
     @sales_form=SalesForm.new
     @profile_options=HomeHelper::CONNECTION_OPTIONS
     @num_calls_options=HomeHelper::NUM_CALLS_OPTIONS
@@ -294,17 +357,23 @@ class SalesController < ApplicationController
     puts 'PARAMETERS',lowcf, highcf, hrid, profile, Date.today
     @cc=Convertcalls.search_ccrange_prevnext(lowcf, limit, hrid, profile, Date.today, numcalls)
     
-    
+    trip=false
     num=num.to_i+1
-    session[:num]=num.to_s
-    next_client=@cc[num]
+    begin
+      session[:num]=num.to_s
+      next_client=@cc[num]
+      if !next_client.lastcall.nil? && next_client.lastcall!=Date.today
+        trip=true
+        break
+      end
+      num=num.to_i+1
+    end until trip
 
-
-    jobid=Job.max_id
-    jobid=jobid[2,jobid.size]
-    jobid=jobid.to_i
-    jobid+=1
-    jobid=HomeHelper.pad_id_num('JB',jobid)
+    #jobid=Job.max_id
+    #jobid=jobid[2,jobid.size]
+    #jobid=jobid.to_i
+    #jobid+=1
+    #jobid=HomeHelper.pad_id_num('JB',jobid)
 
     if next_client.nil?
       highcf=highcf[2,highcf.size]
@@ -334,16 +403,29 @@ class SalesController < ApplicationController
     numcalls=session[:numcalls]
     @cc=Convertcalls.search_ccrange_prevnext(lowcf, limit, hrid, profile, Date.today, numcalls)
     
-    puts 'FIRST NUM',num
+    #num=num.to_i-1
+    #session[:num]=num.to_s
+  
+    trip=false
     num=num.to_i-1
-    session[:num]=num.to_s
-    puts 'SECOND NUM',num
-
+    begin
+      session[:num]=num.to_s
+      next_client=@cc[num]
+      if !next_client.lastcall.nil? && next_client.lastcall!=Date.today
+        trip=true
+        break
+      end
+      num=num.to_i-1
+    end until trip
+  
     next_client=@cc[num]
     if next_client.nil?
       redirect_to sales_path
-      return
     end
+    
+    
+    
+    
     redirect_to clientprofile_function_path(:id => next_client.cfid, :jobid1=>@jobid1, :source=>@source,:function=>@function)
   end
 

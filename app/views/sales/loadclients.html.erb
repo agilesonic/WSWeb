@@ -34,14 +34,23 @@
 			    		<tr border="1" class="blackredcell">
 			        <%else%>
 			    		<tr border="1" class="cell">
-			    	<%end%>	 
+			    	<%end
+			    	lastcall="nil"
+			    	followup="nil"
+			    	if !c.lastcall.nil?
+			    		lastcall=c.lastcall.to_formatted_s(:long_ordinal)
+			    	end
+			    	if !c.followup.nil?
+			    		followup=c.followup.to_formatted_s(:long_ordinal)
+			    	end
+			    	%>	 
 						<td><%= i %></td>
 						<td><%= c.cfid %></td>
 						<td><%= c.rating %></td>
 						<td><%= c.summcalls %></td>
 						<td><%= c.laststatus %></td>
-						<td><%= c.lastcall.to_formatted_s(:long_ordinal) %></td>
-						<td><%= c.followup.to_formatted_s(:long_ordinal) %></td>
+						<td><%= lastcall %></td>
+						<td><%= followup %></td>
 						<td><%= link_to 'Call Client', clientprofile_function_path(:id => c.cfid, :num=>i, :source=>'callclient',:function=>'callclient'),:style=>"color: yellow"%></td>
 					</tr>
 				<% 

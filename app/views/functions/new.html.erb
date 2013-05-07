@@ -3,7 +3,7 @@
 <%= form_for @login_form, :url => login_functions_url do |log| %>
 	<fieldset class="mystyle">
 		<legend>Log In Internal</legend>
-		<b>Ruby Version 1.31 &nbsp;&nbsp;May 7&nbsp;12:45pm am</b><br/>
+		<b>Ruby Version 1.32 &nbsp;&nbsp;May 7&nbsp;6:30 pm</b><br/>
  		<table class="mystyle" border="1">
 			<tr  class="cell" border="1">
 				<td><%=log.label :name %></td>
@@ -26,12 +26,9 @@
 		</table>
 	<br/><br/>
 	<b>Changes to this version>>></b><br/>
-	<b>Number Summer Calls works</b><br/>
-	<b>Client go red if they were called TODAY</b><br/><br/>
-	<b>in a few hours</b><br/>
-	<b>I'll indicate highest 'red' client</b><br/>
-	<b>I'll add change that next/previous goes to the next client NOT called today</b><br/>
-	<b>Please email me other changes</b><br/>
-	<b>after your highest CFID and the last limit you used. You just have to hit load.</b><br/>
+	<b>Next and Previous skips today's calls in red'</b><br/>
+	<b>Profile shows highest CF called that day</b><br/><br/>
+	<b>New Estimates Works</b><br/>
+	<b>Crashes to some profies was fixed</b><br/>
 	</fieldset>
 <% end%>

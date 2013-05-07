@@ -294,6 +294,7 @@ class SalesController < ApplicationController
     puts 'PARAMETERS',lowcf, highcf, hrid, profile, Date.today
     @cc=Convertcalls.search_ccrange_prevnext(lowcf, limit, hrid, profile, Date.today, numcalls)
     
+    
     num=num.to_i+1
     session[:num]=num.to_s
     next_client=@cc[num]

@@ -27,8 +27,11 @@
 				@cc.each do |c| 
 				%>
 			        <% date=Date.parse('2013-04-01')
-			        if c.laststatus=='Pending' and c.lastcall>date%>
-			    		<tr border="1" class="redcell">
+			           today5=Date.today
+			        if c.laststatus=='Pending' && c.lastcall>date && c.lastcall!=today5%>
+			    		<tr border="1" class="redblackcell">
+			        <%elsif c.lastcall==today5%>
+			    		<tr border="1" class="blackredcell">
 			        <%else%>
 			    		<tr border="1" class="cell">
 			    	<%end%>	 

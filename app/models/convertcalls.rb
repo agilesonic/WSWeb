@@ -20,14 +20,14 @@ class Convertcalls < ActiveRecord::Base
 
   def self.search_profile_ratings(lowcf, limit, hrid, today, r1, r2, numcalls)
     where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
-    " (followup is null or followup<= ? or (lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?)) and rating between ? and ?",
+    " ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?))) and rating between ? and ?",
          "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").limit(limit) 
   end
 
 
   def self.search_profile_lastsummer(lowcf, limit, hrid, today, numcalls)
     where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
-    " (followup is null or followup<= ? or (lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?)) and numjobsls>'0'",
+    " ((followup is null or followup<= ?) and (lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?)) and numjobsls>'0'",
     "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
   end
 #_______________________________________________________________________________________________________________
@@ -36,13 +36,13 @@ class Convertcalls < ActiveRecord::Base
       
  
   def self.count_profile_ratings(highcf, hrid, today, r1, r2, numcalls)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and (followup is null or followup<= ? or (lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?)) and rating between ? and ?",
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?))) and rating between ? and ?",
          "#{highcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").count 
   end
    
 
   def self.count_profile_lastsummer(highcf, hrid, today, numcalls)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and (followup is null or followup<= ? or (lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?)) and numjobsls>'0'",
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?))) and numjobsls>'0'",
          "#{highcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today,"#{numcalls}").count 
   end 
 
@@ -82,13 +82,13 @@ class Convertcalls < ActiveRecord::Base
 
   def self.search_profile_ratings_prevnext(lowcf, limit, hrid, today, r1, r2, numcalls)
     where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
-    " and (followup is null or followup<= ? or (lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?)) and rating between ? and ? ",
+    " and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?))) and rating between ? and ? ",
          "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").limit(limit) 
   end
 
 
   def self.search_profile_lastsummer_prevnext(lowcf, limit, hrid, today,numcalls)
-    where("cfid >= ? and hrid= ? and (followup is null or followup<= ? or (lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?)) and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and numjobsls>'0'",
+    where("cfid >= ? and hrid= ? and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or(lastcall < ? and summcalls =?))) and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and numjobsls>'0'",
          "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
   end
 #_______________________________________________________________________________________________________________

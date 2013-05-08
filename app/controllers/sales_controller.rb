@@ -359,16 +359,20 @@ class SalesController < ApplicationController
     
     trip=false
     num=num.to_i+1
+    next_client=@cc[num]
     begin
-      session[:num]=num.to_s
-      next_client=@cc[num]
-      if !next_client.nil? && next_client.lastcall!=Date.today
+      if next_client.nil? || (!next_client.nil? && next_client.lastcall!=Date.today)
         trip=true
         break
       end
+      if i==@cc.size-1
+        break
+      end
       num=num.to_i+1
+      next_client=@cc[num]
     end until trip
-
+    session[:num]=num.to_s
+ 
     #jobid=Job.max_id
     #jobid=jobid[2,jobid.size]
     #jobid=jobid.to_i
@@ -406,19 +410,25 @@ class SalesController < ApplicationController
     #num=num.to_i-1
     #session[:num]=num.to_s
   
+
     trip=false
     num=num.to_i-1
+    next_client=@cc[num]
     begin
-      session[:num]=num.to_s
-      next_client=@cc[num]
-      if !next_client.nil? && next_client.lastcall!=Date.today
+      if next_client.nil? || (!next_client.nil? && next_client.lastcall!=Date.today)
         trip=true
         break
       end
-      num=num.to_i-1
+      if i==@cc.size-1
+        break
+      end
+      num=num.to_i+1
+      next_client=@cc[num]
     end until trip
-  
-    next_client=@cc[num]
+    session[:num]=num.to_s
+
+
+
     if next_client.nil?
       redirect_to sales_path
     end

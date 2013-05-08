@@ -361,8 +361,8 @@ class SalesController < ApplicationController
     num=num.to_i+1
     next_client=@cc[num]
     begin
-      puts 'Dates:',next_client.lastcall.to_s,Date.today.to_s
-      if next_client.nil? || (!next_client.nil? && next_client.lastcall!=Date.today)
+      #puts 'Dates:',next_client.lastcall.to_s,Date.today.to_s
+      if next_client.nil? || (!next_client.nil? &&  (next_client.lastcall.nil? || next_client.lastcall!=Date.today) )
         break
       end
       if num==@cc.size-1
@@ -416,7 +416,7 @@ class SalesController < ApplicationController
     num=num.to_i-1
     next_client=@cc[num]
     begin
-      if next_client.nil? || (!next_client.nil? && next_client.lastcall!=Date.today)
+      if next_client.nil? || (!next_client.nil? &&  (next_client.lastcall.nil? || next_client.lastcall!=Date.today) )
         break
       end
       if num==@cc.size-1

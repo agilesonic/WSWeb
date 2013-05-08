@@ -362,7 +362,7 @@ class SalesController < ApplicationController
     begin
       session[:num]=num.to_s
       next_client=@cc[num]
-      if !next_client.lastcall.nil? && next_client.lastcall!=Date.today
+      if !next_client.nil? && next_client.lastcall!=Date.today
         trip=true
         break
       end
@@ -411,7 +411,7 @@ class SalesController < ApplicationController
     begin
       session[:num]=num.to_s
       next_client=@cc[num]
-      if !next_client.lastcall.nil? && next_client.lastcall!=Date.today
+      if !next_client.nil? && next_client.lastcall!=Date.today
         trip=true
         break
       end
@@ -852,10 +852,9 @@ class SalesController < ApplicationController
     address=csf.address
     props=Property.get_property_from_address(address)
     jobinfoid=''
-    props.each do |prop|
-      jobinfoid=prop.JobInfoID
-    end
-
+    prop=props.last
+    jobinfoid=prop.JobInfoID
+   
     stime=csf.stime
     salesid1=session[:hrid]
     syear=csf.syear
@@ -961,8 +960,12 @@ class SalesController < ApplicationController
     job.Fdate=fdate
     
     jobid5=Job.max_id_prop jobinfoid
-    j5=Job.find jobid5
-    if j5.Sdate!=job.Sdate || j5.Fdate!=job.Fdate || j5.JobDesc!=job.JobDesc
+    puts 'JOB ID5 >>>>>>>>>>>', jobinfoid,jobid5
+    j5=nil
+    if !jobid5.nil?
+      j5=Job.find jobid5
+    end
+    if (j5.nil? || (j5.Sdate!=job.Sdate || j5.Fdate!=job.Fdate || j5.JobDesc!=job.JobDesc))
       job.save!
       if(csf.notes!='')
         note=Notes.new

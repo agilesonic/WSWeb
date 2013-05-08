@@ -266,12 +266,12 @@ class SalesController < ApplicationController
     end
     
     @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today, sf.numcalls
-    puts @cc.size
+    puts 'CC SIZE LOAD CLIENTS:',@cc.size
     if !@cc.empty?
       cc1=@cc.first
       cc=@cc.last
       session[:profile] = sf.profile
-      session[:lowcf] = cc1.cfid
+      session[:lowcf] = sf.lowcf
       session[:highcf] = cc.cfid
       session[:limit] = sf.limit
       session[:numcalls]= sf.numcalls
@@ -354,13 +354,15 @@ class SalesController < ApplicationController
     hrid=session[:hrid]
     profile=session[:profile]
     num=session[:num]
-    puts 'PARAMETERS',lowcf, highcf, hrid, profile, Date.today
-    @cc=Convertcalls.search_ccrange_prevnext(lowcf, limit, hrid, profile, Date.today, numcalls)
-    
+    puts 'PARAMETERS',lowcf, highcf, hrid, profile, Date.today,'Num::',numcalls,'LIMIT',limit
+#    @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today, sf.numcalls
+#    @cc=Convertcalls.search_ccrange_prevnext(lowcf, limit, hrid, profile, Date.today, numcalls)
+    @cc=Convertcalls.search_ccrange(lowcf, limit, hrid, profile, Date.today, numcalls)
+    puts 'CC SIZE',@cc.size
     trip=false
     num=num.to_i+1
     next_client=@cc[num]
-    begin
+    loop do
       #puts 'Dates:',next_client.lastcall.to_s,Date.today.to_s
       if next_client.nil? || (!next_client.nil? &&  (next_client.lastcall.nil? || next_client.lastcall!=Date.today) )
         break
@@ -371,9 +373,13 @@ class SalesController < ApplicationController
       puts 'NNNUUUUMMMMMM',num
       num=num.to_i+1
       next_client=@cc[num]
-    end until trip
+    end 
     session[:num]=num.to_s
- 
+    next_client=@cc[num]
+    puts 'SESSION NNNUUUUMMMMMM',num
+    if next_client.nil?
+      puts 'next_client is nil'
+    end
     #jobid=Job.max_id
     #jobid=jobid[2,jobid.size]
     #jobid=jobid.to_i
@@ -406,7 +412,7 @@ class SalesController < ApplicationController
     profile=session[:profile]
     num=session[:num]
     numcalls=session[:numcalls]
-    @cc=Convertcalls.search_ccrange_prevnext(lowcf, limit, hrid, profile, Date.today, numcalls)
+    @cc=Convertcalls.search_ccrange(lowcf, limit, hrid, profile, Date.today, numcalls)
     
     #num=num.to_i-1
     #session[:num]=num.to_s

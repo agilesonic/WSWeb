@@ -19,10 +19,19 @@ class Convertcalls < ActiveRecord::Base
 #_______________________________________________________________________________________________________________
 
   def self.search_profile_ratings(lowcf, limit, hrid, today, r1, r2, numcalls)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
     " ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and rating between ? and ?",
-         "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").limit(limit) 
+         "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").order('cfid').limit(limit) 
   end
+
+#......
+#  def self.search_profile_ratings_prevnext(lowcf, limit, hrid, today, r1, r2, numcalls)
+#    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
+#    " and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and rating between ? and ? ",
+#         "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").limit(limit) 
+#  end
+#..........
+
 
 
   def self.search_profile_lastsummer(lowcf, limit, hrid, today, numcalls)
@@ -81,7 +90,7 @@ class Convertcalls < ActiveRecord::Base
 
 
   def self.search_profile_ratings_prevnext(lowcf, limit, hrid, today, r1, r2, numcalls)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
     " and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and rating between ? and ? ",
          "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").limit(limit) 
   end

@@ -365,7 +365,7 @@ class SalesController < ApplicationController
         trip=true
         break
       end
-      if i==@cc.size-1
+      if num==@cc.size-1
         break
       end
       num=num.to_i+1
@@ -419,10 +419,10 @@ class SalesController < ApplicationController
         trip=true
         break
       end
-      if i==@cc.size-1
+      if num==@cc.size-1
         break
       end
-      num=num.to_i+1
+      num=num.to_i-1
       next_client=@cc[num]
     end until trip
     session[:num]=num.to_s

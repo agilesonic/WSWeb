@@ -625,7 +625,7 @@ class SalesController < ApplicationController
 
     date=HomeHelper.add_days_to_current_date(1)
     date10=HomeHelper.add_days_to_date date,10
-    date30=HomeHelper.add_days_to_date date,30
+    date30=HomeHelper.add_days_to_date date,45
     dates=date.to_s
     date10s=date10.to_s
     date30s=date30.to_s

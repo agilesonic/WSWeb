@@ -430,7 +430,11 @@ class FunctionsController <  ApplicationController
       end
       job_bundle.jobid=job.JobID
       job_bundle.address=job.property.address
-      job_bundle.jobdesc=job.JobDesc
+      jdesc='unknown'
+      if !job.JobDesc.nil?
+        jdesc=job.JobDesc
+      end
+      job_bundle.jobdesc=jdesc
       job_bundle.price=job.Price
       empList=Employee.find_by_hrid(job.SalesID1)
       emp=empList.last

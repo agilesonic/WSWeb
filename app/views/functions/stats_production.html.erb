@@ -1,0 +1,33 @@
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
+<b>Stats Last Generated:<%=@ts%></b><br/><br/>
+<%if !@prod_stats.nil? && !@prod_stats.empty? then%>
+		<b>Company Schedule Stats YTD</b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>YEAR</b></th>
+					<th><b>Current</b></th>
+					<th><b>YTD</b></th>
+					<th><b>Last Seven</b></th>
+					<th><b>Next Seven</b></th>
+					<th><b>Incomplete 15</b></th>
+					<th><b>Incomplete 16 to 30</b></th>
+					<th><b>Incomplete 30+</b></th>
+				</tr>	
+			<%@prod_stats.each do |sb|
+			  class5='cell'	
+			%>
+				<tr class=<%=class5%>>
+					<td><b><%= sb.year %></b></td>
+					<td><b><%= number_to_currency sb.curr %></b></td>
+					<td><b><%= number_to_currency sb.ytd %></b></td>
+					<td><b><%= number_to_currency sb.lastseven %></b></td>
+					<td><b><%= number_to_currency sb.nextseven %></b></td>
+					<td><b><%= sb.incomp15 %></b></td>
+					<td><b><%= sb.incomp16to30 %></b></td>
+					<td><b><%= sb.incomp30plus %></b></td>
+				</tr>	
+			<%end%>
+		</table>
+<%end%>
+<br/>
+<br/>

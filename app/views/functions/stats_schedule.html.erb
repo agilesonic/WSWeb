@@ -1,0 +1,75 @@
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
+<b>Stats Last Generated:<%=@ts%></b><br/><br/>
+<%if !@sched_stats_ytd.nil? && !@sched_stats_ytd.empty? then%>
+		<b>Company Schedule Stats YTD</b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>YEAR</b></th>
+					<th><b>May 1-15</b></th>
+					<th><b>May 16-31</b></th>
+					<th><b>June 1-15</b></th>
+					<th><b>June 16-30</b></th>
+					<th><b>July 1-15</b></th>
+					<th><b>July 16-31</b></th>
+					<th><b>August</b></th>
+					<th><b>September</b></th>
+					<th><b>October</b></th>
+					<th><b>November</b></th>
+				</tr>	
+			<%@sched_stats_ytd.each do |sb|
+			  class5='cell'	
+			%>
+				<tr class=<%=class5%>>
+					<td><b><%= sb.year %></b></td>
+					<td><b><%= sb.may1 %></b></td>
+					<td><b><%= sb.may2 %></b></td>
+					<td><b><%= sb.june1 %></b></td>
+					<td><b><%= sb.june2 %></b></td>
+					<td><b><%= sb.july1 %></b></td>
+					<td><b><%= sb.july2 %></b></td>
+					<td><b><%= sb.august %></b></td>
+					<td><b><%= sb.september %></b></td>
+					<td><b><%= sb.october %></b></td>
+					<td><b><%= sb.november %></b></td>
+				</tr>	
+			<%end%>
+		</table>
+<%end%>
+<br/>
+<br/>
+<%if !@sched_stats.nil? && !@sched_stats.empty? then%>
+		<b>Company Schedule Stats Total</b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>YEAR</b></th>
+					<th><b>May 1-15</b></th>
+					<th><b>May 16-31</b></th>
+					<th><b>June 1-15</b></th>
+					<th><b>June 16-30</b></th>
+					<th><b>July 1-15</b></th>
+					<th><b>July 16-31</b></th>
+					<th><b>August</b></th>
+					<th><b>September</b></th>
+					<th><b>October</b></th>
+					<th><b>November</b></th>
+				</tr>	
+			<%@sched_stats.each do |sb|
+			  class5='cell'	
+			%>
+				<tr class=<%=class5%>>
+					<td><b><%= sb.year %></b></td>
+					<td><b><%= sb.may1 %></b></td>
+					<td><b><%= sb.may2 %></b></td>
+					<td><b><%= sb.june1 %></b></td>
+					<td><b><%= sb.june2 %></b></td>
+					<td><b><%= sb.july1 %></b></td>
+					<td><b><%= sb.july2 %></b></td>
+					<td><b><%= sb.august %></b></td>
+					<td><b><%= sb.september %></b></td>
+					<td><b><%= sb.october %></b></td>
+					<td><b><%= sb.november %></b></td>
+				</tr>	
+			<%end%>
+		</table>
+<%end%>
+<br/>

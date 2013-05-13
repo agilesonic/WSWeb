@@ -41,6 +41,8 @@ WSWeb::Application.routes.draw do
       get 'login1'
       get 'stats'
       get 'stats1'
+      get 'stats_schedule'
+      get 'stats_production'
     end
     member do
       get 'new'

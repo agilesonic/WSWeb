@@ -59,6 +59,17 @@ module HomeHelper
       a=zero + num
     end
 
+    def self.pad_num5(num)
+      num=num.to_s
+      a=num.length
+      if(a==5)
+        return num
+      end
+      b=5-a.to_i
+      zero="0"*b
+      a=zero + num
+    end
+
  
 
     def self.get_num_from_month(month)

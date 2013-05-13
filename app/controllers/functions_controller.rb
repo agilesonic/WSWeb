@@ -1538,11 +1538,17 @@ class FunctionsController <  ApplicationController
       totsalescurr=total_bundle.salescurr.to_i+salescurr.to_i
       total_bundle.salescurr=totsalescurr.to_s
       
+
+      good_sales=salesass.to_i+salesdir.to_i
+
+
+
       if(atts!=0)
         per=sales*100/atts
         per5=HomeHelper.pad_num3 per
         personal_bundle.per=per
-        @indstats[(per5+id).to_s.to_sym]=personal_bundle
+        good_sales5=HomeHelper.pad_num5 good_sales.to_s
+        @indstats[(good_sales5).to_s.to_sym]=personal_bundle
       end
     end
 
@@ -1568,5 +1574,373 @@ class FunctionsController <  ApplicationController
     ts=Time.now.to_s 
     Utils.record_stat_time ts   
   end
+   
+  def stats_schedule
+    @sched_stats=[]
+    @sched_stats_ytd=[]
+    ssb=ScheduleStatBundle.new 
+    
+    date2013 = Date.today
+    date2012 = date2013 << 12
+    date2011 = date2012 << 12
+    date2010 = date2011 << 12
+    date2009 = date2010 << 12
+    date2008 = date2009 << 12
+    
+    ssb.year='2013 Current'
+    ssb.may1=Job.number_jobs_schedule_curr Date.parse('2013-05-01'), Date.parse('2013-05-15')     
+    ssb.may2=Job.number_jobs_schedule_curr Date.parse('2013-05-16'), Date.parse('2013-05-31')
+    ssb.june1=Job.number_jobs_schedule_curr Date.parse('2013-06-01'), Date.parse('2013-06-15')
+    ssb.june2=Job.number_jobs_schedule_curr Date.parse('2013-06-16'), Date.parse('2013-06-30') 
+    ssb.july1=Job.number_jobs_schedule_curr Date.parse('2013-07-01'), Date.parse('2013-07-15')     
+    ssb.july2=Job.number_jobs_schedule_curr Date.parse('2013-07-16'), Date.parse('2013-07-31') 
+    ssb.august=Job.number_jobs_schedule_curr Date.parse('2013-08-01'), Date.parse('2013-08-31')     
+    ssb.september=Job.number_jobs_schedule_curr Date.parse('2013-09-01'), Date.parse('2013-09-30') 
+    ssb.october=Job.number_jobs_schedule_curr Date.parse('2013-10-01'), Date.parse('2013-10-31') 
+    ssb.november=Job.number_jobs_schedule_curr Date.parse('2013-11-01'), Date.parse('2013-11-30')
+    @sched_stats_ytd<<ssb 
+
+    ssb=ScheduleStatBundle.new 
+    ssb.year='2013 YTD'
+    ssb.may1=Job.number_jobs_schedule_ytd Date.parse('2013-05-01'), Date.parse('2013-05-15'), date2013     
+    ssb.may2=Job.number_jobs_schedule_ytd Date.parse('2013-05-16'), Date.parse('2013-05-31'), date2013 
+    ssb.june1=Job.number_jobs_schedule_ytd Date.parse('2013-06-01'), Date.parse('2013-06-15'), date2013     
+    ssb.june2=Job.number_jobs_schedule_ytd Date.parse('2013-06-16'), Date.parse('2013-06-30'), date2013 
+    ssb.july1=Job.number_jobs_schedule_ytd Date.parse('2013-07-01'), Date.parse('2013-07-15'), date2013     
+    ssb.july2=Job.number_jobs_schedule_ytd Date.parse('2013-07-16'), Date.parse('2013-07-31'), date2013 
+    ssb.august=Job.number_jobs_schedule_ytd Date.parse('2013-08-01'), Date.parse('2013-08-31'), date2013     
+    ssb.september=Job.number_jobs_schedule_ytd Date.parse('2013-09-01'), Date.parse('2013-09-30'), date2013 
+    ssb.october=Job.number_jobs_schedule_ytd Date.parse('2013-10-01'), Date.parse('2013-10-31'), date2013 
+    ssb.november=Job.number_jobs_schedule_ytd Date.parse('2013-11-01'), Date.parse('2013-11-30'), date2013
+    @sched_stats_ytd<<ssb 
+
+    ssb=ScheduleStatBundle.new 
+    ssb.year='2012 YTD'
+    ssb.may1=Job.number_jobs_schedule_ytd Date.parse('2012-05-01'), Date.parse('2012-05-15'), date2012     
+    ssb.may2=Job.number_jobs_schedule_ytd Date.parse('2012-05-16'), Date.parse('2012-05-31'), date2012 
+    ssb.june1=Job.number_jobs_schedule_ytd Date.parse('2012-06-01'), Date.parse('2012-06-15'), date2012     
+    ssb.june2=Job.number_jobs_schedule_ytd Date.parse('2012-06-16'), Date.parse('2012-06-30'), date2012 
+    ssb.july1=Job.number_jobs_schedule_ytd Date.parse('2012-07-01'), Date.parse('2012-07-15'), date2012     
+    ssb.july2=Job.number_jobs_schedule_ytd Date.parse('2012-07-16'), Date.parse('2012-07-31'), date2012 
+    ssb.august=Job.number_jobs_schedule_ytd Date.parse('2012-08-01'), Date.parse('2012-08-31'), date2012     
+    ssb.september=Job.number_jobs_schedule_ytd Date.parse('2012-09-01'), Date.parse('2012-09-30'), date2012 
+    ssb.october=Job.number_jobs_schedule_ytd Date.parse('2012-10-01'), Date.parse('2012-10-31'), date2012 
+    ssb.november=Job.number_jobs_schedule_ytd Date.parse('2012-11-01'), Date.parse('2012-11-30'), date2012
+    @sched_stats_ytd<<ssb 
+
+    ssb=ScheduleStatBundle.new 
+    ssb.year='2011 YTD'
+    ssb.may1=Job.number_jobs_schedule_ytd Date.parse('2011-05-01'), Date.parse('2011-05-15'), date2011     
+    ssb.may2=Job.number_jobs_schedule_ytd Date.parse('2011-05-16'), Date.parse('2011-05-31'), date2011 
+    ssb.june1=Job.number_jobs_schedule_ytd Date.parse('2011-06-01'), Date.parse('2011-06-15'), date2011     
+    ssb.june2=Job.number_jobs_schedule_ytd Date.parse('2011-06-16'), Date.parse('2011-06-30'), date2011 
+    ssb.july1=Job.number_jobs_schedule_ytd Date.parse('2011-07-01'), Date.parse('2011-07-15'), date2011     
+    ssb.july2=Job.number_jobs_schedule_ytd Date.parse('2011-07-16'), Date.parse('2011-07-31'), date2011 
+    ssb.august=Job.number_jobs_schedule_ytd Date.parse('2011-08-01'), Date.parse('2011-08-31'), date2011     
+    ssb.september=Job.number_jobs_schedule_ytd Date.parse('2011-09-01'), Date.parse('2011-09-30'), date2011 
+    ssb.october=Job.number_jobs_schedule_ytd Date.parse('2011-10-01'), Date.parse('2011-10-31'), date2011 
+    ssb.november=Job.number_jobs_schedule_ytd Date.parse('2011-11-01'), Date.parse('2011-11-30'), date2011
+    @sched_stats_ytd<<ssb 
+    
+    ssb=ScheduleStatBundle.new 
+    ssb.year='2010 YTD'
+    ssb.may1=Job.number_jobs_schedule_ytd Date.parse('2010-05-01'), Date.parse('2010-05-15'), date2010     
+    ssb.may2=Job.number_jobs_schedule_ytd Date.parse('2010-05-16'), Date.parse('2010-05-31'), date2010 
+    ssb.june1=Job.number_jobs_schedule_ytd Date.parse('2010-06-01'), Date.parse('2010-06-15'), date2010     
+    ssb.june2=Job.number_jobs_schedule_ytd Date.parse('2010-06-16'), Date.parse('2010-06-30'), date2010 
+    ssb.july1=Job.number_jobs_schedule_ytd Date.parse('2010-07-01'), Date.parse('2010-07-15'), date2010     
+    ssb.july2=Job.number_jobs_schedule_ytd Date.parse('2010-07-16'), Date.parse('2010-07-31'), date2010 
+    ssb.august=Job.number_jobs_schedule_ytd Date.parse('2010-08-01'), Date.parse('2010-08-31'), date2010     
+    ssb.september=Job.number_jobs_schedule_ytd Date.parse('2010-09-01'), Date.parse('2010-09-30'), date2010 
+    ssb.october=Job.number_jobs_schedule_ytd Date.parse('2010-10-01'), Date.parse('2010-10-31'), date2010 
+    ssb.november=Job.number_jobs_schedule_ytd Date.parse('2010-11-01'), Date.parse('2010-11-30'), date2010
+    @sched_stats_ytd<<ssb 
+    
+    ssb=ScheduleStatBundle.new 
+    ssb.year='2009 YTD'
+    ssb.may1=Job.number_jobs_schedule_ytd Date.parse('2009-05-01'), Date.parse('2009-05-15'), date2009     
+    ssb.may2=Job.number_jobs_schedule_ytd Date.parse('2009-05-16'), Date.parse('2009-05-31'), date2009 
+    ssb.june1=Job.number_jobs_schedule_ytd Date.parse('2009-06-01'), Date.parse('2009-06-15'), date2009     
+    ssb.june2=Job.number_jobs_schedule_ytd Date.parse('2009-06-16'), Date.parse('2009-06-30'), date2009 
+    ssb.july1=Job.number_jobs_schedule_ytd Date.parse('2009-07-01'), Date.parse('2009-07-15'), date2009     
+    ssb.july2=Job.number_jobs_schedule_ytd Date.parse('2009-07-16'), Date.parse('2009-07-31'), date2009 
+    ssb.august=Job.number_jobs_schedule_ytd Date.parse('2009-08-01'), Date.parse('2009-08-31'), date2009     
+    ssb.september=Job.number_jobs_schedule_ytd Date.parse('2009-09-01'), Date.parse('2009-09-30'), date2009 
+    ssb.october=Job.number_jobs_schedule_ytd Date.parse('2009-10-01'), Date.parse('2009-10-31'), date2009 
+    ssb.november=Job.number_jobs_schedule_ytd Date.parse('2009-11-01'), Date.parse('2009-11-30'), date2009
+    @sched_stats_ytd<<ssb 
+
+    ssb=ScheduleStatBundle.new 
+    ssb.year='2008 YTD'
+    ssb.may1=Job.number_jobs_schedule_ytd Date.parse('2008-05-01'), Date.parse('2008-05-15'), date2008     
+    ssb.may2=Job.number_jobs_schedule_ytd Date.parse('2008-05-16'), Date.parse('2008-05-31'), date2008 
+    ssb.june1=Job.number_jobs_schedule_ytd Date.parse('2008-06-01'), Date.parse('2008-06-15'), date2008     
+    ssb.june2=Job.number_jobs_schedule_ytd Date.parse('2008-06-16'), Date.parse('2008-06-30'), date2008 
+    ssb.july1=Job.number_jobs_schedule_ytd Date.parse('2008-07-01'), Date.parse('2008-07-15'), date2008     
+    ssb.july2=Job.number_jobs_schedule_ytd Date.parse('2008-07-16'), Date.parse('2008-07-31'), date2008 
+    ssb.august=Job.number_jobs_schedule_ytd Date.parse('2008-08-01'), Date.parse('2008-08-31'), date2008     
+    ssb.september=Job.number_jobs_schedule_ytd Date.parse('2008-09-01'), Date.parse('2008-09-30'), date2008 
+    ssb.october=Job.number_jobs_schedule_ytd Date.parse('2008-10-01'), Date.parse('2008-10-31'), date2008 
+    ssb.november=Job.number_jobs_schedule_ytd Date.parse('2008-11-01'), Date.parse('2008-11-30'), date2008
+    @sched_stats_ytd<<ssb 
+
+#_______________________________________________________________________________________________
+
+    @sched_stats=[]
+    ssb=ScheduleStatBundle.new 
+    ssb.year='2013 Current'
+    ssb.may1=Job.number_jobs_schedule_curr Date.parse('2013-05-01'), Date.parse('2013-05-15')     
+    ssb.may2=Job.number_jobs_schedule_curr Date.parse('2013-05-16'), Date.parse('2013-05-31') 
+    ssb.june1=Job.number_jobs_schedule_curr Date.parse('2013-06-01'), Date.parse('2013-06-15')     
+    ssb.june2=Job.number_jobs_schedule_curr Date.parse('2013-06-16'), Date.parse('2013-06-30') 
+    ssb.july1=Job.number_jobs_schedule_curr Date.parse('2013-07-01'), Date.parse('2013-07-15')     
+    ssb.july2=Job.number_jobs_schedule_curr Date.parse('2013-07-16'), Date.parse('2013-07-31') 
+    ssb.august=Job.number_jobs_schedule_curr Date.parse('2013-08-01'), Date.parse('2013-08-31')     
+    ssb.september=Job.number_jobs_schedule_curr Date.parse('2013-09-01'), Date.parse('2013-09-30') 
+    ssb.october=Job.number_jobs_schedule_curr Date.parse('2013-10-01'), Date.parse('2013-10-31') 
+    ssb.november=Job.number_jobs_schedule_curr Date.parse('2013-11-01'), Date.parse('2013-11-30')
+    @sched_stats<<ssb 
+
+    ssb=ScheduleStatBundle.new 
+    ssb.year='2013 Total'
+    ssb.may1=Job.number_jobs_schedule Date.parse('2013-05-01'), Date.parse('2013-05-15')     
+    ssb.may2=Job.number_jobs_schedule Date.parse('2013-05-16'), Date.parse('2013-05-31') 
+    ssb.june1=Job.number_jobs_schedule Date.parse('2013-06-01'), Date.parse('2013-06-15')     
+    ssb.june2=Job.number_jobs_schedule Date.parse('2013-06-16'), Date.parse('2013-06-30') 
+    ssb.july1=Job.number_jobs_schedule Date.parse('2013-07-01'), Date.parse('2013-07-15')     
+    ssb.july2=Job.number_jobs_schedule Date.parse('2013-07-16'), Date.parse('2013-07-31') 
+    ssb.august=Job.number_jobs_schedule Date.parse('2013-08-01'), Date.parse('2013-08-31')     
+    ssb.september=Job.number_jobs_schedule Date.parse('2013-09-01'), Date.parse('2013-09-30') 
+    ssb.october=Job.number_jobs_schedule Date.parse('2013-10-01'), Date.parse('2013-10-31') 
+    ssb.november=Job.number_jobs_schedule Date.parse('2013-11-01'), Date.parse('2013-11-30')
+    @sched_stats<<ssb 
+
+    ssb=ScheduleStatBundle.new 
+    ssb.year='2012 Total'
+    ssb.may1=Job.number_jobs_schedule Date.parse('2012-05-01'), Date.parse('2012-05-15')     
+    ssb.may2=Job.number_jobs_schedule Date.parse('2012-05-16'), Date.parse('2012-05-31') 
+    ssb.june1=Job.number_jobs_schedule Date.parse('2012-06-01'), Date.parse('2012-06-15')     
+    ssb.june2=Job.number_jobs_schedule Date.parse('2012-06-16'), Date.parse('2012-06-30') 
+    ssb.july1=Job.number_jobs_schedule Date.parse('2012-07-01'), Date.parse('2012-07-15')     
+    ssb.july2=Job.number_jobs_schedule Date.parse('2012-07-16'), Date.parse('2012-07-31') 
+    ssb.august=Job.number_jobs_schedule Date.parse('2012-08-01'), Date.parse('2012-08-31')     
+    ssb.september=Job.number_jobs_schedule Date.parse('2012-09-01'), Date.parse('2012-09-30') 
+    ssb.october=Job.number_jobs_schedule Date.parse('2012-10-01'), Date.parse('2012-10-31') 
+    ssb.november=Job.number_jobs_schedule Date.parse('2012-11-01'), Date.parse('2012-11-30')
+    @sched_stats<<ssb 
+
+    ssb=ScheduleStatBundle.new 
+    ssb.year='2011 Total'
+    ssb.may1=Job.number_jobs_schedule Date.parse('2011-05-01'), Date.parse('2011-05-15')     
+    ssb.may2=Job.number_jobs_schedule Date.parse('2011-05-16'), Date.parse('2011-05-31') 
+    ssb.june1=Job.number_jobs_schedule Date.parse('2011-06-01'), Date.parse('2011-06-15')     
+    ssb.june2=Job.number_jobs_schedule Date.parse('2011-06-16'), Date.parse('2011-06-30') 
+    ssb.july1=Job.number_jobs_schedule Date.parse('2011-07-01'), Date.parse('2011-07-15')     
+    ssb.july2=Job.number_jobs_schedule Date.parse('2011-07-16'), Date.parse('2011-07-31') 
+    ssb.august=Job.number_jobs_schedule Date.parse('2011-08-01'), Date.parse('2011-08-31')     
+    ssb.september=Job.number_jobs_schedule Date.parse('2011-09-01'), Date.parse('2011-09-30') 
+    ssb.october=Job.number_jobs_schedule Date.parse('2011-10-01'), Date.parse('2011-10-31') 
+    ssb.november=Job.number_jobs_schedule Date.parse('2011-11-01'), Date.parse('2011-11-30')
+    @sched_stats<<ssb 
+    
+    ssb=ScheduleStatBundle.new 
+    ssb.year='2010 Total'
+    ssb.may1=Job.number_jobs_schedule Date.parse('2010-05-01'), Date.parse('2010-05-15')     
+    ssb.may2=Job.number_jobs_schedule Date.parse('2010-05-16'), Date.parse('2010-05-31') 
+    ssb.june1=Job.number_jobs_schedule Date.parse('2010-06-01'), Date.parse('2010-06-15')     
+    ssb.june2=Job.number_jobs_schedule Date.parse('2010-06-16'), Date.parse('2010-06-30') 
+    ssb.july1=Job.number_jobs_schedule Date.parse('2010-07-01'), Date.parse('2010-07-15')     
+    ssb.july2=Job.number_jobs_schedule Date.parse('2010-07-16'), Date.parse('2010-07-31') 
+    ssb.august=Job.number_jobs_schedule Date.parse('2010-08-01'), Date.parse('2010-08-31')     
+    ssb.september=Job.number_jobs_schedule Date.parse('2010-09-01'), Date.parse('2010-09-30') 
+    ssb.october=Job.number_jobs_schedule Date.parse('2010-10-01'), Date.parse('2010-10-31') 
+    ssb.november=Job.number_jobs_schedule Date.parse('2010-11-01'), Date.parse('2010-11-30')
+    @sched_stats<<ssb 
+    
+    ssb=ScheduleStatBundle.new 
+    ssb.year='2009 Total'
+    ssb.may1=Job.number_jobs_schedule Date.parse('2009-05-01'), Date.parse('2009-05-15')     
+    ssb.may2=Job.number_jobs_schedule Date.parse('2009-05-16'), Date.parse('2009-05-31') 
+    ssb.june1=Job.number_jobs_schedule Date.parse('2009-06-01'), Date.parse('2009-06-15')     
+    ssb.june2=Job.number_jobs_schedule Date.parse('2009-06-16'), Date.parse('2009-06-30') 
+    ssb.july1=Job.number_jobs_schedule Date.parse('2009-07-01'), Date.parse('2009-07-15')     
+    ssb.july2=Job.number_jobs_schedule Date.parse('2009-07-16'), Date.parse('2009-07-31') 
+    ssb.august=Job.number_jobs_schedule Date.parse('2009-08-01'), Date.parse('2009-08-31')     
+    ssb.september=Job.number_jobs_schedule Date.parse('2009-09-01'), Date.parse('2009-09-30') 
+    ssb.october=Job.number_jobs_schedule Date.parse('2009-10-01'), Date.parse('2009-10-31') 
+    ssb.november=Job.number_jobs_schedule Date.parse('2009-11-01'), Date.parse('2009-11-30')
+    @sched_stats<<ssb 
+
+    ssb=ScheduleStatBundle.new 
+    ssb.year='2008 Total'
+    ssb.may1=Job.number_jobs_schedule Date.parse('2008-05-01'), Date.parse('2008-05-15')     
+    ssb.may2=Job.number_jobs_schedule Date.parse('2008-05-16'), Date.parse('2008-05-31') 
+    ssb.june1=Job.number_jobs_schedule Date.parse('2008-06-01'), Date.parse('2008-06-15')     
+    ssb.june2=Job.number_jobs_schedule Date.parse('2008-06-16'), Date.parse('2008-06-30') 
+    ssb.july1=Job.number_jobs_schedule Date.parse('2008-07-01'), Date.parse('2008-07-15')     
+    ssb.july2=Job.number_jobs_schedule Date.parse('2008-07-16'), Date.parse('2008-07-31') 
+    ssb.august=Job.number_jobs_schedule Date.parse('2008-08-01'), Date.parse('2008-08-31')     
+    ssb.september=Job.number_jobs_schedule Date.parse('2008-09-01'), Date.parse('2008-09-30') 
+    ssb.october=Job.number_jobs_schedule Date.parse('2008-10-01'), Date.parse('2008-10-31') 
+    ssb.november=Job.number_jobs_schedule Date.parse('2008-11-01'), Date.parse('2008-11-30')
+    @sched_stats<<ssb 
+  end
+
+  def stats_production
+    @prod_stats=[]
+    
+    today=Date.today
+    @date_2008=Date.parse('2008-01-01')
+    @date_2009=@date_2008 >> 12
+    @date_2010=@date_2009 >> 12
+    @date_2011=@date_2010 >> 12
+    @date_2012=@date_2011 >> 12
+    @date_2013=@date_2012 >> 12
+    
+
+
+    @date_today_2013=today
+    @date_last7_2013=HomeHelper.add_days_to_date @date_today_2013 , -8
+    @date_yesterday_2013=HomeHelper.add_days_to_date @date_today_2013 , -1
+    
+    @date_today_2012=@date_today_2013 << 12
+    @date_today_2012=HomeHelper.add_days_to_date @date_today_2012 , 1
+    @date_last7_2012=HomeHelper.add_days_to_date @date_today_2012 , -8
+    @date_next7_2012=HomeHelper.add_days_to_date @date_today_2012 , 8
+    @date_yesterday_2012=HomeHelper.add_days_to_date @date_today_2012 , -1
+    @date_tomorrow_2012=HomeHelper.add_days_to_date @date_today_2012 , 1
+    @date_two_2012=HomeHelper.add_days_to_date @date_today_2012 , 2
+    @date_three_2012=HomeHelper.add_days_to_date @date_today_2012 , 3
+    @date_four_2012=HomeHelper.add_days_to_date @date_today_2012 , 4
+    @date_five_2012=HomeHelper.add_days_to_date @date_today_2012 , 5
+    
+    @date_today_2011=@date_today_2012 << 12
+    @date_today_2011=HomeHelper.add_days_to_date @date_today_2011 , 2
+    @date_last7_2011=HomeHelper.add_days_to_date @date_today_2011 , -8
+    @date_next7_2011=HomeHelper.add_days_to_date @date_today_2011 , 8
+    @date_yesterday_2011=HomeHelper.add_days_to_date @date_today_2011 , -1
+    @date_tomorrow_2011=HomeHelper.add_days_to_date @date_today_2011 , 1
+    @date_two_2011=HomeHelper.add_days_to_date @date_today_2011 , 2
+    @date_three_2011=HomeHelper.add_days_to_date @date_today_2011 , 3
+    @date_four_2011=HomeHelper.add_days_to_date @date_today_2011 , 4
+    @date_five_2011=HomeHelper.add_days_to_date @date_today_2011 , 5
+    
+    
+    @date_today_2010=@date_today_2011 << 12
+    @date_today_2010=HomeHelper.add_days_to_date @date_today_2010 , -6
+    @date_last7_2010=HomeHelper.add_days_to_date @date_today_2010 , -8
+    @date_next7_2010=HomeHelper.add_days_to_date @date_today_2010 , 8
+    @date_yesterday_2010=HomeHelper.add_days_to_date @date_today_2010 , -1
+    @date_tomorrow_2010=HomeHelper.add_days_to_date @date_today_2010 , 1
+    @date_two_2010=HomeHelper.add_days_to_date @date_today_2010 , 2
+    @date_three_2010=HomeHelper.add_days_to_date @date_today_2010 , 3
+    @date_four_2010=HomeHelper.add_days_to_date @date_today_2010 , 4
+    @date_five_2010=HomeHelper.add_days_to_date @date_today_2010 , 5
+    
+    @date_today_2009=@date_today_2010 << 12
+    @date_today_2009=HomeHelper.add_days_to_date @date_today_2009 , 1
+    @date_last7_2009=HomeHelper.add_days_to_date @date_today_2009 , -8
+    @date_next7_2009=HomeHelper.add_days_to_date @date_today_2009 , 8
+    @date_yesterday_2009=HomeHelper.add_days_to_date @date_today_2009 , -1
+    @date_tomorrow_2009=HomeHelper.add_days_to_date @date_today_2009 , 1
+    @date_two_2009=HomeHelper.add_days_to_date @date_today_2009 , 2
+    @date_three_2009=HomeHelper.add_days_to_date @date_today_2009 , 3
+    @date_four_2009=HomeHelper.add_days_to_date @date_today_2009 , 4
+    @date_five_2009=HomeHelper.add_days_to_date @date_today_2009 , 5
+    
+    
+    @date_today_2008=@date_today_2009 << 12
+    @date_today_2008=HomeHelper.add_days_to_date @date_today_2008 , 1
+    @date_last7_2008=HomeHelper.add_days_to_date @date_today_2008 , -8
+    @date_next7_2008=HomeHelper.add_days_to_date @date_today_2008 , 8
+    @date_yesterday_2008=HomeHelper.add_days_to_date @date_today_2008 , -1
+    @date_tomorrow_2008=HomeHelper.add_days_to_date @date_today_2008 , 1
+    @date_two_2008=HomeHelper.add_days_to_date @date_today_2008 , 2
+    @date_three_2008=HomeHelper.add_days_to_date @date_today_2008 , 3
+    @date_four_2008=HomeHelper.add_days_to_date @date_today_2008 , 4
+    @date_five_2008=HomeHelper.add_days_to_date @date_today_2008 , 5
+    
+
+
+
+
+
+    
+#      attr_accessor :curr, :ytd, :lastseven, :nextseven, :incomp30, :incomp30plus
+#    @date_2013=@date_2012 >> 12
+#    @date_today_2013=today
+#    @date_last7_2013=HomeHelper.add_days_to_date @date_today_2013 , -8
+#    @date_yesterday_2013=HomeHelper.add_days_to_date @date_today_2013 , -1
+
+    
+    ssb=ProductionStatBundle.new 
+    ssb.year='2013'
+    ssb.curr=Job.dollar_jobs_produced_curr @date_today_2013     
+    puts 'MMOOONNNTTTHHH',@date_today_2013.mon
+    ssb.ytd=Job.dollar_jobs_produced @date_2013, @date_today_2013
+    ssb.lastseven=Job.dollar_jobs_produced @date_last7_2013, @date_today_2013
+    ssb.nextseven='nil'
+    ssb.incomp15=Job.number_jobs_incomplete @date_today_2013-15, @date_today_2013
+    ssb.incomp16to30=Job.number_jobs_incomplete @date_today_2013-30, @date_today_2013-16
+    ssb.incomp30plus=Job.number_jobs_incomplete @date_2013, @date_today_2013-31
+    @prod_stats<<ssb 
+
+    ssb=ProductionStatBundle.new 
+    ssb.year='2012'
+    ssb.curr=Job.dollar_jobs_produced_curr @date_today_2012     
+    ssb.ytd=Job.dollar_jobs_produced @date_2012, @date_today_2012
+    ssb.lastseven=Job.dollar_jobs_produced @date_last7_2012, @date_today_2012
+    ssb.nextseven=Job.dollar_jobs_produced @date_today_2012, @date_next7_2012
+    ssb.incomp15='nil'
+    ssb.incomp16to30='nil'
+    ssb.incomp30plus='nil'
+    @prod_stats<<ssb 
+
+    ssb=ProductionStatBundle.new 
+    ssb.year='2011'
+    ssb.curr=Job.dollar_jobs_produced_curr @date_today_2011     
+    ssb.ytd=Job.dollar_jobs_produced @date_2011, @date_today_2011
+    ssb.lastseven=Job.dollar_jobs_produced @date_last7_2011, @date_today_2011
+    ssb.nextseven=Job.dollar_jobs_produced @date_today_2011, @date_next7_2011
+    ssb.incomp15='nil'
+    ssb.incomp16to30='nil'
+    ssb.incomp30plus='nil'
+    @prod_stats<<ssb 
+
+    ssb=ProductionStatBundle.new 
+    ssb.year='2010'
+    ssb.curr=Job.dollar_jobs_produced_curr @date_today_2010     
+    ssb.ytd=Job.dollar_jobs_produced @date_2010, @date_today_2010
+    ssb.lastseven=Job.dollar_jobs_produced @date_last7_2010, @date_today_2010
+    ssb.nextseven=Job.dollar_jobs_produced @date_today_2010, @date_next7_2010
+    ssb.incomp15='nil'
+    ssb.incomp16to30='nil'
+    ssb.incomp30plus='nil'
+    @prod_stats<<ssb 
+
+    ssb=ProductionStatBundle.new 
+    ssb.year='2009'
+    ssb.curr=Job.dollar_jobs_produced_curr @date_today_2009     
+    ssb.ytd=Job.dollar_jobs_produced @date_2009, @date_today_2009
+    ssb.lastseven=Job.dollar_jobs_produced @date_last7_2009, @date_today_2009
+    ssb.nextseven=Job.dollar_jobs_produced @date_today_2009, @date_next7_2009
+    ssb.incomp15='nil'
+    ssb.incomp16to30='nil'
+    ssb.incomp30plus='nil'
+    @prod_stats<<ssb 
+
+    ssb=ProductionStatBundle.new 
+    ssb.year='2008'
+    ssb.curr=Job.dollar_jobs_produced_curr @date_today_2008     
+    ssb.ytd=Job.dollar_jobs_produced @date_2008, @date_today_2008
+    ssb.lastseven=Job.dollar_jobs_produced @date_last7_2008, @date_today_2008
+    ssb.nextseven=Job.dollar_jobs_produced @date_today_2008, @date_next7_2008
+    ssb.incomp15='nil'
+    ssb.incomp16to30='nil'
+    ssb.incomp30plus='nil'
+    @prod_stats<<ssb 
+
+  end
+
   
 end

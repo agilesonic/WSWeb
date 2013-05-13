@@ -24,6 +24,35 @@ class Job < ActiveRecord::Base
     where("jobid not like ? and jobinfoid = ?","JB98%","#{jobinfoid}").maximum("JobID")
   end
 
+  def self.number_jobs_schedule(date1, date2) 
+    where("sdate between ? and ?", date1, date2).count 
+  end
+
+  def self.number_jobs_schedule_curr(date1, date2) 
+    where("sdate between ? and ? and datesold = ?", date1, date2, Date.today).count 
+  end
+
+  def self.number_jobs_schedule_ytd(date1, date2, date3) 
+    where("sdate between ? and ? and datesold <= ?", date1, date2, date3).count 
+  end
+
+
+
+  def self.dollar_jobs_produced(date1, date2) 
+    where("datebi between ? and ?", date1, date2).sum('price') 
+  end
+
+  def self.dollar_jobs_produced_curr(date) 
+    where("datebi = ?",  date).sum('price')
+  end
+
+  def self.number_jobs_incomplete(date1, date2) 
+    where("sdate between ? and ? and datebi is null", date1, date2).count
+  end
+
+
+
+
   def self.number_jobs_sold(date1, date2, date3) 
     where("datesold between ? and ? and sdate < ?", date1, date2, date3).count 
   end

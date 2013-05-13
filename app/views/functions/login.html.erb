@@ -9,7 +9,9 @@
 <b><%= link_to 'Read Stats', stats1_functions_path%></b><br/><br/><br/>
 
 <%if @username=='Roger' || @username=='Shantz'%>
-	<b><%= link_to 'Make Stats', stats_functions_path%></b><br/>
+	<b><%= link_to 'Make Sales Stats', stats_functions_path%></b><br/>
+	<b><%= link_to 'Make Schedule Stats', stats_schedule_functions_path%></b><br/>
+	<b><%= link_to 'Make Production Stats', stats_production_functions_path%></b><br/>
 	<b><%= link_to 'Find Clients', findclients_sales_path%></b><br/>
 	<b><%= link_to 'Call Profile', callprofile_sales_path%></b><br/>
 	<b><%= link_to 'Add New Estimates to Call List (EHEH)', screenconvertcalls_sales_path%></b><br/>

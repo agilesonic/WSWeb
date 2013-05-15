@@ -1526,7 +1526,7 @@ class FunctionsController <  ApplicationController
         personal_bundle.per=per
         good_sales5='00000'+id
         if good_sales!=0
-          good_sales5=HomeHelper.pad_num5 good_sales.to_s+id
+          good_sales5=(HomeHelper.pad_num5 good_sales.to_s)+id
         end
         @indstats[(good_sales5).to_s.to_sym]=personal_bundle
       end

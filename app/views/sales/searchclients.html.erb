@@ -11,6 +11,12 @@
 				</td>
 			</tr>
 			<tr border="1" class="cell">
+				<td><%= sales.label :ass %></td>
+				<td>
+					<%=sales.select :ass, options_for_select(@ass_options, @selected_ass)%>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
 				<td><%= sales.label :low, "Low Number: " %></td>
 				<td>
 					<%= sales.text_field :low, :value=>@low, :size => 30 %>

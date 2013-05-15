@@ -1,3 +1,3 @@
 class AssignClientForm < BaseForm
-  attr_accessor :salesp, :low, :high
+  attr_accessor :ass, :salesp, :low, :high
 end

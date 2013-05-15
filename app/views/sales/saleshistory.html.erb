@@ -1,0 +1,63 @@
+<fieldset>
+	<legend>Sales History</legend>
+	<%if !@summer_jobs.nil? && !@summer_jobs.empty? then%>
+	<b>Summer Jobs</b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Job ID</b></th>
+					<th><b>Address</b></th>
+					<th><b>Job Desc</b></th>
+					<th><b>Sold By</b></th>
+					<th><b>Date Sold</b></th>
+					<th><b>Price</b></th>
+					<th><b>Type</b></th>
+					<th><b>Start Date</b></th>
+				</tr>	
+			<%@summer_jobs.each do |job|
+				  class5='cell'	
+			%>
+				<tr class=<%=class5%>>
+					<td><b><%= job.jobid %></b></td>
+					<td><b><%= job.address %></b></td>
+					<td><b><%= job.jobdesc.squeeze "" %></b></td>
+					<td><b><%= job.salesp %></b></td>
+					<td><b><%= job.datesold.to_formatted_s(:long_ordinal) %></b></td>
+					<td><b><%= number_to_currency job.price %></b></td>
+					<td><b><%= job.type %></b></td>
+					<td><b><%= job.sdate.to_formatted_s(:long_ordinal) %></b></td>
+				</tr>	
+			<%end%>
+		</table>
+	<%end%>
+	<br/><br/>
+	<%if !@fall_jobs.nil? && !@fall_jobs.empty? then%>
+	<b>Fall Jobs</b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Job ID</b></th>
+					<th><b>Address</b></th>
+					<th><b>Job Desc</b></th>
+					<th><b>Sold By</b></th>
+					<th><b>Date Sold</b></th>
+					<th><b>Price</b></th>
+					<th><b>Type</b></th>
+					<th><b>Start Date</b></th>
+				</tr>	
+			<%@fall_jobs.each do |job|
+				  class5='cell'	
+			%>
+				<tr class=<%=class5%>>
+					<td><b><%= job.jobid %></b></td>
+					<td><b><%= job.address %></b></td>
+					<td><b><%= job.jobdesc %></b></td>
+					<td><b><%= job.salesp %></b></td>
+					<td><b><%= job.datesold.to_formatted_s(:long_ordinal) %></b></td>
+					<td><b><%= number_to_currency job.price %></b></td>
+					<td><b><%= job.type %></b></td>
+					<td><b><%= job.sdate.to_formatted_s(:long_ordinal) %></b></td>
+				</tr>	
+			<%end%>
+		</table>
+	<%end%>
+
+</fieldset>

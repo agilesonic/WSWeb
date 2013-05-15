@@ -19,7 +19,6 @@ class FunctionsController <  ApplicationController
     user=@user[0]
     @username=user.username
     session[:username]=@username
-    puts "******************",pass,@username
     if !@user.empty? 
       @l='ok'
       session[:hrid]=user.HRID
@@ -48,8 +47,6 @@ class FunctionsController <  ApplicationController
     if jobid!=''
       jobid=HomeHelper.pad_id_num('JB',jobid)
     end
-    puts 'CFID**************************************************************',cfid
-    puts 'JOBID*************************************************************',jobid
     
     name=ssf[:name]
     address=ssf[:address]
@@ -715,7 +712,6 @@ class FunctionsController <  ApplicationController
     @jobs_upcoming=[]
     
     @jobs.each do |job|
-      puts job.typedesc
       if job.datetag=='2013' && ((job.typedesc!='upcomingjob') && (job.typedesc!='upcomingdnf')) 
         @jobs_2013<<job    
       end
@@ -890,10 +886,6 @@ class FunctionsController <  ApplicationController
     if @phone.eql? '' then
       @phone='Wayne Gretzky' 
     end
-    puts 'name......',@shortname
-    puts 'ADDRESS......',@address
-    puts 'PHONE......',@phone
-    puts 'Job ADDRESS......',@jobaddress
     @clients=Client.search1(@shortname, @address, @phone, @jobaddress, @cfid, @jobid)
     @clients=@clients.uniq
     if @cfid.eql? 'Wayne Gretzky' then
@@ -917,7 +909,6 @@ class FunctionsController <  ApplicationController
     if @phone.eql? 'Wayne Gretzky' then
       @phone='' 
     end
-    puts 'CLIENT SIZE****************',@clients.size
     @action='Screen Message'
     render 'logmessage'
   end
@@ -1090,13 +1081,11 @@ class FunctionsController <  ApplicationController
   def loadsatisfaction
     @sat_form=SatForm.new
     jobid=Satisfaction.maximum('jobid')
-    puts 'JOBID',jobid
     job=Job.find jobid
     datebi=job.Datebi.to_s
     year=datebi[0,4]
     month=datebi[5,2]
     day=datebi[8,2]
-#    puts syear, smonth, sday
     month=HomeHelper.get_month_from_num month
     
     @syear_options=HomeHelper::YEARS
@@ -1473,18 +1462,7 @@ class FunctionsController <  ApplicationController
     @sbs<<sb        
     stats<<sb
     
-    
-    stats.each do |value|
-      sb=value
-      puts sb.year,
-      sb.salesytd,
-      sb.salescurr,
-      sb.yesterday,
-      sb.lastseven
-    end
-    
     x=Utils.format_postal_code "m5r 2l4"
-    puts x
     
     
     #Utils.log1 "test"
@@ -1514,7 +1492,6 @@ class FunctionsController <  ApplicationController
       salesass=Convertcalls.sales_by_assist @date_summer1, @date_summer2, id
       salesdir=Convertcalls.sales_by_direct @date_summer1, @date_summer2, id
       sales=salesass.to_i+salesdir.to_i
-      puts 'NAME############',name,sales
       atts=Clientcontact.num_cfcontacts_summer2013_ind id
       attscurr=Clientcontact.num_cfcontacts_summer2013_ind_curr id, @date_summer2
       salescurr=Job.number_jobs_sold_ind_curr id, @date_summer2          
@@ -1547,7 +1524,7 @@ class FunctionsController <  ApplicationController
         per=sales*100/atts
         per5=HomeHelper.pad_num3 per
         personal_bundle.per=per
-        good_sales5=HomeHelper.pad_num5 good_sales.to_s
+        good_sales5=HomeHelper.pad_num5 good_sales.to_s+id
         @indstats[(good_sales5).to_s.to_sym]=personal_bundle
       end
     end
@@ -1555,10 +1532,8 @@ class FunctionsController <  ApplicationController
       if(total_bundle.atts!=0)
         sales=total_bundle.sales
         atts=total_bundle.atts
-        puts 'sales atts',sales,atts
         per=sales.to_i*100/atts.to_i
         per5=HomeHelper.pad_num3 per
-        puts 'per',per.to_s
         total_bundle.per=per.to_s
         @indstats[(-1).to_s.to_sym]=total_bundle
       end
@@ -1566,10 +1541,6 @@ class FunctionsController <  ApplicationController
     @indstats=@indstats.sort_by{|sales, pb| sales}
     @indstats=@indstats.reverse!
     
-    @indstats.each do |k,v|
-      puts k,v
-    end
-    puts 'DAATTTEEEE', Date.today
     Utils.deposit_indstats @indstats
     ts=Time.now.to_s 
     Utils.record_stat_time ts   
@@ -1876,7 +1847,6 @@ class FunctionsController <  ApplicationController
     ssb=ProductionStatBundle.new 
     ssb.year='2013'
     ssb.curr=Job.dollar_jobs_produced_curr @date_today_2013     
-    puts 'MMOOONNNTTTHHH',@date_today_2013.mon
     ssb.ytd=Job.dollar_jobs_produced @date_2013, @date_today_2013
     ssb.lastseven=Job.dollar_jobs_produced @date_last7_2013, @date_today_2013
     ssb.nextseven='nil'

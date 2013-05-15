@@ -212,6 +212,25 @@ class Convertcalls < ActiveRecord::Base
     where("hrid=? and numjobsls>'0'","#{hrid}").count 
   end
 
+  def self.search_assigned_by_holder_newestimates hrid
+    where("hrid=? and cfid>='CF00039366'","#{hrid}").count 
+  end
+
+
+  def self.search_assigned_by_holder_cc(hrid, r1, r2)
+    where("hrid=? and rating between ? and ?","#{hrid}","#{r1}", "#{r2}") 
+  end
+
+
+  def self.search_assigned_by_holder_lastsummer_cc hrid
+    where("hrid=? and numjobsls>'0'","#{hrid}")
+  end
+
+  def self.search_assigned_by_holder_newestimates_cc hrid
+    where("hrid=? and cfid>='CF00039366'","#{hrid}") 
+  end
+
+
 #'New Estimates','3.3=>3.6 clients','3.7=>3.9 clients'
   def self.available_new_estimates(lowcf, limit)
     where("cfid >= ? and hrid is null and (lastjob is null or lastjob<'2013-02-15') and rating= '2.5'",

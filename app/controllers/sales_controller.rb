@@ -1,8 +1,62 @@
 require 'date'
+#    puts 'NEXT CLIENT FINISH ',Time.now.to_s
+#    puts 'IN NEXT CLIENT II...',session[:num]
 
 class SalesController < ApplicationController
   layout "application1"
   protect_from_forgery
+
+  def saleshistory
+    hrid=session[:hrid]
+    emp=Employee.name_from_id hrid
+    name=emp.first.name
+    soldjobs_summer2013=Job.jobs_sold_summer_by hrid
+    soldjobs_fall2013=Job.jobs_sold_fall_by hrid
+    @summer_jobs=[]
+    @fall_jobs=[]
+    soldjobs_summer2013.each do |job|
+      job_bundle=JobBundle.new
+      job_bundle.jobdnf='job'
+      job_bundle.jobid=job.JobID
+      job_bundle.address=job.property.address
+      if job.JobDesc.size>15
+        job.JobDesc=job.JobDesc[0..15]
+      end
+      job_bundle.jobdesc=job.JobDesc
+      job_bundle.salesp=name
+      job_bundle.datesold=job.Datesold
+      job_bundle.price=job.Price
+      if(job.Sdate==job.Fdate)
+        job_bundle.type='Appt('+job.Stime+')'
+      else  
+        job_bundle.type='Fltr'
+      end
+      job_bundle.sdate=job.Sdate
+      @summer_jobs << job_bundle
+    end
+
+    soldjobs_fall2013.each do |job|
+      job_bundle=JobBundle.new
+      job_bundle.jobdnf='job'
+      job_bundle.jobid=job.JobID
+      job_bundle.address=job.property.address
+      if job.JobDesc.size>15
+        job.JobDesc=job.JobDesc[0..15]
+      end
+      job_bundle.jobdesc=job.JobDesc
+      job_bundle.salesp=name
+      job_bundle.datesold=job.Datesold
+      job_bundle.price=job.Price
+      if(job.Sdate==job.Fdate)
+        job_bundle.type='Appt('+job.Stime+')'
+      else  
+        job_bundle.type='Fltr'
+      end
+      job_bundle.sdate=job.Sdate
+      @fall_jobs << job_bundle
+    end
+
+  end
 
   def screensales
     maxdate=Convertcalls.max_datesold
@@ -11,7 +65,6 @@ class SalesController < ApplicationController
     jobs=Job.jobs_sold_after(maxdate)
     jobs.each do |job|
       c=job.client
-      puts c.CFID
       ccs=Convertcalls.find_by_cfid c.CFID
       cc=ccs.first
       if !cc.nil?
@@ -48,12 +101,12 @@ class SalesController < ApplicationController
     fdate=Date.parse(cp.fmonth.to_s+' '+cp.fday.to_s+', '+cp.fyear.to_s)
     name=cp.caller
     emps=Employee.find_by_name name
-    puts 'EHEHEHEHEH',emps.first.HRID
 
   end 
    
   def findclients
     @find_client_form=FindClientForm.new
+    @action_client_form=ActionClientForm.new
     @profile_options=HomeHelper::PROFILE_OPTIONS
     cc=Convertcalls.select(:hrid).uniq
     @callers=[]
@@ -85,6 +138,59 @@ class SalesController < ApplicationController
         @callers<<cb
       end
     end
+
+    emps=Employee.active_sales_people
+    @salesp_options=[]
+    emps.each do|emp|
+      @salesp_options<<emp.name
+    end        
+    @ass_options=HomeHelper::ASS_OPTIONS
+
+  end
+  
+  def actionclients
+    acf=ActionClientForm.new(params[:action_client_form])
+    profile=acf.profile
+    action=acf.action
+    limit=acf.limit
+    from=acf.from
+    emp=Employee.find_by_name from
+    from_hrid=emp.first.HRID
+    to=acf.to
+    emp=Employee.find_by_name to
+    to_hrid=emp.first.HRID
+#        lowcf='CF00039366'
+puts action,profile,from_hrid
+    if action=='unassign'
+    if profile=='4.0=>4.1 clients'
+      cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.0', '4.1')
+    elsif profile=='4.2=>4.3 clients'
+      cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.2', '4.3')
+    elsif profile=='4.4=>4.5 clients'
+      cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.4', '4.5')
+    elsif profile=='4.6=>4.7 clients'
+      cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.6', '4.7')
+    elsif profile=='3.7=>3.9 clients'
+      cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '3.7', '3.9')
+    elsif profile=='3.3=>3.6 clients'
+      cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '3.3', '3.6')
+    elsif profile=='New Estimates'
+      cc=Convertcalls.search_assigned_by_holder_newestimates_cc from_hrid  
+    elsif profile=='Used Us Last Summer'
+      cc=Convertcalls.search_assigned_by_holder_lastsummer_cc from_hrid  
+    end
+    puts 'CC SIZE.......',cc.size
+    lim=limit.to_i
+    cc.each do |c|
+      if i==lim
+        break 
+      end
+      c.hrid=nil
+      c.save!
+      i+=1   
+    end
+    end
+    redirect_to findclients_sales_url    
   end
   
   def searchclients
@@ -163,8 +269,8 @@ class SalesController < ApplicationController
     hrid=emp.first.HRID
     cc_select=cc[low.to_i-1, high.to_i-1]
     cc_select.each do |c|
-      c.hrid=hrid
-      c.save!
+     c.hrid=hrid
+     c.save!
     end
     redirect_to findclients_sales_url    
   end   
@@ -172,6 +278,7 @@ class SalesController < ApplicationController
   def index
     hrid=session[:hrid]    
     @cb=CallerBundle.new
+    
     emp=Employee.name_from_id hrid
     @cb.name=emp.first.name
     @cb.num=Convertcalls.search_assigned_by_holder_all hrid
@@ -266,7 +373,6 @@ class SalesController < ApplicationController
     end
     
     @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today, sf.numcalls
-    puts 'CC SIZE LOAD CLIENTS:',@cc.size
     if !@cc.empty?
       cc1=@cc.first
       cc=@cc.last
@@ -340,9 +446,6 @@ class SalesController < ApplicationController
 
   
   def nextclient
-    puts 'NEXT CLIENT START ',Time.now.to_s
-    puts 'IN NEXT CLIENT I...',session[:num]
-
     cfid=params[:id]
     @jobid1=params[:jobid1]
     @source=params[:source]
@@ -354,37 +457,22 @@ class SalesController < ApplicationController
     hrid=session[:hrid]
     profile=session[:profile]
     num=session[:num]
-    puts 'PARAMETERS',lowcf, highcf, hrid, profile, Date.today,'Num::',numcalls,'LIMIT',limit
-#    @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today, sf.numcalls
-#    @cc=Convertcalls.search_ccrange_prevnext(lowcf, limit, hrid, profile, Date.today, numcalls)
     @cc=Convertcalls.search_ccrange(lowcf, limit, hrid, profile, Date.today, numcalls)
-    puts 'CC SIZE',@cc.size
     trip=false
     num=num.to_i+1
     next_client=@cc[num]
     loop do
-      #puts 'Dates:',next_client.lastcall.to_s,Date.today.to_s
       if next_client.nil? || (!next_client.nil? &&  (next_client.lastcall.nil? || next_client.lastcall!=Date.today) )
         break
       end
       if num==@cc.size-1
         break
       end
-      puts 'NNNUUUUMMMMMM',num
       num=num.to_i+1
       next_client=@cc[num]
     end 
     session[:num]=num.to_s
     next_client=@cc[num]
-    puts 'SESSION NNNUUUUMMMMMM',num
-    if next_client.nil?
-      puts 'next_client is nil'
-    end
-    #jobid=Job.max_id
-    #jobid=jobid[2,jobid.size]
-    #jobid=jobid.to_i
-    #jobid+=1
-    #jobid=HomeHelper.pad_id_num('JB',jobid)
 
     if next_client.nil?
       highcf=highcf[2,highcf.size]
@@ -396,8 +484,6 @@ class SalesController < ApplicationController
       return
     end
     redirect_to clientprofile_function_path(:id => next_client.cfid, :jobid1=>@jobid1, :source=>@source,:function=>@function)
-    puts 'NEXT CLIENT FINISH ',Time.now.to_s
-    puts 'IN NEXT CLIENT II...',session[:num]
   end
 
   def previousclient
@@ -654,7 +740,6 @@ class SalesController < ApplicationController
   end
 
   def modifysale
-    puts 'IN EDIT SALE *************'
     @source=params[:source]
     @function=params[:function]
     @jobid=params[:jobid]
@@ -663,7 +748,6 @@ class SalesController < ApplicationController
     @nosale=params[:nosale]
     props=Property.get_property_from_jobinfoid @job.JobInfoID
     prop=props[0]
-    puts 'PPPRRROOOOOPPPPPP',prop.address
     @cfid=prop.CFID
     @esf_form=CreateSaleForm.new
     @ppr=PropPrices.new
@@ -709,7 +793,6 @@ class SalesController < ApplicationController
     @stime_options=HomeHelper::STIME
     @cagenum_options=HomeHelper::CAGES   
     @notes=Notes.get_job_notes @jobid
-    puts 'NOTES SIZE',@notes.size
     @notes_list=[]
     @notes.each do |note|
       nb=NoteBundle.new  
@@ -723,8 +806,6 @@ class SalesController < ApplicationController
     @sbs=[]
     date=HomeHelper.add_days_to_current_date(1)
     date30=HomeHelper.add_days_to_date date,30
-#    d1=Date.parse('Mar 22, 2013')
-#    d2=Date.parse('Mar 31, 2013')
   
     while date!=date30 do
       sb=ScheduleBundle.new
@@ -782,10 +863,8 @@ class SalesController < ApplicationController
     
     if(esf.w1=='1')
       w1=esf.w1price
-    puts 'WWWWWWWWWWW111111111111111111 First',w1,esf.w1price
       w1=HomeHelper.make_price_zero w1
     end    
-    puts 'WWWWWWWWWWW111111111111111111',w1,esf.w1price
     if(esf.w2=='1')
       w2=esf.w2price  
       w2=HomeHelper.make_price_zero w2
@@ -908,10 +987,8 @@ class SalesController < ApplicationController
     
     if(csf.w1=='1')
       w1=csf.w1price
-    puts 'WWWWWWWWWWW111111111111111111 First',w1,csf.w1price
       w1=HomeHelper.make_price_zero w1
     end    
-    puts 'WWWWWWWWWWW111111111111111111',w1,csf.w1price
     if(csf.w2=='1')
       w2=csf.w2price  
       w2=HomeHelper.make_price_zero w2
@@ -976,7 +1053,6 @@ class SalesController < ApplicationController
     job.Fdate=fdate
     
     jobid5=Job.max_id_prop jobinfoid
-    puts 'JOB ID5 >>>>>>>>>>>', jobinfoid,jobid5
     j5=nil
     if !jobid5.nil?
       j5=Job.find jobid5
@@ -1019,7 +1095,6 @@ class SalesController < ApplicationController
   def screenconvertcalls
     cfid1=Client.max_CFID
     cfid=Convertcalls.max_CFID
-    puts cfid,cfid1
     clients=Client.range_for_convertcalls cfid,cfid1 
     clients.each do |client|
       cc=Convertcalls.new

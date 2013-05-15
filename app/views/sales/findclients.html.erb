@@ -1,3 +1,5 @@
+<b>Hi Ho!!</b>
+
 <b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
 
 <% if !@callers.nil? %>
@@ -32,6 +34,56 @@
 				<% end %>
 			</table>
 <% end %>
+<br/><br/>
+<%= form_for @action_client_form, :url => actionclients_sales_url do |action| %>
+	<fieldset class="mystyle">
+		<legend>Find Clients</legend>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<td><%= action.label :profile %></td>
+				<td>
+					<%=action.select :profile, options_for_select(@profile_options, @selected_profile)%>
+				</td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%= action.label :action %></td>
+				<td>
+					<%=action.select :action, options_for_select(@ass_options, @selected_action)%>
+				</td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%= action.label :from %></td>
+				<td>
+					<%=action.select :from, options_for_select(@salesp_options, @selected_salesp)%>
+				</td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%= action.label :to %></td>
+				<td>
+					<%=action.select :to, options_for_select(@salesp_options, @selected_salesp)%>
+				</td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%= action.label :limit %></td>
+				<td>
+					<%= action.text_field :limit, :size => 30 %>
+				</td>
+			</tr>
+
+
+
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td>&nbsp;</td>
+				<td><%= action.submit "Action Clients" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>	
+
 <br/><br/>
 
 <%= form_for @find_client_form, :url => searchclients_sales_url do |sales| %>

@@ -3,7 +3,7 @@
 <%= form_for @login_form, :url => login_functions_url do |log| %>
 	<fieldset class="mystyle">
 		<legend>Log In Internal</legend>
-		<b>Ruby Version 1.40 &nbsp;&nbsp;May 15&nbsp;4:30 pm</b><br/>
+		<b>Ruby Version 1.41 &nbsp;&nbsp;May 16&nbsp;3:45 pm</b><br/>
  		<table class="mystyle" border="1">
 			<tr  class="cell" border="1">
 				<td><%=log.label :name %></td>
@@ -25,7 +25,8 @@
 			</tr>
 		</table>
 	<br/><br/>
-	<b>Sales History Tab shows you jobs you sold for Summer/Fall 2013.</b><br/>
-	<b>Jobs are listed by sales date in descending order.</b><br/>
+	<b>Check Sat Call status before making call. It is in green so should be easy to spot if call done already.</b><br/>
+	<b>When loading a sat call, it checks in real time.</b><br/>
+	<b>Sales History set for LAST FIVE DAYS.</b><br/>
 	</fieldset>
 <% end%>

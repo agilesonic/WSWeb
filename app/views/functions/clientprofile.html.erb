@@ -256,7 +256,9 @@
 					<td><b><%= job.minutes %></b></td>
 					<td><b><%= job.datebi %></b></td>
 					<td><b><%= job.daystopay %></b></td>
-					<td><%= link_to 'Create DNF', makednf_function_path(:jobid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+					<% if class5=='cell' %>
+						<td><%= link_to 'Create DNF', makednf_function_path(:jobid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+					<% end %>
 				</tr>	
 			<%end%>
 		</table>

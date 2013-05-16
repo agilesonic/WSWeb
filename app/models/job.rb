@@ -20,11 +20,11 @@ class Job < ActiveRecord::Base
   end
 
   def self.jobs_sold_summer_by(hrid)
-    where("sdate between '2013-04-01' and '2013-09-30' and salesid1=?","#{hrid}").order('datesold DESC')
+    where("sdate between '2013-04-01' and '2013-09-30' and salesid1=? and datesold between ? and ?","#{hrid}", Date.today-5, Date.today).order('datesold DESC')
   end
 
   def self.jobs_sold_fall_by(hrid)
-    where("sdate between '2013-10-01' and '2013-12-31' and salesid1=?","#{hrid}").order('datesold DESC')
+    where("sdate between '2013-10-01' and '2013-12-31' and salesid1=? and datesold between ? and ?","#{hrid}", Date.today-5, Date.today).order('datesold DESC')
   end
 
 

@@ -558,7 +558,8 @@ class FunctionsController <  ApplicationController
         else  
           job_bundle.type='Fltr'
         end
-        job_bundle.sdate=dnf.Sdate
+        puts nil.to_formatted_s(:long_ordinal)
+        job_bundle.sdate=dnf.Sdate.to_formatted_s(:long_ordinal)
         job_bundle.datetag='2013'
         jobs << job_bundle
       end
@@ -578,7 +579,7 @@ class FunctionsController <  ApplicationController
           sb.crewname=emp.name
         end
         sb.minutes='n/a'
-        sb.datebi=sat.SatDate
+        sb.datebi=sat.SatDate.to_formatted_s(:long_ordinal)
         if sat.SatDate>=@date_2013
           sb.datetag='2013'
         else  
@@ -613,7 +614,7 @@ class FunctionsController <  ApplicationController
       else  
         job_bundle.type='Fltr'
       end
-      job_bundle.sdate=job.Sdate
+      job_bundle.sdate=job.Sdate.to_formatted_s(:long_ordinal)
       job_bundle.datetag='2013'
 
       jobs << job_bundle
@@ -710,6 +711,12 @@ class FunctionsController <  ApplicationController
     @jobs_2013=[]
     @jobs_all=[]
     @jobs_upcoming=[]
+
+
+#        sb=JobBundle.new
+#        sb.typedesc='satjob'
+#        sb.jobdnf='sat'
+
     
     @jobs.each do |job|
       if job.datetag=='2013' && ((job.typedesc!='upcomingjob') && (job.typedesc!='upcomingdnf')) 
@@ -1149,7 +1156,7 @@ class FunctionsController <  ApplicationController
       end
       job_bundle.crewname=job.CrewName.to_s + partner.to_s
       job_bundle.minutes=job.Minutes
-      job_bundle.datebi=job.Datebi
+      job_bundle.datebi=job.Datebi.to_formatted_s(:long_ordinal)
       if !job.Recstatus.nil? && !job.Recstatus.index('Receiv').nil? && job.Recstatus.index('Receiv')>-1
          job_bundle.daystopay=job.Recstatus
           done_jobs << job_bundle

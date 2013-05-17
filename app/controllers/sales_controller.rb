@@ -180,6 +180,7 @@ puts action,profile,from_hrid
       cc=Convertcalls.search_assigned_by_holder_lastsummer_cc from_hrid  
     end
     puts 'CC SIZE.......',cc.size
+    i=0
     lim=limit.to_i
     cc.each do |c|
       if i==lim

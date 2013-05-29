@@ -11,6 +11,10 @@ class Convertcalls < ActiveRecord::Base
   end
 
 
+  def self.search_newests_zero_calls(hrid, today)
+    where("cfid>='CF00039366' and lastjob is null and summcalls='0' and hrid = ?", "#{hrid}") 
+  end
+
 
   def self.search_pendings(hrid, today)
     where("hrid = ? and laststatus=? and lastcall>'2013-04-01' and (followup is null or followup<= ? or lastcall = ?)", "#{hrid}", "Pending", today, today) 
@@ -105,6 +109,7 @@ class Convertcalls < ActiveRecord::Base
 
   def self.search_ccrange_prevnext(lowcf, limit, hrid, profile, today, numcalls)
     list=[]
+   # newests=search_newests_zero_calls(hrid, today)
     pendings=search_pendings(hrid, today)
     profiles=[]
     if profile=='New Estimates'  
@@ -148,9 +153,13 @@ class Convertcalls < ActiveRecord::Base
 
   def self.search_ccrange(lowcf, limit, hrid, profile, today,numcalls)
     list=[]
+    newests=search_newests_zero_calls(hrid, today)
     pendings=search_pendings(hrid, today)
     profiles=[]
     if profile=='New Estimates'  
+      if numcalls=='0'
+        numcalls='1'
+      end
       profiles=search_profile_ratings(lowcf, limit, hrid, today, '2.5', '2.5',numcalls)
     elsif profile=='3.3=>3.6 clients'  
       profiles=search_profile_ratings(lowcf, limit, hrid, today,'3.3', '3.6',numcalls)
@@ -167,18 +176,21 @@ class Convertcalls < ActiveRecord::Base
     elsif profile=='Used Us Last Summer'  
       profiles=search_profile_lastsummer(lowcf, limit, hrid, today,numcalls)
     end
-    if pendings.nil? && profiles.nil?
-      return list
-    elsif pendings.nil? && !profiles.nil?
-      return profiles
-    elsif !pendings.nil? && profiles.nil?
-      return pendings
-    elsif !pendings.nil? && !profiles.nil?
-      return pendings+profiles
-    else
-      return list
-    end
-    return profiles    
+    #if pendings.nil? && profiles.nil?
+    #  return list
+    #elsif pendings.nil? && !profiles.nil?
+    #  return profiles
+    #elsif !pendings.nil? && profiles.nil?
+    #  return pendings
+    #elsif !pendings.nil? && !profiles.nil?
+    #  return pendings+profiles
+    #else
+    #  return list
+    #end
+    #return profiles
+    list=newests+pendings
+    list=list+profiles
+    return list    
   end
 
   def self.search_unassigned_all
@@ -265,7 +277,7 @@ class Convertcalls < ActiveRecord::Base
     end
 
   def self.max_datesold
-    maximum(lastjob).pluck(lastjob) 
+    maximum("lastjob")
   end
 
   def self.find_by_cfid cfid

@@ -60,15 +60,16 @@ class SalesController < ApplicationController
 
   def screensales
     maxdate=Convertcalls.max_datesold
-    #maxdate1=Date.parse('2013-04-01')
-    #maxdate2=Date.parse('2013-04-02')
-    jobs=Job.jobs_sold_after(maxdate)
+    maxdate1=Date.parse('2013-04-03')
+    maxdate2=Date.parse('2013-04-04')
+    jobs=Job.jobs_sold_between(maxdate1, maxdate2)
     jobs.each do |job|
       c=job.client
       ccs=Convertcalls.find_by_cfid c.CFID
       cc=ccs.first
       if !cc.nil?
         cc.lastjob=job.Datesold
+        puts 'Updated ',c.CFID
         cc.save!
       end   
     end
@@ -374,6 +375,7 @@ puts action,profile,from_hrid
     end
     
     @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today, sf.numcalls
+    
     if !@cc.empty?
       cc1=@cc.first
       cc=@cc.last
@@ -385,26 +387,6 @@ puts action,profile,from_hrid
       session[:selected_profile] = sf.profile
       @count=Convertcalls.count_ccrange cc.cfid, hrid, sf.profile, Date.today, sf.numcalls
     end
-#    @cc=[]
-#    i=0
-#    @ccalls.each do |call|
-#      ccb=ConvertcallBundle.new
-#        
-#      ccb.num=i.to_s
-#      ccb.cfid=call.cfid
-#      client=Client.find call.cfid
-#      ccb.name=client.full_name
-#      ccb.rating=call.rating
-#      ccb.summcalls=call.summcalls
-#      ccb.laststatus=call.laststatus
-#      if call.followup.nil?
-#        ccb.followup="unknown"
-#      else
-#        ccb.followup=call.followup.to_formatted_s(:long_ordinal)
-#      end
-#      @cc<<ccb
-#      i+=1
-#    end
   end   
 
   def clientlist
@@ -445,7 +427,19 @@ puts action,profile,from_hrid
   end
 
 
-  
+  def have_prices(next_client)
+    client=Client.find next_client.cfid     
+    prices=HomeHelper::get_props_and_prices(client)
+    convert=false
+    prices.each do |price|
+     if (!price.w1.nil? && price.w1!='')||(!price.eh.nil? && price.eh!='')
+      convert=true
+      break
+     end
+    end
+    return convert
+  end
+
   def nextclient
     cfid=params[:id]
     @jobid1=params[:jobid1]
@@ -461,9 +455,9 @@ puts action,profile,from_hrid
     @cc=Convertcalls.search_ccrange(lowcf, limit, hrid, profile, Date.today, numcalls)
     trip=false
     num=num.to_i+1
-    next_client=@cc[num]
     loop do
-      if next_client.nil? || (!next_client.nil? &&  (next_client.lastcall.nil? || next_client.lastcall!=Date.today) )
+      next_client=@cc[num]
+      if next_client.nil? || (have_prices(next_client)&&!next_client.nil? &&  (next_client.lastcall.nil? || next_client.lastcall!=Date.today) )
         break
       end
       if num==@cc.size-1
@@ -509,7 +503,7 @@ puts action,profile,from_hrid
     num=num.to_i-1
     next_client=@cc[num]
     begin
-      if next_client.nil? || (!next_client.nil? &&  (next_client.lastcall.nil? || next_client.lastcall!=Date.today) )
+      if next_client.nil? || (have_prices(next_client)&&!next_client.nil? &&  (next_client.lastcall.nil? || next_client.lastcall!=Date.today) )
         break
       end
       if num==@cc.size-1
@@ -739,7 +733,23 @@ puts action,profile,from_hrid
       d1=HomeHelper.add_days_to_date(d1,1) 
     end
   end
-
+  
+  def schedule
+    date=HomeHelper.add_days_to_current_date(1)
+    date30=HomeHelper.add_days_to_date date,45
+    dates=date.to_s
+    date30s=date30.to_s
+    @sbs=[]
+    d1=date
+    d2=date30
+    while d1!=d2 do
+      sb=ScheduleBundle.new
+      sb=HomeHelper.schedule_bean d1
+      @sbs<<sb
+      d1=HomeHelper.add_days_to_date(d1,1) 
+    end
+  end
+  
   def modifysale
     @source=params[:source]
     @function=params[:function]
@@ -1098,17 +1108,26 @@ puts action,profile,from_hrid
     cfid=Convertcalls.max_CFID
     clients=Client.range_for_convertcalls cfid,cfid1 
     clients.each do |client|
-      cc=Convertcalls.new
-      cc.cfid=client.CFID
-      
-      cc.numjobsls='0'
-      cc.numjobslf='0'
-      cc.fallcalls='0'
-      cc.summcalls='0'
-      cc.package='0'
-      cc.rating='2.5'
-      cc.clientstatus='Normal Client'
-      cc.save!
+      prices=HomeHelper::get_props_and_prices(client)
+      convert=false
+      prices.each do |price|
+        if (!price.w1.nil? && price.w1!='')||(!price.eh.nil? && price.eh!='')
+          convert=true
+        end
+      end
+      if convert
+        cc=Convertcalls.new
+        cc.cfid=client.CFID
+        
+        cc.numjobsls='0'
+        cc.numjobslf='0'
+        cc.fallcalls='0'
+        cc.summcalls='0'
+        cc.package='0'
+        cc.rating='2.5'
+        cc.clientstatus='Normal Client'
+        cc.save!
+      end
     end
     redirect_to login1_functions_url 
   end

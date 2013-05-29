@@ -186,6 +186,26 @@ module HomeHelper
       end
     end
 
+    def self.day_of_week i
+      if i==0
+        return 'Sun'
+      elsif i==1
+        return 'Mon'
+      elsif i==2
+        return 'Tue'
+      elsif i==3
+        return 'Wed'
+      elsif i==4
+        return 'Thu'
+      elsif i==5
+        return 'Fri'
+      elsif i==6
+        return 'Sat'
+      else
+        return 'unknown'  
+      end
+    end
+
     def self.schedule_bean(d1)    
       eights=Job.search_schedule_times(d1,'8:00 AM')
       as=Apptsched.search_limits d1, '8:00 AM'

@@ -28,9 +28,15 @@
 				%>
 			        <% date=Date.parse('2013-04-01')
 			           today5=Date.today
-			        if c.laststatus=='Pending' && c.lastcall>date && c.lastcall!=today5%>
+			           class5="cell"
+			        if c.laststatus=='Pending' && c.lastcall>date && c.lastcall!=today5
+			            class5="redblackcell"%>
 			    		<tr border="1" class="redblackcell">
-			        <%elsif c.lastcall==today5%>
+			        <%elsif c.cfid>='CF00039366' && c.lastjob.nil? && c.summcalls=='0' && c.lastcall!=today5
+			            class5="blackyellowcell"%>
+			    		<tr border="1" class="blackyellowcell">
+			        <%elsif c.lastcall==today5
+			            class5="blackredcell"%>
 			    		<tr border="1" class="blackredcell">
 			        <%else%>
 			    		<tr border="1" class="cell">
@@ -51,7 +57,11 @@
 						<td><%= c.laststatus %></td>
 						<td><%= lastcall %></td>
 						<td><%= followup %></td>
-						<td><%= link_to 'Call Client', clientprofile_function_path(:id => c.cfid, :num=>i, :source=>'callclient',:function=>'callclient'),:style=>"color: yellow"%></td>
+			            <% if class5=="blackyellowcell"%>
+							<td><%= link_to 'Call Client', clientprofile_function_path(:id => c.cfid, :num=>i, :source=>'callclient',:function=>'callclient'),:style=>"color: black"%></td>
+			            <%else%>
+							<td><%= link_to 'Call Client', clientprofile_function_path(:id => c.cfid, :num=>i, :source=>'callclient',:function=>'callclient'),:style=>"color: yellow"%></td>
+						<%end%>
 					</tr>
 				<% 
 				i+=1

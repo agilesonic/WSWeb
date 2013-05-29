@@ -1,0 +1,44 @@
+
+<fieldset class="mystyle">
+	<legend>Show Schedule</legend>
+	<%if !@sbs.nil? && !@sbs.empty?%>
+			<table border="1" class="mystyle">
+				<tr border="1" class="cell">
+					<td>Date</td>
+					<td>8 AM</td>
+					<td>10 AM</td>
+					<td>12 PM</td>
+					<td>Anytime</td>
+				</tr>
+	
+	 		<%@sbs.each do |sb|
+	 			date=sb.date.to_formatted_s(:long_ordinal)
+	 			day=sb.date.wday
+	 			if day==1
+	 				day='Mon'
+	 			elsif day==2
+	 				day='Tue'
+	 			elsif day==3
+	 				day='Wed'
+	 			elsif day==4
+	 				day='Thu'
+	 			elsif day==5
+	 				day='Fri'
+	 			elsif day==6
+	 				day='Sat'
+	 			elsif day==0
+	 				day='Sun'
+	 			end
+	 		%>
+				<tr border="1" class="cell">
+					<td><%=day%>&nbsp;&nbsp;&nbsp;<%=date%></td>
+					<td class="<%=sb.lim8 %>" ><%=sb.eights%></td>
+					<td class="<%=sb.lim10 %>"><%=sb.tens%></td>
+					<td class="<%=sb.lim12 %>"><%=sb.twelves%></td>
+					<td class="<%=sb.limany %>"><%=sb.anytimes%></td>
+				</tr>
+	
+		   <%end%>
+		</table>
+	<%end%>
+</fieldset>

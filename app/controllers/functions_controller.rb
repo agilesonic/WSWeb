@@ -2,6 +2,7 @@ class FunctionsController <  ApplicationController
   layout "application1"
   
   def new
+    @mess=params[:mess]
     @login_form=Login1Form.new
   end
   
@@ -11,19 +12,17 @@ class FunctionsController <  ApplicationController
 
   def login
     login_form=params[:login1_form]
-    #login_form = Login1Form.new(params[:login1_form])
-
     name=login_form[:name]
     pass=login_form[:password]
     @user=InternalUser.search(name,pass)  #@user is an array of InternalUser
-    user=@user[0]
-    @username=user.username
-    session[:username]=@username
     if !@user.empty? 
       @l='ok'
+      user=@user[0]
+      @username=user.username
+      session[:username]=@username
       session[:hrid]=user.HRID
     else  
-      redirect_to new_function_url
+      redirect_to new_function_url(:mess=>'*****Incorrect Username/Password*****')
     end
   end
   
@@ -765,6 +764,7 @@ class FunctionsController <  ApplicationController
     client.fax  =ecf.fax
     client.email  =ecf.email
     client.contactstatus= ecf.contactstatus
+    
     client.save!
     
     cc=Convertcalls.find cfid

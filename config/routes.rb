@@ -43,6 +43,7 @@ WSWeb::Application.routes.draw do
       get 'stats1'
       get 'stats_schedule'
       get 'stats_production'
+      get 'new'
     end
     member do
       get 'new'
@@ -77,6 +78,7 @@ WSWeb::Application.routes.draw do
       get 'screensales' 
       post 'actionclients'
       get 'saleshistory'
+      get 'schedule'
     end
     member do
 #      get 'loadclient'  # /clients/:id/changeAddress   helper_method: changeAddress_client_path(:id)

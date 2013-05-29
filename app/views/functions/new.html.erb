@@ -1,9 +1,10 @@
-
-
 <%= form_for @login_form, :url => login_functions_url do |log| %>
 	<fieldset class="mystyle">
+	<%if !@mess.nil?%>
+		<b><%=@mess%></b><br/><br/>
+	<%end%>
 		<legend>Log In Internal</legend>
-		<b>Ruby Version 1.43 &nbsp;&nbsp;May 17&nbsp;12 pm</b><br/>
+		<b>Ruby Version 1.44 &nbsp;&nbsp;May 29&nbsp;1:30 am</b><br/>
  		<table class="mystyle" border="1">
 			<tr  class="cell" border="1">
 				<td><%=log.label :name %></td>
@@ -25,8 +26,8 @@
 			</tr>
 		</table>
 	<br/><br/>
-	<b>Check Sat Call status before making call. It is in green so should be easy to spot if call done already.</b><br/>
-	<b>When loading a sat call, it checks in real time.</b><br/>
-	<b>Sales History set for LAST FIVE DAYS.</b><br/>
+	<b>There is a schedule tab in Main Menu. Calls to New Estimates are limited to clients with prices that have not booked yet.</b><br/>
+	<b>Call List shows up with estimates with zero calls followed by Pendings followed by requested list. Calls to clients with </b><br/>
+	<b>zero calls is a priority. If your list skips, this means there are no prices or a job is sold already.</b>
 	</fieldset>
 <% end%>

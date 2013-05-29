@@ -19,6 +19,11 @@ class Job < ActiveRecord::Base
     where("datesold>= ?",date)
   end
 
+  def self.jobs_sold_between(date1, date2)
+    where("datesold between ? and ?",date1, date2)
+  end
+
+
   def self.jobs_sold_summer_by(hrid)
     where("sdate between '2013-04-01' and '2013-09-30' and salesid1=? and datesold between ? and ?","#{hrid}", Date.today-5, Date.today).order('datesold DESC')
   end

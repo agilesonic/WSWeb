@@ -19,6 +19,9 @@ module HomeHelper
     CLIENT_CONTACT_STATUS=['Normal Client', 'No Phone Call', 'No Mail', 'No Phone Call and No Mail', 'Ask Client To Pay Promptly',
                            "Client doesn't want us", "We don't want the client"]
     
+    SCHEDULING_NOTES=['MON => Markham, Thornhill, Richmond Hill','TUES => Scarborough','WED => Woodbridge, Vaughan',
+      'THURS => Mississauga, Oakville, Brampton','FRI => Keep light for Rain Days','SAT => 1/2 Crews working and 50% more labor cost']
+    
     def self.add_days_to_current_date(days)
         date=Date.today+days
     end

@@ -1,6 +1,9 @@
 
 <fieldset class="mystyle">
 	<legend>Show Schedule</legend>
+	<%@sched_notes.each do |sched|%>
+		<b><%=sched%></b><br/>		
+	<%end%><br/><br/> 
 	<%if !@sbs.nil? && !@sbs.empty?%>
 			<table border="1" class="mystyle">
 				<tr border="1" class="cell">

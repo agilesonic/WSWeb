@@ -726,6 +726,8 @@ puts action,profile,from_hrid
 #    d1=Date.parse('Mar 22, 2013')
 #    d2=Date.parse('Mar 31, 2013')
   
+    @sched_notes=HomeHelper::SCHEDULING_NOTES
+  
     while d1!=d2 do
       sb=ScheduleBundle.new
       sb=HomeHelper.schedule_bean d1
@@ -735,6 +737,7 @@ puts action,profile,from_hrid
   end
   
   def schedule
+    @sched_notes=HomeHelper::SCHEDULING_NOTES
     date=HomeHelper.add_days_to_current_date(1)
     date30=HomeHelper.add_days_to_date date,45
     dates=date.to_s

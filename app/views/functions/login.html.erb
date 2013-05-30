@@ -15,7 +15,10 @@
 	<b><%= link_to 'Find Clients', findclients_sales_path%></b><br/>
 	<b><%= link_to 'Call Profile', callprofile_sales_path%></b><br/>
 	<b><%= link_to 'Add New Estimates to Call List (EHEH)', screenconvertcalls_sales_path%></b><br/>
-	<b><%= link_to 'Add Sale Info to Call List (EHEH)', screensales_sales_path%></b><br/>
+	<b><%= link_to 'Add Sale Info to Call List (EHEH)', screensales_sales_path%></b><br/><br/>
+	<%if !@messsales.nil?%>
+		<b><%=@messsales%></b>
+	<%end%> 
 <%end%>
 
 </fieldset>

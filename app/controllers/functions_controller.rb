@@ -28,6 +28,8 @@ class FunctionsController <  ApplicationController
   
   def login1
     @username=session[:username]
+    @messsales=params[:messsales]
+    puts 'FUUCCCKK YYOOOUU',@messsales
     render 'login'
   end
   

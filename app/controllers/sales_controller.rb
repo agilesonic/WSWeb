@@ -63,7 +63,12 @@ class SalesController < ApplicationController
     puts 'MAAXXXDDDAAATEEE',maxdate
     #maxdate1=Date.parse('2013-04-03')
     #maxdate2=Date.parse('2013-04-04')
-    jobs=Job.jobs_sold_between(maxdate, Date.today)
+    if Utils.get_jobid.nil?
+      jobs=Job.jobs_sold_between(maxdate, Date.today, 'JB00000001')
+    else
+      jb=Utils.get_jobid
+      jobs=Job.jobs_sold_between(maxdate, Date.today, jb)
+    end
     jobs.each do |job|
       c=job.client
       ccs=Convertcalls.find_by_cfid c.CFID
@@ -74,7 +79,12 @@ class SalesController < ApplicationController
         cc.save!
       end   
     end
-    redirect_to login1_functions_url    
+    if(jobs.size!=0)
+      lastjob=jobs.last
+      Utils.set_jobid lastjob.JobID
+    end
+    mess="Screened Sales Up To Job ID:"+Utils.get_jobid
+    redirect_to login1_functions_url(:messsales=> mess)    
   end
 
 
@@ -1108,6 +1118,7 @@ puts action,profile,from_hrid
   end
 
   def screenconvertcalls
+    Utils.set_jobid nil
     cfid1=Client.max_CFID
     cfid=Convertcalls.max_CFID
     clients=Client.range_for_convertcalls cfid,cfid1 
@@ -1132,7 +1143,7 @@ puts action,profile,from_hrid
         cc.clientstatus='Normal Client'
         cc.save!
     end
-    redirect_to login1_functions_url 
+    redirect_to login1_functions_url(:messsales=>"Added "+clients.size.to_s+" CFs to Call Base!!") 
   end
 
 

@@ -1,4 +1,5 @@
 class Utils
+  @@jobid=nil
   @@stats=[]
   @@indstats=[]
   @@stat_time
@@ -13,6 +14,14 @@ class Utils
   
   def self.get_stat_time
     @@stat_time
+  end 
+
+  def self.get_jobid
+    @@jobid
+  end 
+  
+  def self.set_jobid jobid5
+    @@jobid=jobid5
   end 
   
   def self.deposit_stats(stats1)  

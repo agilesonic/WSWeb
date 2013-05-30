@@ -60,16 +60,17 @@ class SalesController < ApplicationController
 
   def screensales
     maxdate=Convertcalls.max_datesold
-    maxdate1=Date.parse('2013-04-03')
-    maxdate2=Date.parse('2013-04-04')
-    jobs=Job.jobs_sold_between(maxdate1, maxdate2)
+    puts 'MAAXXXDDDAAATEEE',maxdate
+    #maxdate1=Date.parse('2013-04-03')
+    #maxdate2=Date.parse('2013-04-04')
+    jobs=Job.jobs_sold_between(maxdate, Date.today)
     jobs.each do |job|
       c=job.client
       ccs=Convertcalls.find_by_cfid c.CFID
       cc=ccs.first
       if !cc.nil?
         cc.lastjob=job.Datesold
-        puts 'Updated ',c.CFID
+        puts 'Updated ',c.CFID,job.Datesold
         cc.save!
       end   
     end
@@ -1116,6 +1117,7 @@ puts action,profile,from_hrid
       prices.each do |price|
         if (!price.w1.nil? && price.w1!='')||(!price.eh.nil? && price.eh!='')
           convert=true
+          break
         end
       end
       if convert

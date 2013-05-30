@@ -1112,15 +1112,14 @@ puts action,profile,from_hrid
     cfid=Convertcalls.max_CFID
     clients=Client.range_for_convertcalls cfid,cfid1 
     clients.each do |client|
-      prices=HomeHelper::get_props_and_prices(client)
-      convert=false
-      prices.each do |price|
-        if (!price.w1.nil? && price.w1!='')||(!price.eh.nil? && price.eh!='')
-          convert=true
-          break
-        end
-      end
-      if convert
+#      prices=HomeHelper::get_props_and_prices(client)
+#      convert=false
+#      prices.each do |price|
+#        if (!price.w1.nil? && price.w1!='')||(!price.eh.nil? && price.eh!='')
+#          convert=true
+#          break
+#        end
+#      end
         cc=Convertcalls.new
         cc.cfid=client.CFID
         
@@ -1132,7 +1131,6 @@ puts action,profile,from_hrid
         cc.rating='2.5'
         cc.clientstatus='Normal Client'
         cc.save!
-      end
     end
     redirect_to login1_functions_url 
   end

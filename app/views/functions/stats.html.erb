@@ -35,10 +35,40 @@
 		</table>
 <%end%>
 <br/><br/>
+<%if !@indstats7.nil? && !@indstats7.empty? then%>
+		<b>Individual Performance Last Seven Days(Summer Sales)&nbsp;&nbsp;&nbsp;Stats Last Generated:<%=@ts_ind7%></b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Name</b></th>
+					<th><b>Sales</b></th>
+					<th><b>Direct Sales</b></th>
+					<th><b>Assisted Sales</b></th>
+					<th><b>Attempts</b></th>
+					<th><b>Percentage</b></th>
+					<th><b>Attempts Today</b></th>
+					<th><b>Call In Sales Today</b></th>
+					
+				</tr>	
+			<%@indstats7.each do |k,v|
+			  	
+			%>
+				<tr class='cell'>
+					<td><b><%= v.name5%></b></td>
+					<td><b><%= v.sales %></b></td>
+					<td><b><%= v.salesdir %></b></td>
+					<td><b><%= v.salesass %></b></td>
+					<td><b><%= v.atts %></b></td>
+					<td><b><%= v.per %></b></td>
+					<td><b><%= v.attscurr %></b></td>
+					<td><b><%= v.salescurr %></b></td>
+				</tr>	
+			<%end%>
+		</table>
+<%end%>
+<br/><br/>
 
-<b>Stats Last Generated:<%=@ts_ind%></b><br/><br/>
 <%if !@indstats.nil? && !@indstats.empty? then%>
-		<b>Individual Performance(Summer Sales)&nbsp;&nbsp;&nbsp;Stats Last Generated:<%=@ts_ind%></b>
+		<b>Individual Performance YTD(Summer Sales)&nbsp;&nbsp;&nbsp;Stats Last Generated:<%=@ts_ind%></b>
 		<table border="1" class="mystyle">
 				<tr class="cell">
 					<th><b>Name</b></th>

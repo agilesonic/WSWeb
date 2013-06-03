@@ -100,45 +100,128 @@
 	<fieldset class="function">
 	<legend>Function Call Client</legend>
 	
-		<%if !@jobs_2013.nil? && !@jobs_2013.empty? then%>
-		<b>Upcoming Jobs</b>
-			<table border="1" class="mystyle">
-					<tr class="cell">
-						<th><b>Job ID</b></th>
-						<th><b>Address</b></th>
-						<th><b>Job Desc</b></th>
-						<th><b>Price</b></th>
-						<th><b>Type</b></th>
-						<th><b>Start Date</b></th>
-						<th><b>Date Done</b></th>
-						<th><b>Crewname</b></th>
-					</tr>	
-				<%@jobs_2013.each do |job|
-				  class5='cell'	
-				  if job.jobdnf=='dnf'
-				  	class5='dnf'
-				  elsif	job.jobdnf=='sat'
-				  	class5='sat'
-				  end	
-            	%>
-					<tr class="<%=class5%>">
-						<td><b><%= job.jobid%></b></td>
-						<td><b><%= job.address %></b></td>
-						<td><b><%= job.jobdesc %></b></td>
-						<td><b><%= number_to_currency job.price %></b></td>
-						<td><b><%= job.type %></b></td>
-						<td><b><%= job.sdate %></b></td>
-						<td><b><%= job.datebi %></b></td>
-						<td><b><%= job.crewname %></b></td>
-					</tr>	
-				<%end%>
-			</table>
+<%if !@prices_all.nil? && !@prices_all.empty? then%>
+<b><font color="black">Properties</font></b>
+	<table border="1" class="mystyle">
+			<tr>
+				<th><b>Address</b></th>
+				<th><b>Post Code</b></th>
+				<th><b>Perly</b></th>
+				<th><b>W1 Price</b></th>
+				<th><b>EH Price</b></th>
+				<th><b>EG Price</b></th>
+			</tr>	
+		<%@prices_all.each do |pr|%>
+			<tr>
+				<td><b><%= pr.address %></b></td>
+				<td><b><%= pr.post_code %></b></td>
+				<td><b><%= pr.perly %></b></td>
+				<td><b><%= number_to_currency pr.w1 %></b></td>
+				<td><b><%= number_to_currency pr.eh %></b></td>
+				<td><b><%= number_to_currency pr.eg %></b></td>
+				<td><%= link_to 'Make Sale', makesale_sale_path(:jobinfoid => pr.id, :jobid1=>@jobid1, :source => @source, :function=>@function),:style=>"color: yellow"%></td>
+			</tr>	
 		<%end%>
-		<br/>
+	</table>
+<%end%>
+<br/>
+
+
+<%if !@jobs_upcoming.nil? && !@jobs_upcoming.empty? then%>
+<b><font color="black">Upcoming Jobs</font></b>
+	<table border="1" class="mystyle">
+			<tr>
+				<th><b>Job ID</b></th>
+				<th><b>Address</b></th>
+				<th><b>Job Desc</b></th>
+				<th><b>Price</b></th>
+				<th><b>Sold By</b></th>
+				<th><b>Date Sold</b></th>
+				<th><b>Type</b></th>
+				<th><b>Start Date</b></th>
+			</tr>	
+		<%@jobs_upcoming.each do |job|
+			  class5='cell'	
+			  if job.jobdnf=='dnf'
+			  	class5='dnf'
+			  elsif	job.jobdnf=='sat'
+			  	class5='sat'
+			  end	
+		%>
+			<tr class=<%=class5%>>
+				<td><b><%= job.jobid %></b></td>
+				<td><b><%= job.address %></b></td>
+				<td><b><%= job.jobdesc %></b></td>
+				<td><b><%= number_to_currency job.price %></b></td>
+				<td><b><%= job.salesp %></b></td>
+				<td><b><%= job.datesold %></b></td>
+				<td><b><%= job.type %></b></td>
+				<td><b><%= job.sdate %></b></td>
+				<%if job.jobdnf=='job'%>
+					<td><%= link_to 'Edit Sale', modifysale_sale_path(:jobid => job.jobid, :jobid1=>@jobid1,  :source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+					<td><%= link_to 'Delete Sale', deletesale_sale_path(:id=>@cfid, :jobid => job.jobid, :jobid1=>@jobid1,  :source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+				<%elsif  job.jobdnf=='dnf'%>
+					<td><%= link_to 'Edit DNF', modifydnf_function_path(:dnfid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+				<%end%>					
+
+			</tr>	
+		<%end%>
+	</table>
+<%end%>
+<br/>
+
+<%if !@jobs_2013.nil? && !@jobs_2013.empty? then%>
+<b><font color="black">2013 Completed Jobs</font></b>
+	<table border="1" class="mystyle">
+			<tr>
+				<th><b>Job ID</b></th>
+				<th><b>Address</b></th>
+				<th><b>Job Desc</b></th>
+				<th><b>Price</b></th>
+				<th><b>Sold By</b></th>
+				<th><b>Date Sold</b></th>
+				<th><b>Date Done</b></th>
+				<th><b>Crew</b></th>
+				<th><b>Minutes</b></th>
+			</tr>	
+		<%@jobs_2013.each do |job|
+			  class5='cell'	
+			  if job.jobdnf=='dnf'
+			  	class5='dnf'
+			  elsif	job.jobdnf=='sat'
+			  	class5='sat'
+			  end	
+		%>
+			<tr class=<%=class5%>>
+				<td><b><%= job.jobid %></b></td>
+				<td><b><%= job.address %></b></td>
+				<td><b><%= job.jobdesc %></b></td>
+				<td><b><%= number_to_currency job.price %></b></td>
+				<td><b><%= job.salesp %></b></td>
+				<td><b><%= job.datesold %></b></td>
+				<td><b><%= job.datebi %></b></td>
+				<td><b><%= job.crewname %></b></td>
+				<td><b><%= job.minutes %></b></td>
+
+				<%if  job.jobdnf=='dnf'%>
+					<td><%= link_to 'Edit DNF', modifydnf_function_path(:dnfid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+			    <%elsif job.jobdnf=='job'%>		
+					<td><%= link_to 'Create DNF', makednf_function_path(:jobid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+					<%if job.sat.nil?%>
+						<td><%= link_to 'Satisfaction Call', satisfaction_from_client_profile_function_path(:id => @cfid, :jobid1=>job.jobid, :source=>'satcall',:function=>'satcall'),{:style=>"color: yellow"}%></td>
+					<%end%>
+				<%end%>					
+
+			</tr>	
+		<%end%>
+	</table>
+<%end%>
+<br/>
 
 	
 	
 		<% if !@calls.nil? then %>
+		<b><font color="black">Call History</font></b>
 			<table border="1" class="mystyle">
 				<tr border="1" class="cell">
 					<th>Status</th>
@@ -341,9 +424,9 @@
 				<th><b>Job ID</b></th>
 				<th><b>Address</b></th>
 				<th><b>Job Desc</b></th>
+				<th><b>Price</b></th>
 				<th><b>Sold By</b></th>
 				<th><b>Date Sold</b></th>
-				<th><b>Price</b></th>
 				<th><b>Type</b></th>
 				<th><b>Start Date</b></th>
 			</tr>	

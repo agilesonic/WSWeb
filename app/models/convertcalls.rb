@@ -17,7 +17,7 @@ class Convertcalls < ActiveRecord::Base
 
 
   def self.search_pendings(hrid, today)
-    where("hrid = ? and laststatus=? and lastcall>'2013-04-01' and (followup is null or followup<= ? or lastcall = ?)", "#{hrid}", "Pending", today, today) 
+    where("hrid = ? and laststatus=? and lastcall>'2013-04-01' and (lastjob is null or lastjob<'2013-02-15') and (followup is null or followup<= ? or lastcall = ?)", "#{hrid}", "Pending", today, today) 
   end
 
 #_______________________________________________________________________________________________________________

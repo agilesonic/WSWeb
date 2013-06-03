@@ -1292,8 +1292,10 @@ class FunctionsController <  ApplicationController
   def stats1
     @sbs=Utils.withdraw_stats
     @indstats=Utils.withdraw_indstats
+    @indstats7=Utils.withdraw_indstats7
     @ts_co=Utils.get_stat_co_time   
     @ts_ind=Utils.get_stat_ind_time   
+    @ts_ind7=Utils.get_stat_ind_time7   
     render 'stats'
   end
   
@@ -1556,6 +1558,84 @@ class FunctionsController <  ApplicationController
     Utils.record_stat_ind_time ts   
     redirect_to login1_functions_url
   end
+
+  def ind_stats_7
+    @date_summer1=Date.today-7
+    @date_summer2=Date.today
+    
+    ids=Clientcontact.callers
+
+    @indstats7={}     
+    personal_bundle=PersonalBundle.new
+    total_bundle=PersonalBundle.new
+    total_bundle.name5='Total'
+    total_bundle.sales='0'
+    total_bundle.atts='0'
+    total_bundle.attscurr='0'
+    total_bundle.salescurr='0'
+    
+    ids.each do |id|
+      personal_bundle=PersonalBundle.new
+      emps=Employee.name_from_id id
+      name=emps.first.name  
+      salesass=Convertcalls.sales_by_assist @date_summer1, @date_summer2, id
+      salesdir=Convertcalls.sales_by_direct @date_summer1, @date_summer2, id
+      sales=salesass.to_i+salesdir.to_i
+      atts=Clientcontact.num_cfcontacts_summer2013_ind id
+      attscurr=Clientcontact.num_cfcontacts_summer2013_ind_curr id, @date_summer2
+      salescurr=Job.number_jobs_sold_ind_curr id, @date_summer2          
+      personal_bundle.name5=name
+      personal_bundle.salesass=salesass
+      personal_bundle.salesdir=salesdir
+      personal_bundle.sales=sales
+      totsales=total_bundle.sales.to_i+sales.to_i
+      total_bundle.sales=totsales.to_s
+      
+      personal_bundle.atts=atts
+      totatts=total_bundle.atts.to_i+atts.to_i
+      total_bundle.atts=totatts.to_s
+      
+      personal_bundle.attscurr=attscurr
+      totattscurr=total_bundle.attscurr.to_i+attscurr.to_i
+      total_bundle.attscurr=totattscurr.to_s
+
+      personal_bundle.salescurr=salescurr
+      totsalescurr=total_bundle.salescurr.to_i+salescurr.to_i
+      total_bundle.salescurr=totsalescurr.to_s
+
+      good_sales=salesass.to_i+salesdir.to_i
+
+      if(atts!=0)
+        per=sales*100/atts
+        per5=HomeHelper.pad_num3 per
+        personal_bundle.per=per
+        good_sales5='00000'+id
+        if good_sales!=0
+          good_sales5=(HomeHelper.pad_num5 good_sales.to_s)+id
+        end
+        @indstats7[(good_sales5).to_s.to_sym]=personal_bundle
+      end
+    end
+
+      if(total_bundle.atts!=0)
+        sales=total_bundle.sales
+        atts=total_bundle.atts
+        per=sales.to_i*100/atts.to_i
+        per5=HomeHelper.pad_num3 per
+        total_bundle.per=per.to_s
+        @indstats7[(-1).to_s.to_sym]=total_bundle
+      end
+    
+    @indstats7=@indstats7.sort_by{|sales, pb| sales}
+    @indstats7=@indstats7.reverse!
+    
+    Utils.deposit_indstats7 @indstats7
+    ts=Time.now.to_s 
+    Utils.record_stat_ind_time7 ts   
+    redirect_to login1_functions_url
+  end
+
+
    
   def stats_schedule
     @sched_stats=[]

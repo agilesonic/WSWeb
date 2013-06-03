@@ -2,8 +2,10 @@ class Utils
   @@jobid=nil
   @@stats=[]
   @@indstats=[]
-  @@stat_co_time
-  @@stat_ind_time
+  @@indstats7=[]
+  @@stat_co_time=nil
+  @@stat_ind_time=nil
+  @@stat_ind_time7=nil
   
   def self.log(message)
     puts Date.new.to_s + " " + message
@@ -23,6 +25,14 @@ class Utils
   
   def self.get_stat_ind_time
     @@stat_ind_time
+  end 
+
+  def self.record_stat_ind_time7(ts)
+    @@stat_ind_time7=ts
+  end 
+  
+  def self.get_stat_ind_time7
+    @@stat_ind_time7
   end 
 
 
@@ -52,6 +62,15 @@ class Utils
     @@indstats
   end
     
+  def self.deposit_indstats7(stats1)  
+    @@indstats7=stats1
+  end
+
+  def self.withdraw_indstats7  
+    @@indstats7
+  end
+
+
   def self.format_postal_code(s)
     postal_code = ''
     if !s.nil?

@@ -411,6 +411,28 @@ fieldset legend {
 		background:blue;
 		color:white;
 	}
+
+	table.blackyellow{
+		font-weight:bold;
+		background:yellow;
+		color:black;
+	}
+
+	table.redyellow{
+		font-weight:bold;
+		background:yellow;
+		color:red;
+	}
+
+	table.blueyellow{
+		font-weight:bold;
+		background:yellow;
+		color:blue;
+	}
+
+
+
+
 	
 	td.mia{
 		font-weight:bold;

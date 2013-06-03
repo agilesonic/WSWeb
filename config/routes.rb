@@ -41,6 +41,7 @@ WSWeb::Application.routes.draw do
       get 'login1'
       get 'co_stats'
       get 'ind_stats'
+      get 'ind_stats_7'
       get 'stats1'
       get 'stats_schedule'
       get 'stats_production'

@@ -29,7 +29,6 @@ class FunctionsController <  ApplicationController
   def login1
     @username=session[:username]
     @messsales=params[:messsales]
-    puts 'FUUCCCKK YYOOOUU',@messsales
     render 'login'
   end
   
@@ -1293,11 +1292,12 @@ class FunctionsController <  ApplicationController
   def stats1
     @sbs=Utils.withdraw_stats
     @indstats=Utils.withdraw_indstats
-    @ts=Utils.get_stat_time   
+    @ts_co=Utils.get_stat_co_time   
+    @ts_ind=Utils.get_stat_ind_time   
     render 'stats'
   end
   
-  def stats
+  def co_stats
     @sbs=[]
     stats=[]
     sb=StatBundle.new
@@ -1308,8 +1308,6 @@ class FunctionsController <  ApplicationController
     @date_2011=@date_2010 >> 12
     @date_2012=@date_2011 >> 12
     @date_2013=@date_2012 >> 12
-    
-
 
     @date_today_2013=today
     @date_last7_2013=HomeHelper.add_days_to_date @date_today_2013 , -8
@@ -1336,7 +1334,6 @@ class FunctionsController <  ApplicationController
     @date_three_2011=HomeHelper.add_days_to_date @date_today_2011 , 3
     @date_four_2011=HomeHelper.add_days_to_date @date_today_2011 , 4
     @date_five_2011=HomeHelper.add_days_to_date @date_today_2011 , 5
-    
     
     @date_today_2010=@date_today_2011 << 12
     @date_today_2010=HomeHelper.add_days_to_date @date_today_2010 , -6
@@ -1379,7 +1376,6 @@ class FunctionsController <  ApplicationController
     @date_summer_2011=Date.parse('2011-09-30')
     @date_summer_2012=Date.parse('2012-09-30')
     @date_summer_2013=Date.parse('2013-09-30')
-    
 
     sb=StatBundle.new
     sb.year=@date_2013.to_s[0,4]
@@ -1476,11 +1472,20 @@ class FunctionsController <  ApplicationController
     
     #Utils.log1 "test"
     Utils.deposit_stats stats
-    
+    ts=Time.now.to_s 
+    Utils.record_stat_co_time ts
+    redirect_to login1_functions_url
+  end
+#___________________________________________________________________________________________________    
+#___________________________________________________________________________________________________    
+#___________________________________________________________________________________________________    
+#___________________________________________________________________________________________________
+
+  def ind_stats
     @date_summer1=Date.parse('2013-04-01')
     @date_summer2=Date.today
     
-    ids=Job.sales_people
+    ids=Clientcontact.callers
 
     @indstats={}     
     personal_bundle=PersonalBundle.new
@@ -1490,11 +1495,8 @@ class FunctionsController <  ApplicationController
     total_bundle.atts='0'
     total_bundle.attscurr='0'
     total_bundle.salescurr='0'
-
-    
     
     ids.each do |id|
-  #    personal_bundle.
       personal_bundle=PersonalBundle.new
       emps=Employee.name_from_id id
       name=emps.first.name  
@@ -1504,7 +1506,6 @@ class FunctionsController <  ApplicationController
       atts=Clientcontact.num_cfcontacts_summer2013_ind id
       attscurr=Clientcontact.num_cfcontacts_summer2013_ind_curr id, @date_summer2
       salescurr=Job.number_jobs_sold_ind_curr id, @date_summer2          
-      #, :attscurr, :salesallcurr
       personal_bundle.name5=name
       personal_bundle.salesass=salesass
       personal_bundle.salesdir=salesdir
@@ -1523,11 +1524,8 @@ class FunctionsController <  ApplicationController
       personal_bundle.salescurr=salescurr
       totsalescurr=total_bundle.salescurr.to_i+salescurr.to_i
       total_bundle.salescurr=totsalescurr.to_s
-      
 
       good_sales=salesass.to_i+salesdir.to_i
-
-
 
       if(atts!=0)
         per=sales*100/atts
@@ -1555,7 +1553,8 @@ class FunctionsController <  ApplicationController
     
     Utils.deposit_indstats @indstats
     ts=Time.now.to_s 
-    Utils.record_stat_time ts   
+    Utils.record_stat_ind_time ts   
+    redirect_to login1_functions_url
   end
    
   def stats_schedule

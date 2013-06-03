@@ -1,7 +1,6 @@
 <b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
-<b>Stats Last Generated:<%=@ts%></b><br/><br/>
 <%if !@sbs.nil? && !@sbs.empty? then%>
-		<b>Company Summer Sales</b>
+		<b>Company Summer Sales&nbsp;&nbsp;&nbsp;Stats Last Generated:<%=@ts_co%></b>
 		<table border="1" class="mystyle">
 				<tr class="cell">
 					<th><b>YEAR</b></th>
@@ -35,11 +34,11 @@
 			<%end%>
 		</table>
 <%end%>
-<br/>
+<br/><br/>
 
-
+<b>Stats Last Generated:<%=@ts_ind%></b><br/><br/>
 <%if !@indstats.nil? && !@indstats.empty? then%>
-		<b>Individual Performance(Summer Sales)</b>
+		<b>Individual Performance(Summer Sales)&nbsp;&nbsp;&nbsp;Stats Last Generated:<%=@ts_ind%></b>
 		<table border="1" class="mystyle">
 				<tr class="cell">
 					<th><b>Name</b></th>

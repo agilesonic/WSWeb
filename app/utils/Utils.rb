@@ -2,19 +2,31 @@ class Utils
   @@jobid=nil
   @@stats=[]
   @@indstats=[]
-  @@stat_time
+  @@stat_co_time
+  @@stat_ind_time
   
   def self.log(message)
     puts Date.new.to_s + " " + message
   end
   
-  def self.record_stat_time(ts)
-    @@stat_time=ts
+  def self.record_stat_co_time(ts)
+    @@stat_co_time=ts
   end 
   
-  def self.get_stat_time
-    @@stat_time
+  def self.get_stat_co_time
+    @@stat_co_time
   end 
+
+  def self.record_stat_ind_time(ts)
+    @@stat_ind_time=ts
+  end 
+  
+  def self.get_stat_ind_time
+    @@stat_ind_time
+  end 
+
+
+
 
   def self.get_jobid
     @@jobid

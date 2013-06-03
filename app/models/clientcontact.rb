@@ -7,6 +7,16 @@ class Clientcontact < ActiveRecord::Base
     where("cfid = ? ", "#{key1}").order("dateatt") 
   end
 
+  def self.callers 
+    #where("datesold between ? and ?", date1, date2)
+    #find_by_sql("select distinct(salesid1) from jobs where datesold>'2013-04-01'").pluck(:salesid1) 
+    where("dateatt>'2013-04-01' and caller not in ('HR00000639', 'HR00000001')").uniq.pluck(:caller) 
+    #where("dateatt>'2013-04-01'").pluck(:caller) 
+  end
+
+
+
+
  def self.num_cfcontacts_summer2013(key1) 
     where("cfid = ? and dateatt between '2013-04-01' and '2013-08-31'", "#{key1}").count 
  end

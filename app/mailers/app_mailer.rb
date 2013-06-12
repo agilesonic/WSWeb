@@ -17,4 +17,11 @@ class AppMailer < ActionMailer::Base
     mail(:to => @user.email, :subject => 'Welcome to White Shark Online Services')
   end
   
+  def send_estimate_mail(client)
+    @client = client
+    puts 'EMAILSES ',@client.email
+    mail(:to => @client.email, :subject => 'White Shark Estimate For Windows/Eaves')
+  end
+  
+
 end

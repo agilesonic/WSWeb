@@ -61,6 +61,9 @@
 					<td><b><%= v.per %></b></td>
 					<td><b><%= v.attscurr %></b></td>
 					<td><b><%= v.salescurr %></b></td>
+					<%if @username=='shantz' || @username=='Roger'%>
+						<td><%= link_to 'Call Log', calllog_sales_path(:name => v.name5),:style=>"color: yellow"%></td>
+					<%end%>
 				</tr>	
 			<%end%>
 		</table>

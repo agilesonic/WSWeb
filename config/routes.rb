@@ -24,10 +24,11 @@ WSWeb::Application.routes.draw do
   #match "/sales/loadclients" => "sales#loadclients"
   #match "/sales/callclient1" => "sales#callclient1"
   #match "/functions/messages" => "functions#messages"
-  
+
  
   resources :functions do
     collection do 
+      get 'send_estimate_mail'
       get 'login'
       post 'login'
       post 'findclients'   # /clients/count   helper_method: count_clients_path
@@ -46,6 +47,7 @@ WSWeb::Application.routes.draw do
       get 'stats_schedule'
       get 'stats_production'
       get 'new'
+      get 'send_estimate_mail'
     end
     member do
       get 'new'
@@ -81,6 +83,7 @@ WSWeb::Application.routes.draw do
       post 'actionclients'
       get 'saleshistory'
       get 'schedule'
+      get 'calllog'
     end
     member do
 #      get 'loadclient'  # /clients/:id/changeAddress   helper_method: changeAddress_client_path(:id)
@@ -97,6 +100,5 @@ WSWeb::Application.routes.draw do
       get 'deletesale'
     end
   end
-  #resources :sales
   
 end

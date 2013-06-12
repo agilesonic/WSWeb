@@ -6,6 +6,19 @@ class SalesController < ApplicationController
   layout "application1"
   protect_from_forgery
 
+  def calllog
+    @name=params[:name]
+    emp=Employee.find_by_name @name
+    hrid=emp.first.HRID
+    @today=Date.today
+    @cc=Clientcontact.calllog hrid, @today
+    @cc.each do |c|
+      client=Client.find c.CFID
+      c.CFID=c.CFID+' '+client.full_name
+      
+    end
+  end
+  
   def saleshistory
     hrid=session[:hrid]
     emp=Employee.name_from_id hrid
@@ -367,6 +380,36 @@ puts action,profile,from_hrid
       cc=ccs.last
       @cb.lastsummer_highcf=cc.cfid
     end      
+
+
+#_____________________________________________________________________________________________________________________________
+
+    zeroes=Convertcalls.search__calls hrid, '4.6', '4.7', Date.today, '0'
+      @cb.fourseven_zero=zeroes
+
+    zeroes=Convertcalls.search__calls hrid, '4.4', '4.5', Date.today, '0'
+      @cb.fourfive_zero=zeroes
+    
+    zeroes=Convertcalls.search__calls hrid, '4.2', '4.3', Date.today, '0'
+      @cb.fourthree_zero=zeroes
+
+    zeroes=Convertcalls.search__calls hrid, '4.0', '4.1', Date.today, '0'
+      @cb.fourone_zero=zeroes
+
+    zeroes=Convertcalls.search__calls hrid, '3.7', '3.9', Date.today, '0'
+      @cb.threenine_zero=zeroes
+    
+    zeroes=Convertcalls.search__calls hrid, '3.3', '3.6', Date.today, '0'
+      @cb.threesix_zero=zeroes
+    
+    zeroes=Convertcalls.search__calls hrid, '2.5', '2.5', Date.today, '0'
+      @cb.newests_zero=zeroes
+    
+
+
+
+
+
 
     @sales_form=SalesForm.new
     @profile_options=HomeHelper::CONNECTION_OPTIONS

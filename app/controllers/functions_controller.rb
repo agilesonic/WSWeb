@@ -32,6 +32,13 @@ class FunctionsController <  ApplicationController
     render 'login'
   end
   
+  def send_estimate_mail
+    c=Client.find 'CF00024278'
+    AppMailer.send_estimate_mail(c).deliver
+    redirect_to login1_functions_url
+  end
+  
+  
   def smartsearch
     @smart_search_form=SmartSearchForm.new
   end
@@ -1290,6 +1297,8 @@ class FunctionsController <  ApplicationController
   end
   
   def stats1
+    @username=session[:username]
+
     @sbs=Utils.withdraw_stats
     @indstats=Utils.withdraw_indstats
     @indstats7=Utils.withdraw_indstats7

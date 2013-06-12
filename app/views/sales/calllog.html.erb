@@ -1,0 +1,16 @@
+<b><%= link_to 'Back To Stats', stats1_functions_path%></b><br/><br/>
+
+<% if !@cc.nil?%>
+		<b>Call Log for&nbsp;<%=@name%>&nbsp;on&nbsp;<%=@today.to_formatted_s(:long_ordinal) %></b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Time of Call</b></th>
+				</tr>	
+			<%@cc.each do |c|%>
+				<tr class='cell'>
+					<td><b><%= c.CFID%></b></td>
+					<td><b><%= c.callmade.to_s[11..18]%></b></td>
+				</tr>	
+			<%end%>
+		</table>
+<%end%>

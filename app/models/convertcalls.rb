@@ -11,6 +11,15 @@ class Convertcalls < ActiveRecord::Base
   end
 
 
+
+  def self.search__calls (hrid, r1, r2, date,calls)
+    if r1=='2.5'
+      where("cfid>='CF00039366' and lastjob is null and summcalls= ? and hrid = ? and rating between ? and ?", "#{calls}", "#{hrid}", "#{r1}", "#{r2}").count
+    else
+      where("summcalls= ? and hrid = ? and rating between ? and ?", "#{calls}", "#{hrid}", "#{r1}", "#{r2}").count
+    end 
+  end
+
   def self.search_newests_zero_calls(hrid, today)
     where("cfid>='CF00039366' and lastjob is null and summcalls='0' and hrid = ?", "#{hrid}") 
   end

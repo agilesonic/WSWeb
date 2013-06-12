@@ -7,6 +7,12 @@ class Clientcontact < ActiveRecord::Base
     where("cfid = ? ", "#{key1}").order("dateatt") 
   end
 
+  def self.calllog(hrid,today) 
+    where("caller = ? and dateatt= ? ", "#{hrid}", today).uniq.order("callmade") 
+  end
+
+
+
   def self.callers 
     #where("datesold between ? and ?", date1, date2)
     #find_by_sql("select distinct(salesid1) from jobs where datesold>'2013-04-01'").pluck(:salesid1) 

@@ -1125,7 +1125,7 @@ puts action,profile,from_hrid
     if !jobid5.nil?
       j5=Job.find jobid5
     end
-    if (j5.nil? || (j5.Sdate!=job.Sdate || j5.Fdate!=job.Fdate || j5.JobDesc!=job.JobDesc))
+    if (j5.nil? || (j5.Sdate!=job.Sdate || j5.Fdate!=job.Fdate || j5.JobDesc!=job.JobDesc || j5.JobInfoID!=job.JobInfoID))
       job.save!
       if(csf.notes!='')
         note=Notes.new

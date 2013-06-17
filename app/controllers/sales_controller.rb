@@ -735,6 +735,7 @@ puts action,profile,from_hrid
     c=Client.find prop.CFID
     @ppr.client= c.honorific+' '+c.firstname+' '+c.lastname
     @ppr.address=prop.address
+    @ppr.city=HomeHelper::codeToCity(prop.postcode)
     @prices=prop.prices
     if !@prices.nil?
       @prices.each do |price5|
@@ -821,6 +822,7 @@ puts action,profile,from_hrid
     @ppr=PropPrices.new
     @ppr.id=prop.id
     @ppr.address=prop.address
+    @ppr.city=HomeHelper::codeToCity(prop.postcode)
     @prices=prop.prices
     if !@prices.nil?
       @prices.each do |price5|

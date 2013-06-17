@@ -34,6 +34,7 @@ class FunctionsController <  ApplicationController
   
   def send_estimate_mail
     c=Client.find 'CF00024278'
+    c.email='roger.whiteshark@hotmail.com'
     AppMailer.send_estimate_mail(c).deliver
     redirect_to login1_functions_url
   end
@@ -772,9 +773,8 @@ class FunctionsController <  ApplicationController
     client.fax  =ecf.fax
     client.email  =ecf.email
     client.contactstatus= ecf.contactstatus
-    
     client.save!
-    
+
     cc=Convertcalls.find cfid
     cc.clientstatus=ecf.contactstatus
     cc.save!

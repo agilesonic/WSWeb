@@ -170,6 +170,7 @@ module HomeHelper
           ppr.address=p.address
           ppr.perly=p.perly
           ppr.post_code=p.postcode
+          ppr.city=codeToCity(p.postcode)
           @prices=p.prices
           if !@prices.nil?
             @prices.each do |price5|
@@ -304,4 +305,71 @@ module HomeHelper
       end
     end
     
-end
+    def self.codeToCity(postcode)
+      if(postcode.nil?)
+        return ""
+      end  
+      ans=""
+
+    if(postcode.length>=3)
+      pc = postcode[0, 3]
+      if(pc==("M1B")||pc=="M1X"||pc=="M1C"||pc=="M1E"||pc=="M1G"||pc=="M1H"||pc=="M1J"||pc=="M1K"||pc=="M1L"||pc=="M1M"||pc=="M1N"||pc=="M1P"||pc=="M1R"||pc=="M1S"||pc=="M1T"||pc=="M1W"||pc=="M1V")
+        ans="Scarborough"
+      elsif(pc=="L3P"||pc=="L3S"||pc=="L6B"||pc=="L6E")
+        ans="Markham"
+      elsif(pc=="L3R"||pc=="L6C"||pc=="L6G")
+        ans="Unionville"
+      elsif(pc=="L3T"||pc=="L4J")
+        ans="Thornhill"
+      elsif(pc=="L3X"||pc=="L3Y")
+        ans="Newmarket"
+      elsif(pc=="L4A")
+        ans="Stouffville"
+      elsif(pc=="L4B"||pc=="L4C"||pc=="L4S")
+        ans="Richmond Hill"
+      elsif(pc=="L4E")
+        ans="Oak Ridges"
+      elsif(pc=="L4G")
+        ans="Aurora"
+      elsif(pc=="L4H"||pc=="L4L")
+        ans="Woodbridge"
+      elsif(pc=="L4K")
+        ans="Concord"
+      elsif(pc=="L6A")
+        ans="Maple"
+      elsif(pc=="L1G"||pc=="L1K"||pc=="L1L"||pc=="L1H"||pc=="L1J")
+        ans="Oshawa"
+      elsif(pc=="L1M")
+        ans="Brooklin"
+      elsif(pc=="L1N"||pc=="L1P"||pc=="L1R")
+        ans="Whitby"
+      elsif(pc=="L1S"||pc=="L1T"||pc=="L1Z")
+        ans="Ajax"
+      elsif(pc=="L1V"||pc=="L1W"||pc=="L1X"||pc=="L1Y")
+        ans="Pickering"
+      elsif(pc=="M6S"||pc=="M8V"||pc=="M8W"||pc=="M8Y"||pc=="M8Z"||pc=="M8X"||pc=="M9A"||pc=="M9B"||pc=="M9C"||pc=="M9L"||pc=="M9M"||pc=="M9N"||pc=="M9P"||pc=="M9R"||pc=="M9V"||pc=="M9W")
+        ans="Etobicoke"
+      elsif(pc=="L4T"||pc=="L4V"||pc=="L5S"||pc=="L5T"||pc=="L4W"||pc=="L4X"||pc=="L4Y"||pc=="L4Z"||pc=="L5R"||pc=="L5A"||pc=="L5B"||pc=="L5C"||pc=="L5E"||pc=="L5G"||pc=="L5H"||pc=="L5J"||pc=="L5K"||pc=="L5L"||pc=="L5M"||pc=="L5N"||pc=="L5W"||pc=="L5V")
+        ans="Mississauga"
+     #||pc=="L4Z"||pc=="L5R"||pc=="L5A"||pc=="L5B")||pc=="L5C"||pc=="L5E"   
+        #||pc=="L5G"||pc=="L5H"||pc=="L5J"||pc=="L5K"||pc=="L5L"||pc=="L5M"||pc=="L5N"||pc=="L5W"||pc=="L5V")
+      elsif(pc=="L7L"||pc=="L7N"||pc=="L7M"||pc=="L7P"||pc=="L7R"||pc=="L7S"||pc=="L7T")
+        ans="Burlington"
+      elsif(pc=="L6H"||pc=="L6J"||pc=="L6K"||pc=="L6L"||pc=="L6M")
+        ans="Oakville"
+      elsif(pc=="L6P"||pc=="L6R"||pc=="L6S"||pc=="L6T"||pc=="L6V"||pc=="L6W"||pc=="L6X"||pc=="L6Y"||pc=="L6Z"||pc=="L7A")
+        ans="Brampton"
+      else
+        ans="Toronto"
+      end
+    else
+      ans=""
+    end
+    return ans
+   end
+
+
+  end
+
+    
+    

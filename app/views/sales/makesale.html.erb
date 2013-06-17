@@ -574,7 +574,7 @@
 <br/><br/>
 <%end%>
 
-<h1><b><%=@ppr.client%> &nbsp; <%=@ppr.address%></b></h1>
+<h1><b><%=@ppr.client%> &nbsp; <%=@ppr.address%>&nbsp; <%=@ppr.city%></b></h1>
 
 <b><%=link_to 'Back To Client Profile', clientprofile_function_path(:CFID=>@cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)%></b><br/>     
    
@@ -734,7 +734,7 @@
 				end
 						
 		    %>
-			<h2><b>*******<%=@ppr.address%>*******</b></h2>
+			<h2><b>*******<%=@ppr.address%>*******<%=@ppr.city%>*******</b></h2>
 	
 			<table border="1" class="mystyle">
 				<tr border="1" class="cell">

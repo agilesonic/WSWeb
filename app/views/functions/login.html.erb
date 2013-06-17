@@ -9,11 +9,13 @@
 <b><%= link_to 'Satisfaction Calls', loadsatisfaction_functions_path%></b><br/>
 <b><%= link_to 'Read Stats', stats1_functions_path%></b><br/><br/><br/>
 <b><a href="http://www.whiteshark.ca/internal">White Shark Internal</a></b><br/><br/>
-<%if @username=='Roger' || @username=='shantz'%>
-	<b><%= link_to 'Send Estimate', send_estimate_mail_functions_path%></b><br/><br/><br/>
+<%if @username=='Roger' || @username=='shantz' || @username=='Mac'%>
 	<b><%= link_to 'Make Co Sales Stats', co_stats_functions_path%></b><br/>
 	<b><%= link_to 'Make Ind Sales Stats7', ind_stats_7_functions_path%></b><br/>
 	<b><%= link_to 'Make Ind Sales Stats', ind_stats_functions_path%></b><br/><br/>
+<%end%>	
+<%if @username=='Roger' || @username=='shantz'%>
+	<b><%= link_to 'Send Estimate', send_estimate_mail_functions_path%></b><br/><br/><br/>
 	<b><%= link_to 'Make Schedule Stats', stats_schedule_functions_path%></b><br/>
 	<b><%= link_to 'Make Production Stats', stats_production_functions_path%></b><br/>
 	<b><%= link_to 'Find Clients', findclients_sales_path%></b><br/>

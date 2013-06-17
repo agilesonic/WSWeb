@@ -314,51 +314,51 @@ module HomeHelper
     if(postcode.length>=3)
       pc = postcode[0, 3]
       if(pc==("M1B")||pc=="M1X"||pc=="M1C"||pc=="M1E"||pc=="M1G"||pc=="M1H"||pc=="M1J"||pc=="M1K"||pc=="M1L"||pc=="M1M"||pc=="M1N"||pc=="M1P"||pc=="M1R"||pc=="M1S"||pc=="M1T"||pc=="M1W"||pc=="M1V")
-        ans="Scarborough"
+        ans="Scarborough[Tuesday]"
       elsif(pc=="L3P"||pc=="L3S"||pc=="L6B"||pc=="L6E")
-        ans="Markham"
+        ans="Markham[Monday]"
       elsif(pc=="L3R"||pc=="L6C"||pc=="L6G")
-        ans="Unionville"
+        ans="Unionville[Thursday]"
       elsif(pc=="L3T"||pc=="L4J")
-        ans="Thornhill"
+        ans="Thornhill[Monday]"
       elsif(pc=="L3X"||pc=="L3Y")
-        ans="Newmarket"
+        ans="Newmarket[Monday]"
       elsif(pc=="L4A")
-        ans="Stouffville"
+        ans="Stouffville[Monday]"
       elsif(pc=="L4B"||pc=="L4C"||pc=="L4S")
-        ans="Richmond Hill"
+        ans="Richmond Hill[Monday]"
       elsif(pc=="L4E")
-        ans="Oak Ridges"
+        ans="Oak Ridges[Monday}"
       elsif(pc=="L4G")
-        ans="Aurora"
+        ans="Aurora[Tuesday]"
       elsif(pc=="L4H"||pc=="L4L")
-        ans="Woodbridge"
+        ans="Woodbridge[Monday]"
       elsif(pc=="L4K")
-        ans="Concord"
+        ans="Concord[Thursday]"
       elsif(pc=="L6A")
-        ans="Maple"
+        ans="Maple[Thursday]"
       elsif(pc=="L1G"||pc=="L1K"||pc=="L1L"||pc=="L1H"||pc=="L1J")
-        ans="Oshawa"
+        ans="Oshawa[Tuesday]"
       elsif(pc=="L1M")
-        ans="Brooklin"
+        ans="Brooklin[Monday]"
       elsif(pc=="L1N"||pc=="L1P"||pc=="L1R")
-        ans="Whitby"
+        ans="Whitby[Tuesday]"
       elsif(pc=="L1S"||pc=="L1T"||pc=="L1Z")
-        ans="Ajax"
+        ans="Ajax[Tuesday]"
       elsif(pc=="L1V"||pc=="L1W"||pc=="L1X"||pc=="L1Y")
-        ans="Pickering"
+        ans="Pickering[Tuesday]"
       elsif(pc=="M6S"||pc=="M8V"||pc=="M8W"||pc=="M8Y"||pc=="M8Z"||pc=="M8X"||pc=="M9A"||pc=="M9B"||pc=="M9C"||pc=="M9L"||pc=="M9M"||pc=="M9N"||pc=="M9P"||pc=="M9R"||pc=="M9V"||pc=="M9W")
         ans="Etobicoke"
       elsif(pc=="L4T"||pc=="L4V"||pc=="L5S"||pc=="L5T"||pc=="L4W"||pc=="L4X"||pc=="L4Y"||pc=="L4Z"||pc=="L5R"||pc=="L5A"||pc=="L5B"||pc=="L5C"||pc=="L5E"||pc=="L5G"||pc=="L5H"||pc=="L5J"||pc=="L5K"||pc=="L5L"||pc=="L5M"||pc=="L5N"||pc=="L5W"||pc=="L5V")
-        ans="Mississauga"
-     #||pc=="L4Z"||pc=="L5R"||pc=="L5A"||pc=="L5B")||pc=="L5C"||pc=="L5E"   
+        ans="Mississauga[Thursday]"
+     #||pc=="L4Z"||pc=="L5R"||pc=="L5A"||pc=="L5B")||pc=="L5C"||pc=="L5E"  
         #||pc=="L5G"||pc=="L5H"||pc=="L5J"||pc=="L5K"||pc=="L5L"||pc=="L5M"||pc=="L5N"||pc=="L5W"||pc=="L5V")
       elsif(pc=="L7L"||pc=="L7N"||pc=="L7M"||pc=="L7P"||pc=="L7R"||pc=="L7S"||pc=="L7T")
-        ans="Burlington"
+        ans="Burlington[Thursday]"
       elsif(pc=="L6H"||pc=="L6J"||pc=="L6K"||pc=="L6L"||pc=="L6M")
-        ans="Oakville"
+        ans="Oakville[Thursday]"
       elsif(pc=="L6P"||pc=="L6R"||pc=="L6S"||pc=="L6T"||pc=="L6V"||pc=="L6W"||pc=="L6X"||pc=="L6Y"||pc=="L6Z"||pc=="L7A")
-        ans="Brampton"
+        ans="Brampton[Thursday]"
       else
         ans="Toronto"
       end

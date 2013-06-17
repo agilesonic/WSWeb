@@ -669,10 +669,15 @@ class FunctionsController <  ApplicationController
     @client_header2=name
     @client_header3=address+' '+phone
     @client_header4='Rating:'+overallrate.to_s
+    
     if @client.registerdate.nil? || @client.registerdate==''
       @client_header5='Date Registered: unknown'
     else 
-      @client_header5='Date Registered:'+@client.registerdate.to_formatted_s(:long_ordinal)
+      emps=Employee.name_from_id @client.registerperson
+      e=emps.first
+      @client_header5="Registered By:"+ e.name 
+      temp=" On "+@client.registerdate.to_formatted_s(:long_ordinal)
+      @client_header5+=temp
     end
     @call_client_form=CallClientForm.new
     @sat_call_form=SatCallForm.new

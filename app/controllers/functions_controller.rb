@@ -1131,6 +1131,7 @@ class FunctionsController <  ApplicationController
       sat_jobids<<sat.JobID  
     end
     need_sat_jobids=job_jobids-sat_jobids
+    @numsats=need_sat_jobids.length
     done_jobs=[]
     i=0
     need_sat_jobids.each do |jobid|

@@ -652,11 +652,13 @@ puts action,profile,from_hrid
     source=params[:source]
     function=params[:function]
     contacts=Clientcontact.search_cfcontacts cfid
-    contact=contacts.last
-    contact.destroy
+    if !contacts.nil? && contacts.size!=0
+      contact=contacts.last
+      contact.destroy
+    end
     cc=Convertcalls.find cfid
     contacts=Clientcontact.search_cfcontacts cfid
-    if contacts.nil?
+    if !contacts.nil? && contacts.size==0
       cc.lastcall=nil
       cc.followup=nil
       cc.laststatus=nil

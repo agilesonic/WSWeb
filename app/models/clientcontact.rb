@@ -4,7 +4,7 @@ class Clientcontact < ActiveRecord::Base
   belongs_to :client, :foreign_key => "cfid"
 
   def self.search_cfcontacts(key1) 
-    where("cfid = ? ", "#{key1}").order("dateatt") 
+    where("cfid = ? ", "#{key1}").order("callmade") 
   end
 
   def self.calllog(hrid,today) 

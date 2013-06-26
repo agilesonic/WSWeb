@@ -16,7 +16,7 @@ class Convertcalls < ActiveRecord::Base
     if r1=='2.5'
       where("cfid>='CF00039366' and lastjob is null and summcalls= ? and hrid = ? and rating between ? and ?", "#{calls}", "#{hrid}", "#{r1}", "#{r2}").count
     else
-      where("summcalls= ? and hrid = ? and rating between ? and ?", "#{calls}", "#{hrid}", "#{r1}", "#{r2}").count
+      where("summcalls= ? and hrid = ? and (lastjob is null or lastjob<'2013-02-15') and rating between ? and ?", "#{calls}", "#{hrid}", "#{r1}", "#{r2}").count
     end 
   end
 

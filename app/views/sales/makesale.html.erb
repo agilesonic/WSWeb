@@ -563,6 +563,14 @@
       	return true;	
       }
 
+      function disable_makesale(){
+		var butt=$('#makesale');
+        butt.attr('disabled','disabled');			
+		var form=$('#makesaleform');
+		if(checkData())
+        	form.submit();
+        end
+	  }
 	
 
 </script>
@@ -659,7 +667,7 @@
 	</select>
 </fieldset>
 
-<%= form_for @csf_form, :url => makesalefromcfdetails_sale_url(:CFID => @cfid, :jobid1=>@jobid1, :source => @source, :function=>@function),:html => { :method => :post, :onsubmit => 'return checkData()' }	  do |cc| %>
+<%= form_for @csf_form, :url => makesalefromcfdetails_sale_url(:CFID => @cfid, :jobid1=>@jobid1, :source => @source, :function=>@function),:html => { :method => :post,:id=>'makesaleform' }	  do |cc| %>
 	<fieldset class="mystyle">
 		<legend>Create Sale</legend>
 		    <%=cc.hidden_field :cfid, :value=>@cfid%>
@@ -774,8 +782,18 @@
 				<td><%=cc.label :jobtotal, 'Total' %><%=cc.text_field :jobtotal, :size=>'7'%></td>
 			</tr>
 
+
+      function disable_makesale(){
+		var butt=$('#makesale');
+        butt.attr('disabled','disabled');			
+		var form=$('#makesaleform');
+        form.submit();
+	  }
+
+
+
 			<tr style="padding-top:10px" border="1" class="cell">
-				<td colspan=3, align=center><%= cc.submit "Create Sale" %></td>
+				<td colspan=3, align=center><%= cc.submit "Create Sale", :id=>'makesale', :onclick=>'disable_makesale()' %></td>
 			</tr>
 		</table>
 	</fieldset>

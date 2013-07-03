@@ -1100,13 +1100,19 @@ class FunctionsController <  ApplicationController
   
   def loadsatisfaction
     @sat_form=SatForm.new
-    jobid=Satisfaction.maximum('jobid')
-    job=Job.find jobid
-    datebi=job.Datebi.to_s
-    year=datebi[0,4]
-    month=datebi[5,2]
-    day=datebi[8,2]
+    satdate=Satisfaction.max_satdate
+    satdate=satdate.to_s
+    puts 'SATDATE',satdate
+    #job=Job.find jobid
+    #datebi=job.Datebi.to_s
+    year=satdate[0,4]
+    month=satdate[5,2]
+    day=satdate[8,2]
     month=HomeHelper.get_month_from_num month
+
+    @lowjob=session[:lowjobsat]
+    @limit=session[:limitsat]
+
     
     @syear_options=HomeHelper::YEARS
     @smonth_options=HomeHelper::MONTHS
@@ -1121,28 +1127,28 @@ class FunctionsController <  ApplicationController
     @selected_fmonth=month
     @selected_fday=day
  end
+
   
-  def generate_sat_list(sdate, fdate)
+ def generate_sat_list(sdate, fdate, limit, lowjobsat)
     sat_jobids=[]
     job_jobids=[]
-    jobs=Job.search_jobs_for_sats sdate, fdate
+    jobs=Job.search_jobs_for_sats sdate, fdate, limit, lowjobsat
     jobs.each do |job|
       job_jobids<<job.JobID  
+      sats=Satisfaction.search_sats_job job.JobID
+      sat=sats.first
+      if !sat.nil?
+        sat_jobids<<sat.JobID
+      end  
     end
-    jobid1=job_jobids.first
-    jobid2=job_jobids.last
-    sats=Satisfaction.search_sats jobid1, jobid2
-    sats.each do |sat|
-      sat_jobids<<sat.JobID  
-    end
+    job=jobs.last
+    session[:lowjobsat]=job.JobID
+
     need_sat_jobids=job_jobids-sat_jobids
     @numsats=need_sat_jobids.length
     done_jobs=[]
     i=0
     need_sat_jobids.each do |jobid|
-      if i==10
-        break
-      end
       job=Job.find jobid
       prop=job.property
       cfid=prop.CFID
@@ -1194,7 +1200,13 @@ class FunctionsController <  ApplicationController
   
     
   def satisfaction
-    sf=CreateDNFForm.new(params[:sat_form])
+    sf=SatForm.new(params[:sat_form])
+    limit=sf.limit
+    lowjob=sf.lowjob
+    lowjob=HomeHelper::pad_id_num 'JB', lowjob
+    session[:lowjobsat]=lowjob
+    session[:limitsat]=limit
+
     syear=sf.syear
     smonth=sf.smonth
     smonth=HomeHelper.get_num_from_month(smonth)
@@ -1213,10 +1225,30 @@ class FunctionsController <  ApplicationController
     sdate=Date.parse(syear+'-'+smonth+'-'+sday)
     fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
  
-
-    @done_jobs=generate_sat_list sdate, fdate
+   session[:lowjobsat]=lowjob
+ 
+    @done_jobs=generate_sat_list sdate, fdate, limit, lowjob
     @source='satcall'
     @function='satcall'
+  end
+  
+  def nextsat
+    @source=params[:source]
+    @function=params[:function]
+    lowjob=session[:lowjobsat]
+    limit=session[:limitsat]
+    syear=session[:syear]
+    smonth=session[:smonth]
+    sday=session[:sday]
+    fyear=session[:fyear]
+    fmonth=session[:fmonth]
+    fday=session[:fday]
+    
+    sdate=Date.parse(syear+'-'+smonth+'-'+sday)
+    fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
+ 
+    @done_jobs=generate_sat_list sdate, fdate, limit, lowjob
+    render 'satisfaction' 
   end
 
   def satisfaction1
@@ -1245,7 +1277,7 @@ class FunctionsController <  ApplicationController
     
     sdate=Date.parse(syear+'-'+smonth+'-'+sday)
     fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
-    @done_jobs=generate_sat_list sdate, fdate
+    @done_jobs=generate_sat_list sdate, fdate, '1', jobid1
 
     source=params[:source]
     function=params[:function]

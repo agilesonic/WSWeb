@@ -29,6 +29,21 @@
 		function nigs(){
 			alert ('nigs');
 		}
+
+		function disable_sat(){
+			var butt=$('#satbutton');
+            butt.attr('disabled','disabled');			
+			var form=$('#satform');
+            form.submit();
+		}
+
+		function disable_tcall(){
+			var butt=$('#tcall');
+            butt.attr('disabled','disabled');			
+			var form=$('#tcallform');
+            form.submit();
+		}
+
 		
 		function tstatus(){
 			var tstatus=$('#call_client_form_tstatus');
@@ -210,7 +225,7 @@
 			    <%elsif job.jobdnf=='job'%>		
 					<td><%= link_to 'Create DNF', makednf_function_path(:jobid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
 					<%if job.sat.nil?%>
-						<td><%= link_to 'Satisfaction Call', satisfaction_from_client_profile_function_path(:id => @cfid, :jobid1=>job.jobid, :source=>'satcall',:function=>'satcall'),{:style=>"color: yellow"}%></td>
+						<td><%= link_to 'Satisfaction Call', satisfaction_from_client_profile_function_path(:id => @cfid, :jobid1=>job.jobid, :source=>'satcall',:function=>'satcall'),{:style=>"color: yellow"},:id=>'satbutton'+job.jobid,:onclick=>'disable_sat('+job.jobid+')'%></td>
 					<%end%>
 				<%end%>					
 
@@ -261,7 +276,8 @@
 		</table>
 	<% end%>
 	<br/>
-	<%= form_for @call_client_form, :url => callclient1_sale_url(:id => @cfid, :jobid1=>@jobid1,:source=>@source, :function=>@function) do |cc| %>
+	<%= form_for @call_client_form, :url => callclient1_sale_url(:id => @cfid, :jobid1=>@jobid1,:source=>@source, :function=>@function),
+	 :html=>{:id=>'tcallform'} do |cc| %>
 		<%=cc.hidden_field :day10, :value=>@selected_foll_day%>
 		<%=cc.hidden_field :month10, :value=>@selected_foll_month%>
 		<%=cc.hidden_field :year10, :value=>@selected_foll_year%>
@@ -285,7 +301,8 @@
 			</tr>
 			<tr style="padding-top:10px" border="1" class="cell">
 				<td>&nbsp;</td>
-				<td><%= cc.submit "Record Connection Call" %></td>
+				
+				<td><%= cc.submit "Record Connection Call", :id=>'tcall', :onclick=>'disable_tcall()'%></td>
 			</tr>
 		</table>
 	<%end%>	
@@ -351,7 +368,7 @@
 		
   		<% end%>
 	<br/>
-	<%= form_for @sat_call_form, :url => savesatcall_function_url(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function) do |cc| %>
+	<%= form_for @sat_call_form, :url => savesatcall_function_url(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function), :html=>{:id=>'satform'} do |cc| %>
  		<table border="1" class="mystyle">
 			<tr class="cell">
 				<td><%=cc.label :type %></td>
@@ -363,10 +380,12 @@
 			</tr>				
 			<tr style="padding-top:10px" border="1" class="cell">
 				<td>&nbsp;</td>
-				<td><%= cc.submit "Record Satisfaction" %></td>
+				<td><%= cc.submit "Record Satisfaction", :id=>'satbutton', :onclick=>'disable_sat()' %></td>
 			</tr>
 		</table>
-	<%end%>	
+	<%end%>
+	
+		
 	<br/>	
 	<%if @source=='satcall'%>
 		<h3><b><%= link_to 'Call Next Satisfaction Client', nextsatclient_function_path(:cfid => @cfid,:jobid1=>@jobid1, :source=>@source, :function=>@function)%></b></h3><br/>

@@ -39,6 +39,7 @@ WSWeb::Application.routes.draw do
       get 'loadsatisfaction'
       post 'satisfaction'
       get 'satisfaction1'
+      get 'nextsat'
       get 'login1'
       get 'co_stats'
       get 'ind_stats'

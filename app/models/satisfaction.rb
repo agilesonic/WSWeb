@@ -7,9 +7,20 @@ class Satisfaction < ActiveRecord::Base
     maximum("jobid")
   end
 
+  def self.max_satdate
+    maximum("satdate")
+  end
+
+
   def self.search_sats(jobid1, jobid2)
     Satisfaction.joins(:job).where("jobs.jobid between ? and ? ",jobid1, jobid2).order("jobs.jobid")
   end
+
+  def self.search_sats_job(jobid1)
+    where("jobid= ?",jobid1)
+  end
+
+
 
 
   

@@ -15,7 +15,6 @@ class SalesController < ApplicationController
     @cc.each do |c|
       client=Client.find c.CFID
       c.CFID=c.CFID+' '+client.full_name
-      
     end
   end
   
@@ -421,11 +420,12 @@ puts action,profile,from_hrid
   
   
   def loadclients
-    
     sf=SalesForm.new(params[:sales_form])
     hrid=session[:hrid]
     if sf.lowcf!=''
       sf.lowcf=HomeHelper.pad_id_num('CF',sf.lowcf)
+    else
+      sf.lowcf='CF00000001'  
     end
     
     @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today, sf.numcalls

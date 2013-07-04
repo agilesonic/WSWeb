@@ -7,6 +7,16 @@ class Utils
   @@stat_ind_time=nil
   @@stat_ind_time7=nil
   
+  @done_jobs=[]
+  
+  def self.fill_sat_jobs(sats)
+    @done_jobs=sats
+  end 
+  
+  def self.get_sat_jobs()
+    @done_jobs
+  end 
+  
   def self.log(message)
     puts Date.new.to_s + " " + message
   end

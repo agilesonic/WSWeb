@@ -1137,13 +1137,10 @@ class FunctionsController <  ApplicationController
       job_jobids<<job.JobID  
       sats=Satisfaction.search_sats_job job.JobID
       sat=sats.first
-      if !sat.nil?
+      if !sat.nil? && sat.SatDate!=Date.today
         sat_jobids<<sat.JobID
-      end  
+      end
     end
-    job=jobs.last
-    session[:lowjobsat]=job.JobID
-
     need_sat_jobids=job_jobids-sat_jobids
     @numsats=need_sat_jobids.length
     done_jobs=[]
@@ -1225,8 +1222,6 @@ class FunctionsController <  ApplicationController
     sdate=Date.parse(syear+'-'+smonth+'-'+sday)
     fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
  
-   session[:lowjobsat]=lowjob
- 
     @done_jobs=generate_sat_list sdate, fdate, limit, lowjob
     @source='satcall'
     @function='satcall'
@@ -1246,8 +1241,16 @@ class FunctionsController <  ApplicationController
     
     sdate=Date.parse(syear+'-'+smonth+'-'+sday)
     fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
+
+    jobs=Job.search_jobs_for_sats sdate, fdate, limit, lowjob
+    job=jobs.last
+    session[:lowjobsat]=job.JobID
+    lowjob=session[:lowjobsat]
+  
  
     @done_jobs=generate_sat_list sdate, fdate, limit, lowjob
+  #  Utils.fill_sat_jobs @done_jobs
+ 
     render 'satisfaction' 
   end
 
@@ -1260,7 +1263,9 @@ class FunctionsController <  ApplicationController
     fday=session[:fday]
     sdate=Date.parse(syear+'-'+smonth+'-'+sday)
     fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
-    @done_jobs=generate_sat_list sdate, fdate
+    lowjob=session[:lowjobsat]
+    limit=session[:limitsat]
+    @done_jobs=generate_sat_list sdate, fdate, limit, lowjob
     render 'satisfaction'
   end
 
@@ -1302,16 +1307,21 @@ class FunctionsController <  ApplicationController
     
     sdate=Date.parse(syear+'-'+smonth+'-'+sday)
     fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
-    @done_jobs=generate_sat_list sdate, fdate
-  #  @done_jobs=generate_sat_list sdate, fdate
-   next_jobid=jobid5
-   @done_jobs.each do |job|
+    lowjob=session[:lowjobsat]
+    limit=session[:limitsat]
+    @done_jobs=generate_sat_list sdate, fdate, limit, lowjob
+    #@done_jobs=Utils.get_sat_jobs
+    next_jobid=jobid5
+      puts 'current', jobid5
+    @done_jobs.each do |job|
       jobid=job.jobid
-      if jobid>jobid5
+      puts 'new,current', jobid,jobid5
+      if ((jobid<=>jobid5).to_i==1)
           next_jobid=jobid
           break
       end      
     end
+      puts 'new', next_jobid
     job=Job.find next_jobid
     prop=Property.find job.JobInfoID
     redirect_to clientprofile_function_path(:id => prop.CFID, :jobid1=>next_jobid, :source=>@source, :function=>@function)
@@ -1525,10 +1535,6 @@ class FunctionsController <  ApplicationController
     Utils.record_stat_co_time ts
     redirect_to login1_functions_url
   end
-#___________________________________________________________________________________________________    
-#___________________________________________________________________________________________________    
-#___________________________________________________________________________________________________    
-#___________________________________________________________________________________________________
 
   def ind_stats
     @date_summer1=Date.parse('2013-04-01')

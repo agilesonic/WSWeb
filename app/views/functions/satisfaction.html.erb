@@ -14,7 +14,7 @@
 					<th><b>Days To Pay</b></th>
 				</tr>	
 			<%@done_jobs.each do |job|
-			  class5='cell'	
+			  class5=job.type
 			  if job.jobdnf=='dnf'
 			  	class5='dnf'
 			  elsif	job.jobdnf=='sat'

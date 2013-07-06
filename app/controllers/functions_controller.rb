@@ -1100,32 +1100,44 @@ class FunctionsController <  ApplicationController
   
   def loadsatisfaction
     @sat_form=SatForm.new
-    satdate=Satisfaction.max_satdate
-    satdate=satdate.to_s
-    puts 'SATDATE',satdate
-    #job=Job.find jobid
-    #datebi=job.Datebi.to_s
-    year=satdate[0,4]
-    month=satdate[5,2]
-    day=satdate[8,2]
-    month=HomeHelper.get_month_from_num month
-
-    @lowjob=session[:lowjobsat]
-    @limit=session[:limitsat]
-
-    
     @syear_options=HomeHelper::YEARS
     @smonth_options=HomeHelper::MONTHS
     @sday_options=HomeHelper::DAYS
-    @selected_syear='2013'
-    @selected_smonth='Apr'
-    @selected_sday='01'
     @fyear_options=HomeHelper::YEARS
     @fmonth_options=HomeHelper::MONTHS
     @fday_options=HomeHelper::DAYS
-    @selected_fyear=year
-    @selected_fmonth=month
-    @selected_fday=day
+    
+    type=params[:type]
+    if(!type.nil?&&type='reload')
+      @selected_syear=session[:syear]
+      selected_smonth=session[:smonth]
+      @selected_smonth=HomeHelper::get_month_from_num(selected_smonth)
+      @selected_sday=session[:sday]
+      @selected_fyear=session[:fyear]
+      selected_fmonth=session[:fmonth]
+      @selected_fmonth=HomeHelper::get_month_from_num(selected_fmonth)
+      @selected_fday=session[:fday]
+      @lowjob=session[:lowjobsat] 
+      @limit=session[:limitsat]
+    else      
+      satdate=Satisfaction.max_satdate
+      satdate=satdate.to_s
+      puts 'SATDATE',satdate
+      #job=Job.find jobid
+      #datebi=job.Datebi.to_s
+      year=satdate[0,4]
+      month=satdate[5,2]
+      day=satdate[8,2]
+      month=HomeHelper.get_month_from_num month
+      @lowjob='JB00000001'
+      @limit='20'
+      @selected_syear='2013'
+      @selected_smonth='Apr'
+      @selected_sday='01'
+      @selected_fyear=year
+      @selected_fmonth=month
+      @selected_fday=day
+    end
  end
 
   
@@ -1149,8 +1161,20 @@ class FunctionsController <  ApplicationController
       job=Job.find jobid
       prop=job.property
       cfid=prop.CFID
+      
       job_bundle=JobBundle.new
       job_bundle.num=i
+      sats=Satisfaction.search_sats_job job.JobID
+      sat=sats.first
+
+      if !sat.nil? && sat.SatDate==Date.today
+        sat_jobids<<sat.JobID
+        job_bundle.type='redblackcell'
+        
+      else  
+        job_bundle.type='cell'
+      end
+      
       job_bundle.jobdnf='job'
       job_bundle.jobid=job.JobID
       job_bundle.cfid=cfid
@@ -1305,6 +1329,7 @@ class FunctionsController <  ApplicationController
     fmonth=session[:fmonth]
     fday=session[:fday]
     
+    
     sdate=Date.parse(syear+'-'+smonth+'-'+sday)
     fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
     lowjob=session[:lowjobsat]
@@ -1322,6 +1347,11 @@ class FunctionsController <  ApplicationController
       end      
     end
       puts 'new', next_jobid
+    if next_jobid==jobid5
+      session[:lowjobsat]=jobid5
+      redirect_to loadsatisfaction_functions_path(:type=>'reload')
+      return
+    end  
     job=Job.find next_jobid
     prop=Property.find job.JobInfoID
     redirect_to clientprofile_function_path(:id => prop.CFID, :jobid1=>next_jobid, :source=>@source, :function=>@function)

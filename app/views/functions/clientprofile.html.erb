@@ -109,7 +109,7 @@
 	elsif @function=='satcall'
 		sat_call_display='display:inline'
 	end
-%>
+end%>
 
 <div id="show_callclient" style=<%=call_client_display%>>
 	<fieldset class="function">
@@ -237,7 +237,7 @@
 
 	
 	
-		<% if !@calls.nil? then %>
+	<% if !@calls.nil? then %>
 		<b><font color="black">Call History</font></b>
 			<table border="1" class="mystyle">
 				<tr border="1" class="cell">
@@ -309,8 +309,7 @@
 	<br/>	
 	<h3><b><%= link_to '<<<Call Previous Client', previousclient_sale_path(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)%>&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;<%= link_to 'Call Next Client>>>', nextclient_sale_path(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function)%></b></h3><br/></br>
 	<%if @source=='callclient'%>
-		<h3><b><b><%= link_to 'Client List', clientlist_sales_path%></b><br/>
-</b></h3>
+		<h3><b><%= link_to 'Client List', clientlist_sales_path%></b></h3>
 	<%end%>
 </fieldset>
 </div>
@@ -318,57 +317,52 @@
 <div id="show_satcall" style=<%=sat_call_display%>>
 	<fieldset class="function">
 	<legend>Function Satisfaction</legend>
-
 	<%if !@cfmess.nil?%>
 		<h1><font color="blue"><%=@cfmess%></font></h1>
 	<%end%>
-
-
+	
 	<% if !@jobs_2013.nil? then %>
-		
-				<table border="1" class="mystyle">
-				<tr class="cell">
-					<th><b>Job ID</b></th>
-					<th><b>Address</b></th>
-					<th><b>Job Desc</b></th>
-					<th><b>Price</b></th>
-					<th><b>Sold By</b></th>
-					<th><b>Date Sold</b></th>
-					<th><b>Crew</b></th>
-					<th><b>Minutes</b></th>
-					<th><b>Date Done</b></th>
-					<th><b>Days To Pay</b></th>
-				</tr>	
-			<%@jobs_2013.each do |job|
-			  class5='cell'	
-			  if job.jobdnf=='dnf'
-			  	class5='dnf'
-			  elsif	job.jobdnf=='sat'
-			  	class5='sat'
-			  end	
-			%>
-				<tr class=<%=class5%>>
-					<td><b><%= job.jobid %></b></td>
-					<td><b><%= job.address %></b></td>
-					<td><b><%= job.jobdesc %></b></td>
-					<td><b><%= number_to_currency job.price %></b></td>
-					<td><b><%= job.salesp %></b></td>
-					<td><b><%= job.datesold %></b></td>
-					<td><b><%= job.crewname %></b></td>
-					<td><b><%= job.minutes %></b></td>
-					<td><b><%= job.datebi %></b></td>
-					<td><b><%= job.daystopay %></b></td>
-					<% if class5=='cell' %>
-						<td><%= link_to 'Create DNF', makednf_function_path(:jobid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
-					<% end %>
-				</tr>	
-			<%end%>
+		<table border="1" class="mystyle">
+		<tr class="cell">
+			<th><b>Job ID</b></th>
+			<th><b>Address</b></th>
+			<th><b>Job Desc</b></th>
+			<th><b>Price</b></th>
+			<th><b>Sold By</b></th>
+			<th><b>Date Sold</b></th>
+			<th><b>Crew</b></th>
+			<th><b>Minutes</b></th>
+			<th><b>Date Done</b></th>
+			<th><b>Days To Pay</b></th>
+		</tr>	
+		<%@jobs_2013.each do |job|
+		  class5='cell'	
+		  if job.jobdnf=='dnf'
+		  	class5='dnf'
+		  elsif	job.jobdnf=='sat'
+		  	class5='sat'
+		  end	
+		%>
+		<tr class=<%=class5%>>
+			<td><b><%= job.jobid %></b></td>
+			<td><b><%= job.address %></b></td>
+			<td><b><%= job.jobdesc %></b></td>
+			<td><b><%= number_to_currency job.price %></b></td>
+			<td><b><%= job.salesp %></b></td>
+			<td><b><%= job.datesold %></b></td>
+	    	<td><b><%= job.crewname %></b></td>
+			<td><b><%= job.minutes %></b></td>
+			<td><b><%= job.datebi %></b></td>
+			<td><b><%= job.daystopay %></b></td>
+			<% if class5=='cell' %>
+				<td><%= link_to 'Create DNF', makednf_function_path(:jobid => job.jobid, :jobid1=>@jobid,:source=>@source, :function=>@function),:style=>"color: yellow"%></td>
+			<% end %>
+		</tr>	
+		<%end%>
 		</table>
-
-		
-  		<% end%>
+  	<% end%>
 	<br/>
-	<%= form_for @sat_call_form, :url => savesatcall_function_url(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function), :html=>{:id=>'satform'} do |cc| %>
+	<%=form_for @sat_call_form, :url => savesatcall_function_url(:id => @cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function), :html=>{:id=>'satform'} do |cc| %>
  		<table border="1" class="mystyle">
 			<tr class="cell">
 				<td><%=cc.label :type %></td>
@@ -391,12 +385,8 @@
 		<h3><b><%= link_to 'Call Next Satisfaction Client', nextsatclient_function_path(:cfid => @cfid,:jobid1=>@jobid1, :source=>@source, :function=>@function)%></b></h3><br/>
 		<h3><b><%= link_to 'Satisfaction Calls', satisfaction1_functions_path,%></b></h3><br/>
 	<%end%>
-</fieldset>
+	</fieldset>
 </div>
-
-
-
-<%end%>
 
 
 <fieldset class="mystyle">

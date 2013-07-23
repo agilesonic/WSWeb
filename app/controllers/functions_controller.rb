@@ -1108,7 +1108,7 @@ class FunctionsController <  ApplicationController
     @fday_options=HomeHelper::DAYS
     
     type=params[:type]
-    if(!type.nil?&&type='reload')
+    if(!type.nil?&&type=='reload')
       @selected_syear=session[:syear]
       selected_smonth=session[:smonth]
       @selected_smonth=HomeHelper::get_month_from_num(selected_smonth)

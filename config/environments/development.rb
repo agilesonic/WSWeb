@@ -21,12 +21,12 @@ WSWeb::Application.configure do
   
   # these options are only needed if you choose smtp delivery
   config.action_mailer.smtp_settings = {
-    :address        => 'mail.whiteshark.ca',
+    :address        => 'smtp.1and1.com',
     :port           => 25,
     :domain         => 'whiteshark.ca',
     :authentication => :login,
-    :user_name      => 'mainsrv@whiteshark.ca',
-    :password       => 'wsroger'
+    :user_name      => 'customerservice@whiteshark.ca',
+    :password       => 'customerservice2010'
   }
   
   # Print deprecation notices to the Rails logger

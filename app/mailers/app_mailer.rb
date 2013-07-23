@@ -9,7 +9,7 @@ class AppMailer < ActionMailer::Base
   def forgot_password_mail(forgot_password_form, user)
     @forgot_password_form = forgot_password_form
     @user = user
-    mail(:to => @user.email, :subject => "CWhite Shark Online Services Password")
+    mail(:to => @user.email, :subject => "White Shark Online Services Password")
   end
   
   def user_registration_mail(user)

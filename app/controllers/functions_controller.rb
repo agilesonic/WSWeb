@@ -51,7 +51,7 @@ class FunctionsController <  ApplicationController
     if cfid!=''
       cfid=HomeHelper.pad_id_num('CF',cfid)
     end
-      jobid=ssf[:jobid]
+    jobid=ssf[:jobid]
     if jobid!=''
       jobid=HomeHelper.pad_id_num('JB',jobid)
     end

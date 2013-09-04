@@ -5,4 +5,8 @@ class Notes < ActiveRecord::Base
     where("objectid=  ?", "#{key}").order("ts") 
   end
 
+  def self.calllog(hrid,today)
+    where("recorder = ? and ts like ? ", "#{hrid}", '%'+today.to_s+'%').uniq 
+  end
+
 end

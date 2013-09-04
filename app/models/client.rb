@@ -15,6 +15,10 @@ class Client < ActiveRecord::Base
   def self.max_CFID 
     maximum("cfid") 
   end
+  
+  def self.datacheck(sdate, fdate)
+    where("registerdate between ? and ? and validuntil is null", sdate, fdate)
+  end
 
   def self.range_for_convertcalls(cfid1, cfid2) 
     where("cfid > ? and cfid<= ? and (contactstatus='Normal Client' or contactstatus is null)","#{cfid1}","#{cfid2}").order("cfid") 

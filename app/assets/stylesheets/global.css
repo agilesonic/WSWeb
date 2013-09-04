@@ -828,6 +828,12 @@ a:hover {
 	width: 90px;
 }
 
+#nav #mainMenuManagement {
+	width: 90px;
+}
+
+
+
 #nav li:hover, #mainMenu li.menuMouseHover {
 	background-color: #F8ECDC;
 	background: url("/images/mainHover.gif");

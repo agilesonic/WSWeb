@@ -8,9 +8,8 @@ class Clientcontact < ActiveRecord::Base
   end
 
   def self.calllog(hrid,today) 
-    where("caller = ? and dateatt= ? ", "#{hrid}", today).uniq.order("callmade") 
+    where("caller = ? and dateatt= ? ", "#{hrid}", today).uniq 
   end
-
 
 
   def self.callers 

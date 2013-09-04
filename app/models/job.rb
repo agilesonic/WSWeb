@@ -19,6 +19,11 @@ class Job < ActiveRecord::Base
     where("datesold>= ?",date)
   end
 
+  def self.calllog hrid, date
+    where("SalesID1 = ? and createts like ? ",hrid, '%#{date}%')
+  end
+
+
   def self.jobs_sold_between(date1, date2,jobid)
     where("datesold between ? and ? and jobid>=?",date1, date2, jobid).order("JobID").limit(20)
   end

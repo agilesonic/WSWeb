@@ -1,0 +1,59 @@
+HI HO
+
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
+
+<fieldset class="mystyle">
+	<legend>Sales History</legend>
+	<%if !@data.nil? && !@data.empty? then%>
+	<b>Data Check</b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Type</b></th>
+					<th><b>ID</b></th>
+					<th><b>Honorific</b></th>
+					<th><b>First Name</b></th>
+					<th><b>Last Name</b></th>
+					<th><b>Address</b></th>
+					<th><b>Perly</b></th>
+					<th><b>Post Code</b></th>
+				</tr>	
+			<%
+			i=0
+			@data.each do |d|
+				save_datacheck_form=@forms[i]
+				class5=nil
+				if d.class5=='client'
+				  class5='cell'
+				else
+				  class5='r4'
+				end  	
+			%>
+			
+				<tr class=<%=class5%>>
+					<%= form_for save_datacheck_form, :url => savedatacheck_functions_url do |cc| %>
+					<%=cc.hidden_field :type, :value=>d.type%>
+					<%=cc.hidden_field :id, :value=>d.id%>
+					<%=cc.hidden_field :syear, :value=>@syear%>
+					<%=cc.hidden_field :smonth, :value=>@smonth%>
+					<%=cc.hidden_field :sday, :value=>@sday%>
+					<%=cc.hidden_field :fyear, :value=>@fyear%>
+					<%=cc.hidden_field :fmonth, :value=>@fmonth%>
+					<%=cc.hidden_field :fday, :value=>@fday%>
+					<td><b><%= d.type %></b></td>
+					<td><b><%= d.id %></b></td>
+					<td><b><%=cc.text_field :hon, :value=>d.hon, :size=>'7'%></b></td>
+					<td><b><%=cc.text_field :fname, :value=>d.fname, :size=>'12'%></b></td>
+					<td><b><%=cc.text_field :lname, :value=>d.lname, :size=>'12'%></b></td>
+					<td><b><%=cc.text_field :address, :value=>d.address, :size=>'15'%></b></td>
+					<td><b><%=cc.text_field :perly, :value=>d.perly, :size=>'10'%></b></td>
+					<td><b><%=cc.text_field :postcode, :value=>d.postcode, :size=>'7'%></b></td>
+					<td><b><%=cc.text_field :city, :value=>d.city, :size=>'7'%></b></td>
+					<td><%= cc.submit "Modify Data" %></td>
+					<%end%>	
+				</tr>	
+			<%
+			i+=1
+			end%>
+		</table>
+	<%end%>
+</fieldset>

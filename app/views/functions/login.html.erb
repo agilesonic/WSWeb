@@ -1,30 +1,30 @@
 <fieldset class="mystyle">
 	<legend>Menu</legend>
-<b><%= link_to 'Smart Search', smartsearch_functions_path%></b><br/>
-<b><%= link_to 'Sales', sales_path%></b><br/>
-<b><%= link_to 'Sales History', saleshistory_sales_path%></b><br/>
-<b><%= link_to 'Schedule', schedule_sales_path%></b><br/>
-<b><%= link_to 'Messages', messagelog_functions_path%></b><br/>
-<b><%= link_to 'Create Message', logmessage_functions_path%></b><br/>
-<b><%= link_to 'Satisfaction Calls', loadsatisfaction_functions_path%></b><br/>
-<b><%= link_to 'Read Stats', stats1_functions_path%></b><br/><br/><br/>
-<b><a href="http://www.whiteshark.ca/internal">White Shark Internal</a></b><br/><br/>
-<%if @username=='Roger' || @username=='shantz' || @username=='Mac'%>
-	<b><%= link_to 'Make Co Sales Stats', co_stats_functions_path%></b><br/>
-	<b><%= link_to 'Make Ind Sales Stats7', ind_stats_7_functions_path%></b><br/>
-	<b><%= link_to 'Make Ind Sales Stats', ind_stats_functions_path%></b><br/><br/>
-<%end%>	
-<%if @username=='Roger' || @username=='shantz'%>
-	<b><%= link_to 'Send Estimate', send_estimate_mail_functions_path%></b><br/><br/><br/>
-	<b><%= link_to 'Make Schedule Stats', stats_schedule_functions_path%></b><br/>
-	<b><%= link_to 'Make Production Stats', stats_production_functions_path%></b><br/>
-	<b><%= link_to 'Find Clients', findclients_sales_path%></b><br/>
-	<b><%= link_to 'Call Profile', callprofile_sales_path%></b><br/>
-	<b><%= link_to 'Add New Estimates to Call List (EHEH)', screenconvertcalls_sales_path%></b><br/>
-	<b><%= link_to 'Add Sale Info to Call List (EHEH)', screensales_sales_path%></b><br/><br/>
-	<%if !@messsales.nil?%>
-		<b><%=@messsales%></b>
-	<%end%> 
-<%end%>
+		<b><%= link_to 'Smart Search', smartsearch_functions_path(:id => 'mikey')%></b><br/>
+		<b><%= link_to 'Sales', sales_path%></b><br/>
+		<b><%= link_to 'Sales History', saleshistory_sales_path%></b><br/>
+		<b><%= link_to 'Schedule', schedule_sales_path%></b><br/>
+		<b><%= link_to 'Messages', messagelog_functions_path%></b><br/>
+		<b><%= link_to 'Create Message', logmessage_functions_path%></b><br/>
+		<b><%= link_to 'Satisfaction Calls', loadsatisfaction_functions_path%></b><br/>
+		<b><%= link_to 'Read Stats', stats1_functions_path%></b><br/><br/><br/>
+		<b><a href="http://www.whiteshark.ca/internal">White Shark Internal</a></b><br/><br/>
+	<%if @username=='Roger' || @username=='shantz' || @username=='Mac'%>
+		<b><%= link_to 'Make Co Sales Stats', co_stats_functions_path%></b><br/>
+		<b><%= link_to 'Make Ind Sales Stats7', ind_stats_7_functions_path%></b><br/>
+		<b><%= link_to 'Make Ind Sales Stats', ind_stats_functions_path%></b><br/><br/>
+	<%end%>	
+	<%if @username=='Roger' || @username=='shantz'%>
+		<b><%= link_to 'Send Estimate', send_estimate_mail_functions_path%></b><br/><br/><br/>
+		<b><%= link_to 'Make Schedule Stats', stats_schedule_functions_path%></b><br/>
+		<b><%= link_to 'Make Production Stats', stats_production_functions_path%></b><br/>
+		<b><%= link_to 'Find Clients', findclients_sales_path%></b><br/>
+		<b><%= link_to 'Call Profile', callprofile_sales_path%></b><br/>
+		<b><%= link_to 'Add New Estimates to Call List (EHEH)', screenconvertcalls_sales_path%></b><br/>
+		<b><%= link_to 'Add Sale Info to Call List (EHEH)', screensales_sales_path%></b><br/><br/>
+		<%if !@messsales.nil?%>
+			<b><%=@messsales%></b>
+		<%end%> 
+	<%end%>
 
 </fieldset>

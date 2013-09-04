@@ -1,0 +1,150 @@
+
+
+HI HO
+
+<fieldset class="mystyle">
+<legend>Open/Closed Sessions</legend>
+<%if !@loghours.nil? %>
+	<%= link_to 'Log Me In', loginuser_functions_path(:hrid=>@hrid)%><br/><br/>
+<%end%>
+<%if !@closed_sessions.nil? && !@closed_sessions.empty?%>
+ 	<table class="mystyle" border="1">
+		<tr class="cell" border="1">
+			<td>Name</td>
+			<td>Date</td>
+			<td>Start Time</td>
+			<td>Finish Time</td>
+			<td>Hours</td>
+			<td>Rate</td>
+			<td>Pay</td>
+			<td>Notes</td>
+		</tr>
+    	<% @closed_sessions.each do |ws|
+    		String shour=ws.stime.hour.to_s 
+    	    if shour.length==1
+    	    	shour='0'+shour	
+    	    end
+    		String smin=ws.stime.min.to_s 
+    	    if smin.length==1
+    	    	smin='0'+smin	
+    	    end
+    	%>
+		<tr class="cell" border="1">
+			<td><%=ws.HRID %></td>
+			<td><%=ws.profiledate.to_formatted_s(:long_ordinal) %></td>
+			<%if !ws.stime.nil?%>
+				<td><%=shour.concat(':').concat(smin) %></td>
+			<%else%>
+				<td>nil</td>	
+			<%end%>
+			<%if !ws.ftime.nil?
+		   		String fhour=ws.ftime.hour.to_s 
+		   	    if fhour.length==1
+		   	    	fhour='0'+fhour	
+		   	    end
+		   		String fmin=ws.ftime.min.to_s 
+		   	    if fmin.length==1
+		   	    	fmin='0'+fmin	
+		   	    end
+			%>
+				<td><%=fhour.concat(':').concat(fmin) %></td>
+			<%else%>
+				<td>nil</td>	
+			<%end%>
+				<td><%=ws.hours%></td>
+				<td><%=ws.rate%></td>
+				<td><%=ws.pay%></td>
+				<td><b><%=ws.notes%></b></td>
+				<td><b><%= link_to 'Record Pay', recordpay_employee_path(:id => ws.id),:style=>"color: yellow"%></b></td>
+			</tr>
+		<%end%>
+	</table>
+<%end%>
+
+<br/>	
+<br/>	
+<br/>	
+<br/>	
+<%if !@open_sessions.nil? && !@open_sessions.empty?%>
+ 	<table class="mystyle" border="1">
+			<tr class="cell" border="1">
+				<td>Name</td>
+				<td>Date</td>
+				<td>Start Time</td>
+				<td>Finish Time</td>
+				<td>Hours</td>
+				<td>Rate</td>
+				<td>Pay</td>
+				<td>Notes</td>
+			</tr>
+    	<% @open_sessions.each do |ws|
+    		String shour=ws.stime.hour.to_s 
+    	    if shour.length==1
+    	    	shour='0'+shour	
+    	    end
+    		String smin=ws.stime.min.to_s 
+    	    if smin.length==1
+    	    	smin='0'+smin	
+    	    end
+    	%>
+
+			<%if !ws.ftime.nil?%>
+					<tr  class="cell" border="1">
+						<td><%=ws.HRID %></td>
+						<td><%=ws.profiledate.to_formatted_s(:long_ordinal) %></td>
+						
+						<%if !ws.stime.nil?%>
+							<td><%=shour.concat(':').concat(smin) %></td>
+						<%else%>
+							<td>nil</td>	
+						<%end%>
+						<%if !ws.ftime.nil?
+			    		String fhour=ws.ftime.hour.to_s 
+			    	    if fhour.length==1
+			    	    	fhour='0'+fhour	
+			    	    end
+			    		String fmin=ws.ftime.min.to_s 
+			    	    if fmin.length==1
+			    	    	fmin='0'+fmin	
+			    	    end
+						%>
+							<td><%=fhour.concat(':').concat(fmin) %></td>
+						<%else%>
+							<td>nil</td>	
+						<%end%>
+						<td><%=ws.hours%></td>
+						<td><%=ws.rate%></td>
+						<td><%=ws.pay%></td>
+						<td><b><%=ws.notes%></b></td>
+					</tr>
+			<%else%>
+					<tr  class="cell" border="1">
+						<td><%=ws.HRID %></td>
+						<td><%=ws.profiledate.to_formatted_s(:long_ordinal) %></td>
+						
+						<%if !ws.stime.nil?%>
+							<td><%=shour.concat(':').concat(smin) %></td>
+						<%else%>
+							<td>nil</td>	
+						<%end%>
+						<%if !ws.ftime.nil?
+				    		String fhour=ws.ftime.hour.to_s 
+				    	    if fhour.length==1
+				    	    	fhour='0'+fhour	
+				    	    end
+				    		String fmin=ws.ftime.min.to_s 
+				    	    if fmin.length==1
+				    	    	fmin='0'+fmin	
+				    	    end
+						%>
+							<td><%=fhour.concat(':').concat(fmin) %></td>
+						<%else%>
+							<td>nil</td>	
+						<%end%>
+					</tr>
+			<%end%>
+		<%end%>
+	</table>
+<%end%>
+</fieldset>
+

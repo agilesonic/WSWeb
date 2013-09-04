@@ -1,4 +1,5 @@
 class Utils
+  @user5=nil
   @@jobid=nil
   @@stats=[]
   @@indstats=[]
@@ -7,8 +8,26 @@ class Utils
   @@stat_ind_time=nil
   @@stat_ind_time7=nil
   
+  
   @done_jobs=[]
   
+  def self.pad_time(number)
+    if number.to_s.length==1
+      number.to_s='0'+number.to_s
+    end
+  end
+  
+  def self.set_user(user)
+    @user5=user
+  end 
+  
+  def self.get_user()
+    @user5
+  end 
+
+
+
+
   def self.fill_sat_jobs(sats)
     @done_jobs=sats
   end 

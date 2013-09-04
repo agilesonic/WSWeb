@@ -1,29 +1,109 @@
 class FunctionsController <  ApplicationController
   layout "application1"
   
+    
   def new
     @mess=params[:mess]
     @login_form=Login1Form.new
   end
   
   def show 
-    
+  end
+  
+  def loghours
+  end
+  
+  def time
   end
 
   def login
     login_form=params[:login1_form]
+  #  puts '************LOGINFORM***************',login_form[0]
+    if(login_form.nil?||login_form.empty?)
+      puts 'Got In Here'
+      redirect_to new_function_url(:mess=>'')
+      return
+    end  
     name=login_form[:name]
     pass=login_form[:password]
     @user=InternalUser.search(name,pass)  #@user is an array of InternalUser
     if !@user.empty? 
-      @l='ok'
       user=@user[0]
       @username=user.username
+      hrid=user.HRID
       session[:username]=@username
+      names=Employee.just_name_from_id (user.HRID)
+      session[:fullname]=names[0]
       session[:hrid]=user.HRID
+      session[:verify]='all good'
+      @work_schedule_form=WorkScheduleForm.new
+      render_login(hrid)
     else  
       redirect_to new_function_url(:mess=>'*****Incorrect Username/Password*****')
     end
+  end
+  
+  def render_login(hrid)
+      @loghours=nil
+      @wslist=ws_list(hrid)
+      if @wslist.nil? || @wslist.empty?
+         @loghours='ok'
+      else
+        ws=@wslist.last
+        if(!ws.ftime.nil?)
+           @loghours='ok'
+        end 
+      end  
+      @hrid=hrid
+      @wslist.each do |ws|
+        ws.HRID=session[:fullname]
+      end
+      @work_schedule_form=WorkScheduleForm.new
+      @notes=Notes.calllog 'HR00005392', Date.today
+      puts '***NOTES*****'
+      @notes.each do |n|
+        puts n.notes
+      end
+      render 'login5'
+  end
+  
+  def ws_list(hrid)
+    wslist=Workschedule.current_ind(hrid, Date.today)
+  end
+  
+  def loginuser
+    hrid=params[:hrid]
+    @wslist=ws_list(hrid)
+    if !@wslist.nil?
+      ws=@wslist.last
+      if (ws.nil?)
+        ws=Workschedule.new
+        ws.HRID=hrid
+        ws.profiledate=Date.today
+        ws.stime=Time.now-14400
+        ws.save
+      elsif(!ws.nil?&&!ws.ftime.nil?)
+        ws=Workschedule.new
+        ws.HRID=hrid
+        ws.profiledate=Date.today
+        ws.stime=Time.now-14400
+        ws.save
+      end
+    end
+    @wslist=ws_list(hrid)
+    render_login(hrid)
+  end
+
+  def logoutuser
+    hrid=params[:hrid]
+    log_out_form=params[:work_schedule_form]
+    @wslist=ws_list(hrid)
+    ws=@wslist.last
+    ws.ftime=Time.now-14400
+    ws.notes=log_out_form[:notes]
+    ws.save
+    @wslist=ws_list(hrid)
+    render_login(hrid)
   end
   
   def login1
@@ -40,8 +120,24 @@ class FunctionsController <  ApplicationController
   end
   
   
+  def proceed verify
+    verify=session[:verify]
+    if verify!= 'all good' 
+      redirect_to new_function_url(:mess=>'*****Incorrect Username/Password*****')
+    end
+  end
+  
   def smartsearch
-    @smart_search_form=SmartSearchForm.new
+       
+    ok=params[:verify]
+    
+    @verify=ok
+    proceed @verify    
+#    if !@verify.nil? 
+      @smart_search_form=SmartSearchForm.new
+#    else  
+#      redirect_to new_function_url(:mess=>'*****Incorrect Username/Password*****')
+#    end
   end
 
   def findclients
@@ -566,7 +662,6 @@ class FunctionsController <  ApplicationController
         else  
           job_bundle.type='Fltr'
         end
-        puts nil.to_formatted_s(:long_ordinal)
         job_bundle.sdate=dnf.Sdate.to_formatted_s(:long_ordinal)
         job_bundle.datetag='2013'
         jobs << job_bundle
@@ -1122,9 +1217,6 @@ class FunctionsController <  ApplicationController
     else      
       satdate=Satisfaction.max_satdate
       satdate=satdate.to_s
-      puts 'SATDATE',satdate
-      #job=Job.find jobid
-      #datebi=job.Datebi.to_s
       year=satdate[0,4]
       month=satdate[5,2]
       day=satdate[8,2]
@@ -1337,16 +1429,13 @@ class FunctionsController <  ApplicationController
     @done_jobs=generate_sat_list sdate, fdate, limit, lowjob
     #@done_jobs=Utils.get_sat_jobs
     next_jobid=jobid5
-      puts 'current', jobid5
     @done_jobs.each do |job|
       jobid=job.jobid
-      puts 'new,current', jobid,jobid5
       if ((jobid<=>jobid5).to_i==1)
           next_jobid=jobid
           break
       end      
     end
-      puts 'new', next_jobid
     if next_jobid==jobid5
       session[:lowjobsat]=jobid5
       redirect_to loadsatisfaction_functions_path(:type=>'reload')
@@ -2085,6 +2174,105 @@ class FunctionsController <  ApplicationController
     @prod_stats<<ssb 
 
   end
+  
+  def showdatacheck
+    @sdf=ShowDatacheckForm.new
+    @year_options=HomeHelper::YEARS  
+    @month_options=HomeHelper::MONTHS
+    @day_options=HomeHelper::DAYS
+  end
+  
+  
+  def make_datacheck_list sdate, fdate
+    @data=[]
+    @clients=Client.datacheck(sdate, fdate)
+    @clients.each do |c|
+      dcb=DataCheckBundle.new
+      dcb.class5='client'
+      dcb.id=c.CFID
+      dcb.type='CLIENT'
+      dcb.hon=c.honorific
+      dcb.fname=c.firstname
+      dcb.lname=c.lastname
+      dcb.address=c.address
+      dcb.postcode=c.postcode
+      dcb.perly=c.perly
+      dcb.city=c.city
+      @data<<dcb
+      props=c.valid_properties
+      props.each do |p|
+        dcb=DataCheckBundle.new
+        dcb.class5='property'
+        dcb.id=p.JobInfoID
+        dcb.type='PROPERTY'
+        dcb.hon='xxxxxxx'
+        dcb.fname='xxxxxxx'
+        dcb.lname='xxxxxxx'
+        dcb.address=p.address
+        dcb.postcode=p.postcode
+        dcb.perly=p.perly
+        dcb.city=p.city
+        @data<<dcb
+      end
+    end
+    return @data
+  end
+  
+  def datacheck
+    sdf=params[:show_datacheck_form] 
+    sdf.each do |k,v|
+      puts k,v
+    end 
+    @syear=sdf[:syear]
+    @smonth=sdf[:smonth]
+    @sday=sdf[:sday]
+    @fyear=sdf[:fyear]
+    @fmonth=sdf[:fmonth]
+    @fday=sdf[:fday]
+    sdate=Date.parse(@syear+'-'+@smonth+'-'+@sday)
+    fdate=Date.parse(@fyear+'-'+@fmonth+'-'+@fday)
+        #date=client.registerdate.to_formatted_s(:long_ordinal)
+        
+    #attr_accessor :class, :type, :id, :property, :hon, :fname, :lname, :address, :perly, :postcode
+    @data=make_datacheck_list sdate, fdate
+    @forms=[]
+    @data.each do |d|
+      save_datacheck_form=DatacheckForm.new
+      @forms<<save_datacheck_form
+    end
+  end
+    
+  def savedatacheck
+    sdf=params[:datacheck_form]  
+    type=sdf[:type]
+    if type=='CLIENT'
+      client=Client.find sdf[:id] 
+      client.honorific=sdf[:hon] 
+      client.firstname=sdf[:fname]
+      client.save 
+    end
+
+
+    syear=sdf[:syear]
+    smonth=sdf[:smonth]
+    sday=sdf[:sday]
+    fyear=sdf[:fyear]
+    fmonth=sdf[:fmonth]
+    fday=sdf[:fday]
+    sdate=Date.parse(syear+'-'+smonth+'-'+sday)
+    fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
+    #date=client.registerdate.to_formatted_s(:long_ordinal)
+    #attr_accessor :class, :type, :id, :property, :hon, :fname, :lname, :address, :perly, :postcode
+    @data=make_datacheck_list sdate, fdate
+    @forms=[]
+    @data.each do |d|
+      save_datacheck_form=DatacheckForm.new
+      @forms<<save_datacheck_form
+    end
+    render 'datacheck'
+  end
+    
+    
 
   
 end

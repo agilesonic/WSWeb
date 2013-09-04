@@ -1,0 +1,23 @@
+<%= form_for @call_profile_form, :url => calllog5_sales_url() do |cc| %>
+	<fieldset class="mystyle">
+		<legend>Call Log</legend>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<td><%=cc.label 'Name' %></td>
+				<td>
+					<%=cc.select :caller, options_for_select(@caller_options, @selected_stime)%>
+				</td>
+			</tr>
+				<td><%=cc.label 'Date' %></td>
+				<td>
+					<%=cc.select :syear, options_for_select(@syear_options, @selected_syear)%>
+					<%=cc.select :smonth, options_for_select(@smonth_options, @selected_smonth)%>
+					<%=cc.select :sday, options_for_select(@sday_options, @selected_sday)%>
+				</td>
+			</tr>
+			</tr>
+				<td colspan=2, align=center><%= cc.submit "Submit" %></td>
+			</tr>
+		</table><br/>	
+	</fieldset>
+<%end%>	

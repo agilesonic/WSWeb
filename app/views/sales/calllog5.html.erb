@@ -1,0 +1,26 @@
+Hi Ho
+
+
+<%if !@call_log.nil? && !@call_log.empty? %>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Time</b></th>
+					<th><b>Type</b></th>
+					<th><b>Notes</b></th>
+				</tr>	
+			<%@call_log.each do |k,cl|
+				class5='cell'
+				if cl.class5=='over'
+					class5='r4'
+				end
+			
+			%>
+			    
+				<tr class='<%=class5%>'>
+					<td><b><%= cl.ts.to_s.slice(11,16)%></b></td>
+					<td><b><%= cl.type%></b></td>
+					<td><b><%= cl.notes%></b></td>
+				</tr>	
+			<%end%>
+		</table>
+<%end%>

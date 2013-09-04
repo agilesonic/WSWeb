@@ -7,6 +7,12 @@ class Jobdnf < ActiveRecord::Base
   def self.max_id
     maximum("DNFID")
   end
+  
+  def self.calllog hrid, date
+    where("register = ? and Dnfdate = ? ",hrid, date)
+  end
+
+
 
   def self.search_incomplete_dnfs(jobid) 
     where("jobid=? and datebi is null", "#{jobid}").order("sdate") 

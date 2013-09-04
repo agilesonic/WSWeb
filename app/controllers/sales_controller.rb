@@ -6,6 +6,35 @@ class SalesController < ApplicationController
   layout "application1"
   protect_from_forgery
 
+
+  @indstats7={}     
+
+  def newcalllog5
+    @syear_options=HomeHelper::YEARS
+    @smonth_options=HomeHelper::MONTHS
+    @sday_options=HomeHelper::DAYS
+    names=Employee.active_sales_people_only
+    @caller_options=[]
+    names.each do |name|
+        @caller_options<<name
+    end
+    @call_profile_form=CallProfileForm.new
+  end
+  
+  def calllog5
+    cpf=params[:call_profile_form]
+    name=cpf[:caller] 
+    syear=cpf[:syear] 
+    smonth=cpf[:smonth] 
+    smonth=HomeHelper.get_num_from_month(smonth)
+    sday=cpf[:sday]
+    hrids=Employee.just_id_from_name name 
+    hrid=hrids[0]
+    date=Date.parse(syear+'-'+smonth+'-'+sday)
+    
+    @call_log=HomeHelper.generate_calllog hrid, date
+  end
+
   def calllog
     @name=params[:name]
     emp=Employee.find_by_name @name

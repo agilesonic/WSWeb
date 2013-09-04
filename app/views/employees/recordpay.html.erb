@@ -1,0 +1,73 @@
+WHY NATALIE!!!
+
+<fieldset class="mystyle">
+	<legend>Record Pay</legend>
+<%= form_for @record_pay_form, :url => savepay_employee_url do |rp| %>
+
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Name</b></th><td><%=@name%></td>
+				</tr>
+				<tr class="cell">
+					<th><b>Date</b></th><td><%=@ws.profiledate.to_formatted_s(:long_ordinal) %></td>
+				</tr>
+				<tr class="cell">
+		            <th><b>Stime Log</b></th><td><%=@ws.stime.to_s.slice(11,16) %></td>
+				</tr>
+				<tr class="cell">
+		            <th><b>Ftime Log</b></th><td><%=@ws.ftime.to_s.slice(11,16) %></td>
+				</tr>
+				<tr class="cell">
+					<th><b>Stime</b></th><td><%=rp.select :shr, options_for_select(@hour_options, @selected_hour)%>:
+											<%=rp.select :smin, options_for_select(@min_options, @selected_min)%></td>
+				</tr>
+				<tr class="cell">
+					<th><b>Ftime</b></th><td><%=rp.select :fhr, options_for_select(@hour_options, @selected_hour)%>:
+											<%=rp.select :fmin, options_for_select(@min_options, @selected_min)%></td>
+				</tr>
+				<tr class="cell">
+					<th><b>Hours</b></th><td><b><%=rp.text_field :hours, :value=>@hours , :size=>"5x1" %></b></td>
+				</tr>
+				<tr class="cell">
+					<th><b>Rate</b></th><td><b><%=rp.text_field :rate, :value=>@rate , :size=>"5x1" %></b></td>
+				</tr>
+				<tr class="cell">
+					<th><b>Pay</b></th><td><b><%=rp.text_field :pay, :value=>@pay , :size=>"5x1" %></b></td>
+				</tr>
+				<tr class="cell">
+					<th><b>Notes</b></th><td><b><%=rp.text_field :notes, :value=>@ws.notes , :size=>"5x1" %></b></td>
+				</tr>
+				<tr class="cell">
+							<td colspan=2><%= rp.submit "Save Pay Info" %></td>
+				</tr>
+
+		</table>	
+<%end%>
+
+<br/>
+<br/>
+
+<%if !@call_log.nil? && !@call_log.empty? %>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Time</b></th>
+					<th><b>Type</b></th>
+					<th><b>Notes</b></th>
+				</tr>	
+			<%@call_log.each do |k,cl|
+				class5='cell'
+				if cl.class5=='over'
+					class5='r4'
+				end
+			
+			%>
+			    
+				<tr class='<%=class5%>'>
+					<td><b><%= cl.ts.to_s.slice(11,16)%></b></td>
+					<td><b><%= cl.type%></b></td>
+					<td><b><%= cl.notes%></b></td>
+				</tr>	
+			<%end%>
+		</table>
+<%end%>
+</fieldset>

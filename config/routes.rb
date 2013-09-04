@@ -24,11 +24,26 @@ WSWeb::Application.routes.draw do
   #match "/sales/loadclients" => "sales#loadclients"
   #match "/sales/callclient1" => "sales#callclient1"
   #match "/functions/messages" => "functions#messages"
+  
+  resources :employees do
+    collection do
+      get 'verpay'
+    end
+    member do
+      get 'recordpay'
+      post 'savepay'
+    end
+  end
 
  
   resources :functions do
-    collection do 
+    collection do
+      post 'savedatacheck'
+      post 'datacheck' 
+      get 'showdatacheck' 
       get 'send_estimate_mail'
+      get 'loginuser'
+      post 'logoutuser'
       get 'login'
       post 'login'
       post 'findclients'   # /clients/count   helper_method: count_clients_path
@@ -71,6 +86,8 @@ WSWeb::Application.routes.draw do
     collection do 
       post 'loadclients'   # /clients/count   helper_method: count_clients_path
       get 'index'
+      post 'calllog5'
+      get 'newcalllog5'
       get 'schedule'
       get 'clientlist'
       get 'nextbatch'

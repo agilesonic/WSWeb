@@ -2,8 +2,10 @@ class Transactions < ActiveRecord::Base
     belongs_to :job, :foreign_key => "jobid"
 
   
- # attr_accessible :JobID,:JobInfoID, :JobDesc, :Stime, :SalesID1,
-  #      :Sdate, :Fdate
+  def self.calllog hrid, date
+    where("PersonID = ? and trandate like ? ",hrid, "%#{date}%")
+  end
+
   
   def self.date_paid(key1)
     Transactions.where("transactions.jobid = ? and trantype = ? ",

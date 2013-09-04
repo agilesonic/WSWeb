@@ -11,6 +11,9 @@ class Satisfaction < ActiveRecord::Base
     maximum("satdate")
   end
 
+  def self.calllog hrid, date
+    Satisfaction.where("Caller = ? and SatDate = ? ",hrid, date).order("SatDate")
+  end
 
   def self.search_sats(jobid1, jobid2)
     Satisfaction.joins(:job).where("jobs.jobid between ? and ? ",jobid1, jobid2).order("jobs.jobid")

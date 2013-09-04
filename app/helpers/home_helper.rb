@@ -21,6 +21,121 @@ module HomeHelper
     
     SCHEDULING_NOTES=['MON => Markham, Thornhill, Richmond Hill','TUES => Scarborough','WED => Woodbridge, Vaughan',
       'THURS => Mississauga, Oakville, Brampton','FRI => Keep light for Rain Days','SAT => 1/2 Crews working and 50% more labor cost']
+    HOURS=['07','08','09','10','11','12','13','14','15','16','17','18','19','20']
+    MIN=['00','05','10','15','20','25','30','35','40','45','50','55']
+    
+    def self.generate_calllog hrid, date
+      call_log={}
+      cc=Clientcontact.calllog hrid, date
+      if(!cc.nil?&& !cc.empty?)
+        cc.each do |c|
+          cbl=CallLogBundle.new
+          client=Client.find c.CFID
+          cbl.ts=c.callmade
+          cbl.type='Conn Call'
+          cbl.object=c.CFID+' '+client.full_name
+          cbl.notes=c.CFID+' '+client.full_name
+          call_log[c.callmade]=cbl
+        end
+      end
+      notes=Notes.calllog hrid, date
+      if !notes.nil?
+        notes.each do |n|
+          cbl=CallLogBundle.new
+          cbl.ts=n.ts
+          puts n.id.to_s.concat('  ').concat(n.ts.to_s).concat(n.notes)
+          if !n.nil? && !n.notes.nil? && !n.notes.index('Recble').nil?
+            cbl.type='Recble'
+          else  
+            cbl.type='Notes'
+          end
+          cbl.object=n.objectid
+          cbl.notes=n.notes
+          call_log[n.ts]=cbl
+        end
+      end
+      
+      sats=Satisfaction.calllog hrid, date
+      sats.each do |s|
+        cbl=CallLogBundle.new
+        cbl.ts=s.callmade
+        cbl.type='Satis'
+        cbl.object=s.JobID
+        cbl.notes=s.Type.concat(' ').concat(s.Comments)
+        call_log[s.callmade]=cbl
+      end
+      
+      mess=Messages.calllog_resolved_message hrid, date
+      mess.each do |m|
+        cbl=CallLogBundle.new
+        cbl.ts=m.ts
+        cbl.type='Resolved Message'
+        cbl.object=''
+        cbl.notes=m.message
+        call_log[m.ts]=cbl
+      end
+      
+      mess=Messages.calllog_took_message hrid, date
+      mess.each do |m|
+        cbl=CallLogBundle.new
+        cbl.ts=m.ts
+        cbl.type='Took Message'
+        cbl.object=''
+        cbl.notes=m.message
+        call_log[m.ts]=cbl
+      end
+      
+      jobs=Job.calllog hrid, date
+      jobs.each do |j|
+        cbl=CallLogBundle.new
+        cbl.ts=j.createts
+        cbl.type='SALE'
+        cbl.object=''
+        cbl.notes=j.JobDesc
+        call_log[j.createts]=cbl
+      end
+      
+      trans=Transactions.calllog hrid, date
+      trans.each do |t|
+        cbl=CallLogBundle.new
+        cbl.ts=t.updatets
+        cbl.type='Process Payment'
+        cbl.object=''
+        cbl.notes=t.JobID
+        call_log[t.updatets]=cbl
+      end
+      
+      
+      call_log=call_log.sort_by {|ts, cbl| ts.to_s}
+      
+      tss=[]
+      lastts=nil
+      newts=nil
+      newcl=nil
+      lastcl=nil
+      i=0
+      call_log.each do |k,cl|
+        cl.class5='ok'
+        if i==0
+          lastcl=cl
+          newcl=cl
+        end
+        if i!=0
+          lastcl=newcl
+          newcl=cl
+          if((newcl.ts-lastcl.ts)/60>10)
+            lastcl.class5='over'
+            newcl.class5='over'
+          end
+        end
+        i+=1
+      end
+      call_log
+    end
+    
+    
+    
+    
     
     def self.add_days_to_current_date(days)
         date=Date.today+days
@@ -52,6 +167,17 @@ module HomeHelper
       ans=type+a
     end
     
+    def self.pad_num2(num)
+      num=num.to_s
+      a=num.length
+      if(a==2)
+        return num
+      end
+      b=2-a.to_i
+      zero="0"*b
+      a=zero + num
+    end
+
     def self.pad_num3(num)
       num=num.to_s
       a=num.length

@@ -20,7 +20,7 @@ class Job < ActiveRecord::Base
   end
 
   def self.calllog hrid, date
-    where("SalesID1 = ? and createts like ? ",hrid, '%#{date}%')
+    where("SalesID1 = ? and timeSold like ? ",hrid, '%#{date}%')
   end
 
 

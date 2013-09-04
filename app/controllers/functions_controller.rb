@@ -109,7 +109,9 @@ class FunctionsController <  ApplicationController
   def login1
     @username=session[:username]
     @messsales=params[:messsales]
-    render 'login'
+#    render 'login'
+    hrid=session[:hrid]
+    render_login(hrid)
   end
   
   def send_estimate_mail
@@ -2180,6 +2182,14 @@ class FunctionsController <  ApplicationController
     @year_options=HomeHelper::YEARS  
     @month_options=HomeHelper::MONTHS
     @day_options=HomeHelper::DAYS
+    d=Date.today.to_s
+    @selected_syear=d[0..3]
+    month=d[5..6]
+    @selected_smonth=HomeHelper.get_month_from_num month
+    @selected_sday=d[8..9]
+    @selected_fyear=d[0..3]
+    @selected_fmonth=HomeHelper.get_month_from_num month
+    @selected_fday=d[8..9]
   end
   
   

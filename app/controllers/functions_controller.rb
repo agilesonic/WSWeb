@@ -522,7 +522,7 @@ class FunctionsController <  ApplicationController
 
   def clientprofile_jobs(client)
     jobs=[]
-    @date_Fall_2012=Date.parse("2012-10-01")
+    @date_Fall_2012=Date.parse("2012-09-01")
     @date_2013=Date.parse("2013-01-01")
     donejobs=client.done_jobs
     donejobs.each do |job|
@@ -570,9 +570,10 @@ class FunctionsController <  ApplicationController
       else  
         job_bundle.datetag='pre2013'
       end
+      puts 'FALL JOB***FALL JOB***FALL JOB***FALL JOB***FALL JOB*** ',job.Datebi
       if job.Datebi>=@date_Fall_2012 && job.Datebi<=@date_2013
         job_bundle.datetag='fall2012'
-        puts 'FALL JOB',job_bundle.jobid=job.JobID
+        puts 'FALL JOB***FALL JOB***FALL JOB***FALL JOB***FALL JOB*** ',job_bundle.jobid=job.JobID
       end
 
       job_bundle.datebi=job.Datebi.to_formatted_s(:long_ordinal)
@@ -822,7 +823,8 @@ class FunctionsController <  ApplicationController
       end
     end
 
-    @jobs=clientprofile_jobs(@client)  
+    @jobs=clientprofile_jobs(@client)
+    @jobs_last_fall=[]  
     @jobs_2013=[]
     @jobs_all=[]
     @jobs_upcoming=[]
@@ -835,7 +837,7 @@ class FunctionsController <  ApplicationController
     
     @jobs.each do |job|
       if job.datetag=='fall2012'
-        @jobs_2013<<job    
+        @jobs_last_fall<<job    
       end
 
       if job.datetag=='2013' && ((job.typedesc!='upcomingjob') && (job.typedesc!='upcomingdnf')) 

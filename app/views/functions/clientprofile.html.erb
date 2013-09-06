@@ -187,8 +187,10 @@ end%>
 <%end%>
 <br/>
 
+
+
 <%if !@jobs_2013.nil? && !@jobs_2013.empty? then%>
-<b><font color="black">2013 Completed Jobs AND Last Fall</font></b>
+<b><font color="black">2013 Completed Jobs</font></b>
 	<table border="1" class="mystyle">
 			<tr>
 				<th><b>Job ID</b></th>
@@ -233,6 +235,43 @@ end%>
 		<%end%>
 	</table>
 <%end%>
+<%if !@jobs_last_fall.nil? && !@jobs_last_fall.empty? then%>
+<b><font color="black">***** Completed Jobs Fall 2012 *****</font></b>
+	<table border="1" class="mystyle">
+			<tr>
+				<th><b>Job ID</b></th>
+				<th><b>Address</b></th>
+				<th><b>Job Desc</b></th>
+				<th><b>Price</b></th>
+				<th><b>Sold By</b></th>
+				<th><b>Date Sold</b></th>
+				<th><b>Date Done</b></th>
+				<th><b>Crew</b></th>
+				<th><b>Minutes</b></th>
+			</tr>	
+		<%@jobs_last_fall.each do |job|
+			  class5='cell'	
+			  if job.jobdnf=='dnf'
+			  	class5='dnf'
+			  elsif	job.jobdnf=='sat'
+			  	class5='sat'
+			  end	
+		%>
+			<tr class=<%=class5%>>
+				<td><b><%= job.jobid %></b></td>
+				<td><b><%= job.address %></b></td>
+				<td><b><%= job.jobdesc %></b></td>
+				<td><b><%= number_to_currency job.price %></b></td>
+				<td><b><%= job.salesp %></b></td>
+				<td><b><%= job.datesold %></b></td>
+				<td><b><%= job.datebi %></b></td>
+				<td><b><%= job.crewname %></b></td>
+				<td><b><%= job.minutes %></b></td>
+			</tr>	
+		<%end%>
+	</table>
+<%end%>
+
 <br/>
 
 	

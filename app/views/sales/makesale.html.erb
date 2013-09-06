@@ -775,7 +775,6 @@
 				<td colspan=3><%=cc.text_area :jobdesc, :size=>'60x4'%></td>
 			</tr>
 			<tr border="1" class="cell"><td  colspan=3><%=cc.label :notes, 'Job Notes' %><%=cc.text_field :notes,:size=>'50'%></td></tr>
-
 			<tr border="1" class="cell">
 				<td><%=cc.label :jobprice, 'Price' %><%=cc.text_field :jobprice,:size=>'7'%></td>
 				<td><%=cc.label :jobhst, 'HST' %><%=cc.text_field :jobhst, :size=>'7'%></td>
@@ -783,16 +782,7 @@
 			</tr>
 
 
-      function disable_makesale(){
-		var butt=$('#makesale');
-        butt.attr('disabled','disabled');			
-		var form=$('#makesaleform');
-        form.submit();
-	  }
-
-
-
-			<tr style="padding-top:10px" border="1" class="cell">
+ 			<tr style="padding-top:10px" border="1" class="cell">
 				<td colspan=3, align=center><%= cc.submit "Create Sale", :id=>'makesale', :onclick=>'disable_makesale()' %></td>
 			</tr>
 		</table>

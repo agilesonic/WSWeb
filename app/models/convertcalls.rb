@@ -30,30 +30,6 @@ class Convertcalls < ActiveRecord::Base
     " and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved'))", "#{hrid}", "Pending", today, today) 
   end
 
-#_______________________________________________________________________________________________________________
-
-  def self.search_profile_ratings(lowcf, limit, hrid, today, r1, r2, numcalls)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
-    " ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and rating between ? and ?",
-         "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").order('cfid').limit(limit) 
-  end
-
-#......
-#  def self.search_profile_ratings_prevnext(lowcf, limit, hrid, today, r1, r2, numcalls)
-#    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
-#    " and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and rating between ? and ? ",
-#         "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").limit(limit) 
-#  end
-#..........
-
-
-
-  def self.search_profile_lastsummer(lowcf, limit, hrid, today, numcalls)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
-    " ((followup is null or followup<= ?) and (lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?)) and numjobsls>'0'",
-    "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
-  end
-#_______________________________________________________________________________________________________________
 
 
       
@@ -68,6 +44,27 @@ class Convertcalls < ActiveRecord::Base
     where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and numjobsls>'0'",
          "#{highcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today,"#{numcalls}").count 
   end 
+
+      #count=count_profile_lastseptoct(highcf, hrid, today,numcalls)
+
+  def self.count_profile_lastseptoct(highcf, hrid, today, numcalls)
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and"+
+    " (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and "+
+    "((followup is null or followup<= ?) and ((lastcall = ? and fallcalls =?) or((lastcall is null or lastcall < ?)"+
+    " and fallcalls =?))) and numjobsls>'0'",
+         "#{highcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today,"#{numcalls}").count 
+  end 
+
+  def self.count_profile_lastnovdec(highcf, hrid, today, numcalls)
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and"+
+    " (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and "+
+    "((followup is null or followup<= ?) and ((lastcall = ? and fallcalls =?) or((lastcall is null or lastcall < ?)"+
+    " and fallcalls =?))) and numjobslf>'0'",
+         "#{highcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today,"#{numcalls}").count 
+  end 
+
+
+
 
 
   def self.count_ccrange(highcf, hrid, profile, today, numcalls)
@@ -87,8 +84,16 @@ class Convertcalls < ActiveRecord::Base
     elsif profile=='4.6=>4.7 clients'  
       count=count_profile_ratings(highcf, hrid, today,'4.6','4.7',numcalls)
     elsif profile=='Used Us Last Summer'  
-      count=count_profile_lastsummer(highcf, limit, hrid, today,numcalls)
+      count=count_profile_lastsummer(highcf, hrid, today,numcalls)
+    elsif profile=='Used Us Last Sept/Oct'  
+      count=count_profile_lastseptoct(highcf, hrid, today,numcalls)
+    elsif profile=='Used Us Last Nov/Dec'  
+      count=count_profile_lastnovdec(highcf, hrid, today,numcalls)
     end
+    
+    
+#          @count=Convertcalls.count_ccrange cc.cfid, hrid, sf.profile, Date.today, sf.numcalls
+
     return count
   end
 #'New Estimates','3.3=>3.6 clients','3.7=>3.9 clients'
@@ -111,8 +116,33 @@ class Convertcalls < ActiveRecord::Base
 
 
   def self.search_profile_lastsummer_prevnext(lowcf, limit, hrid, today,numcalls)
-    where("cfid >= ? and hrid= ? and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and numjobsls>'0'",
-         "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
+    where("cfid >= ? and hrid= ? and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?)"+
+    " or((lastcall is null or lastcall < ?) and summcalls =?))) and (lastjob is null or lastjob<'2013-02-15')"+
+    " and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
+    " and numjobsls>'0'", "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
+  end
+
+  def self.search_profile_lastseptoct_prevnext(lowcf, limit, hrid, today,numcalls)
+    where("cfid >= ? and hrid= ? and ((followup is null or followup<= ?) and ((lastcall = ? and fallcalls =?)"+
+    " or((lastcall is null or lastcall < ?) and fallcalls =?))) and (lastjob is null or lastjob<'2013-02-15')"+
+    " and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
+    " and numjobsls>'0'", "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
+  end
+
+ #  where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and"+
+ #   " (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
+ #   " ((followup is null or followup<= ?) and (lastcall = ? and fallcalls =?) or((lastcall is null or lastcall < ?)"+
+ #   " and fallcalls =?)) and numjobsls>'0'",
+ #   "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
+ 
+
+
+
+  def self.search_profile_lastnovdec_prevnext(lowcf, limit, hrid, today,numcalls)
+    where("cfid >= ? and hrid= ? and ((followup is null or followup<= ?) and ((lastcall = ? and fallcalls =?)"+
+    " or((lastcall is null or lastcall < ?) and fallcalls =?))) and (lastjob is null or lastjob<'2013-02-15')"+
+    " and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
+    " and numjobslf>'0'", "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
   end
 #_______________________________________________________________________________________________________________
 
@@ -138,6 +168,10 @@ class Convertcalls < ActiveRecord::Base
       profiles=search_profile_ratings_prevnext(lowcf, limit, hrid, today,'4.6', '4.7', numcalls)
     elsif profile=='Used Us Last Summer'  
       profiles=search_profile_lastsummer_prevnext(lowcf, highcf, hrid, today, numcalls)
+    elsif profile=='Used Us Last Sept/Oct'  
+      profiles=search_profile_lastseptoct_prevnext(lowcf, highcf, hrid, today, numcalls)
+    elsif profile=='Used Us Last Nov/Dec'  
+      profiles=search_profile_lastnovdec_prevnext(lowcf, highcf, hrid, today, numcalls)
     end
     if pendings.nil? && profiles.nil?
       return list
@@ -160,6 +194,54 @@ class Convertcalls < ActiveRecord::Base
 
 
 #============================================================================================================================
+
+
+
+#_______________________________________________________________________________________________________________
+
+  def self.search_profile_ratings(lowcf, limit, hrid, today, r1, r2, numcalls)
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
+    " ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and rating between ? and ?",
+         "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").order('cfid').limit(limit) 
+  end
+
+#......
+#  def self.search_profile_ratings_prevnext(lowcf, limit, hrid, today, r1, r2, numcalls)
+#    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
+#    " and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and rating between ? and ? ",
+#         "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").limit(limit) 
+#  end
+#..........
+
+
+
+  def self.search_profile_lastsummer(lowcf, limit, hrid, today, numcalls)
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
+    " ((followup is null or followup<= ?) and (lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?)) and numjobsls>'0'",
+    "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
+  end
+
+  def self.search_profile_lastseptoct(lowcf, limit, hrid, today, numcalls)
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and"+
+    " (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
+    " ((followup is null or followup<= ?) and (lastcall = ? and fallcalls =?) or((lastcall is null or lastcall < ?)"+
+    " and fallcalls =?)) and numjobsls>'0'",
+    "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
+  end
+
+  def self.search_profile_lastnovdec(lowcf, limit, hrid, today, numcalls)
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-02-15') and clientstatus='Normal Client' and"+
+    " (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
+    " ((followup is null or followup<= ?) and (lastcall = ? and fallcalls =?) or((lastcall is null or lastcall < ?)"+
+    " and fallcalls =?)) and numjobslf>'0'",
+    "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
+  end
+#_______________________________________________________________________________________________________________
+
+
+
+
+
 
   def self.search_ccrange(lowcf, limit, hrid, profile, today,numcalls)
     list=[]
@@ -185,9 +267,13 @@ class Convertcalls < ActiveRecord::Base
       profiles=search_profile_ratings(lowcf, limit, hrid, today,'4.6', '4.7',numcalls)
     elsif profile=='Used Us Last Summer'  
       profiles=search_profile_lastsummer(lowcf, limit, hrid, today,numcalls)
+    elsif profile=='Used Us Last Sept/Oct'  
+      profiles=search_profile_lastseptoct(lowcf, limit, hrid, today,numcalls)
+    elsif profile=='Used Us Last Nov/Dec'  
+      profiles=search_profile_lastnovdec(lowcf, limit, hrid, today,numcalls)
     end
     #if pendings.nil? && profiles.nil?
-    #  return list
+    #  return listov
     #elsif pendings.nil? && !profiles.nil?
     #  return profiles
     #elsif !pendings.nil? && profiles.nil?
@@ -301,5 +387,14 @@ class Convertcalls < ActiveRecord::Base
   def self.search__highcf_lastsummer hrid, today
     where("hrid= ? and numjobsls>'0' and lastcall= ?","#{hrid}",today).order('cfid') 
   end
+
+  def self.search__highcf_lastseptoct hrid, today
+    where("hrid= ? and numjobsls>'0' and lastcall= ?","#{hrid}",today).order('cfid') 
+  end
+
+  def self.search__highcf_lastnovdec hrid, today
+    where("hrid= ? and numjobslf>'0' and lastcall= ?","#{hrid}",today).order('cfid') 
+  end
+
 
 end

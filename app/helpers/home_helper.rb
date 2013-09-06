@@ -12,10 +12,12 @@ module HomeHelper
           'Call Back', 'Custom']
     YESNO=['Yes', 'No']
     ASS_OPTIONS=['unassign', 'transfer']
-    CONNECTION_OPTIONS=['New Estimates','3.3=>3.6 clients','3.7=>3.9 clients','4.0=>4.1 clients', '4.2=>4.3 clients', '4.4=>4.5 clients', '4.6=>4.7 clients', 'Used Us Last Summer']
+    CONNECTION_OPTIONS=['New Estimates','3.3=>3.6 clients','3.7=>3.9 clients','4.0=>4.1 clients',
+       '4.2=>4.3 clients', '4.4=>4.5 clients', '4.6=>4.7 clients', 'Used Us Last Sept/Oct','Used Us Last Nov/Dec']
     NUM_CALLS_OPTIONS=['0','1','2']
-    CALL_OPTIONS=['LMM', 'LMP', 'Pending', 'Pending Summer 2014', 'Pending Fall 2013', 'NC', 'Moved', 'Phone Out Of Service'] 
-    PROFILE_OPTIONS=['New Estimates','3.3=>3.6 clients','3.7=>3.9 clients','4.0=>4.1 clients','4.2=>4.3 clients','4.4=>4.5 clients', '4.6=>4.7 clients']
+    CALL_OPTIONS=['LMM', 'LMP', 'Pending', 'Pending Summer 2014', 'Pending Fall 2014', 'NC', 'Moved', 'Phone Out Of Service'] 
+    PROFILE_OPTIONS=['New Estimates','3.3=>3.6 clients','3.7=>3.9 clients','4.0=>4.1 clients','4.2=>4.3 clients',
+      '4.4=>4.5 clients', '4.6=>4.7 clients']
     CLIENT_CONTACT_STATUS=['Normal Client', 'No Phone Call', 'No Mail', 'No Phone Call and No Mail', 'Ask Client To Pay Promptly',
                            "Client doesn't want us", "We don't want the client"]
     

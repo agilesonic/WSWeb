@@ -597,14 +597,9 @@ puts action,profile,from_hrid
     end until trip
     session[:num]=num.to_s
 
-
-
     if next_client.nil?
       redirect_to sales_path
     end
-    
-    
-    
     
     redirect_to clientprofile_function_path(:id => next_client.cfid, :jobid1=>@jobid1, :source=>@source,:function=>@function)
   end

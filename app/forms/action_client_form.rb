@@ -1,3 +1,3 @@
 class ActionClientForm<BaseForm
-  attr_accessor :profile, :action, :from, :to, :limit
+  attr_accessor :profile, :from, :to, :limit
 end

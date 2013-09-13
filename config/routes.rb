@@ -25,6 +25,17 @@ WSWeb::Application.routes.draw do
   #match "/sales/callclient1" => "sales#callclient1"
   #match "/functions/messages" => "functions#messages"
   
+  resources :crews do
+    collection do
+      get 'tracker'
+    end
+    member do
+      get 'activity'
+    end
+  end
+
+
+
   resources :employees do
     collection do
       get 'verpay'

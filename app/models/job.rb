@@ -65,6 +65,11 @@ class Job < ActiveRecord::Base
     where("datebi = ?",  date).sum('price')
   end
 
+  def self.dollar_jobs_produced_curr_crew(date, crewname) 
+    where("datebi = ? and crewname = ?",  date, "#{crewname}").sum('price')
+  end
+
+
   def self.number_jobs_incomplete(date1, date2) 
     where("sdate between ? and ? and datebi is null", date1, date2).count
   end

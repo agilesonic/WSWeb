@@ -7,6 +7,11 @@ class Satisfaction < ActiveRecord::Base
     maximum("jobid")
   end
 
+  def self.count_sats jobid
+    where("jobid = ? ",jobid).count
+  end
+
+
   def self.max_satdate
     maximum("satdate")
   end

@@ -1,0 +1,24 @@
+<%=@test%>
+
+
+<%if !@crew_bundles.nil? && !@crew_bundles.empty? then%>
+	<b><h2>Crew Tracker</h2></b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Partner1</b></th>
+					<th><b>Partner2</b></th>
+					<th><b>Prod</b></th>
+				</tr>	
+			<%@crew_bundles.each do |crew|
+			  class5='mystyle'
+			%>
+				<tr class=<%=class5%>>
+					<td><b><%= crew.driver %></b></td>
+					<td><b><%= crew.partner %></b></td>
+					<td><b><%= number_to_currency crew.prod %></b></td>
+					<td><%= link_to 'Crew Activity', activity_crew_path(:id => crew.driver),{:style=>"color: yellow"}%></td>
+				</tr>	
+			<%end%>
+		</table>
+	<%end%>
+<br/>

@@ -30,6 +30,7 @@ class FunctionsController <  ApplicationController
     if !@user.empty? 
       user=@user[0]
       @username=user.username
+      puts 'USER*************',@username
       hrid=user.HRID
       session[:username]=@username
       names=Employee.just_name_from_id (user.HRID)
@@ -64,6 +65,7 @@ class FunctionsController <  ApplicationController
       @notes.each do |n|
         puts n.notes
       end
+      @username=session[:username]
       render 'login5'
   end
   
@@ -1461,19 +1463,22 @@ class FunctionsController <  ApplicationController
   end
   
   def savesatcall
-    @cfmess='Satisfaction Call Recorded Successfully!!!'
     @source=params[:source]
     @function=params[:function]
     @jobid1=params[:jobid1]
-    scf=SatCallForm.new(params[:sat_call_form])
-    
-    sat=Satisfaction.new
-    sat.JobID=@jobid1
-    sat.Caller=session[:hrid]
-    sat.Comments=scf.comments
-    sat.Type=scf.type
-    sat.SatDate=Date.today
-    sat.save!
+    Satisfaction.count_sats @jobid1
+    @cfmess='Satisfaction Call Already Recorded!!!'
+    if count==0
+      scf=SatCallForm.new(params[:sat_call_form])
+      sat=Satisfaction.new
+      sat.JobID=@jobid1
+      sat.Caller=session[:hrid]
+      sat.Comments=scf.comments
+      sat.Type=scf.type
+      sat.SatDate=Date.today
+      sat.save!
+      @cfmess='Satisfaction Call Recorded Successfully!!!'
+    end
     redirect_to clientprofile_function_url(:cfid=>@cfid, :jobid1=>@jobid1, :source=>@source, :function=>@function, :cfmess=>@cfmess)
   end
   
@@ -2220,12 +2225,15 @@ class FunctionsController <  ApplicationController
       dcb.postcode=c.postcode
       dcb.perly=c.perly
       dcb.city=c.city
+      names=Employee.just_name_from_id c.registerperson
+      dcb.register=names[0]
       @data<<dcb
       props=c.valid_properties
       props.each do |p|
         dcb=DataCheckBundle.new
         dcb.class5='property'
         dcb.id=p.JobInfoID
+        dcb.register=p.JobInfoID
         dcb.type='PROPERTY'
         dcb.hon='xxxxxxx'
         dcb.fname='xxxxxxx'
@@ -2271,20 +2279,32 @@ class FunctionsController <  ApplicationController
       client=Client.find sdf[:id] 
       client.honorific=sdf[:hon] 
       client.firstname=sdf[:fname]
+      client.lastname=sdf[:lname]
+      client.address=sdf[:address] 
+      client.postcode=sdf[:postcode]
+      client.perly=sdf[:perly]
+      client.city=sdf[:city]
       client.save 
     end
 
+    if type=='PROPERTY'
+      prop=Property.find sdf[:id] 
+      prop.address=sdf[:address] 
+      prop.postcode=sdf[:postcode]
+      prop.perly=sdf[:perly]
+      prop.city=sdf[:city]
+      prop.save 
+    end
 
-    syear=sdf[:syear]
-    smonth=sdf[:smonth]
-    sday=sdf[:sday]
-    fyear=sdf[:fyear]
-    fmonth=sdf[:fmonth]
-    fday=sdf[:fday]
-    sdate=Date.parse(syear+'-'+smonth+'-'+sday)
-    fdate=Date.parse(fyear+'-'+fmonth+'-'+fday)
-    #date=client.registerdate.to_formatted_s(:long_ordinal)
-    #attr_accessor :class, :type, :id, :property, :hon, :fname, :lname, :address, :perly, :postcode
+    @syear=sdf[:syear]
+    @smonth=sdf[:smonth]
+    @sday=sdf[:sday]
+    @fyear=sdf[:fyear]
+    @fmonth=sdf[:fmonth]
+    @fday=sdf[:fday]
+    sdate=Date.parse(@smonth+' '+@sday+', '+@syear)
+    fdate=Date.parse(@fmonth+' '+@fday+', '+@fyear)
+    
     @data=make_datacheck_list sdate, fdate
     @forms=[]
     @data.each do |d|

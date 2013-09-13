@@ -1,8 +1,74 @@
 WHY NATALIE!!!
+<script text="text/javascript" type="text/javascript">
+
+//              var startTotMin=startHour.value*60 + startMin.value;
+//              var finishTotMin=finishHour.value*60 + finishMin.value;
+//              var jobMin=finishTotMin-startTotMin;
+//              actMin.value=jobMin;
+
+//id="bookoption" onchange="setDates()
+//var bookoption=$('#bookoption');
+
+	var Money = function(amount) {
+	        this.amount = amount;
+	    }
+	Money.prototype.valueOf = function() {
+	    return Math.round(this.amount*100)/100;
+	}
+
+
+
+
+    function pad2(obj){
+    	var ob5=obj.toString();
+    	if(ob5.length==1){
+    		ob5="0"+ob5;
+    	}	
+  		return ob5; 
+    }
+    
+	function calcTime(){
+		var smin=$('#smin');
+		var shr=$('#shr');
+		var fmin=$('#fmin');
+		var fhr=$('#fhr');
+		var hours=$('#record_pay_form_hours');
+		var rate=$('#record_pay_form_rate');
+		var pay=$('#record_pay_form_pay');
+	    var sm=Number(smin.val())+(Number(shr.val())*60);
+	    var fm=Number(fmin.val())+(Number(fhr.val())*60);
+	    var tm=fm-sm;
+	    //alert(tm);
+	    //var hrs=parseInt(tm/60);
+	    //var mins=tm-(hrs*60);
+	    //alert(hrs);
+	    //alert(mins);	
+	    //var hrs5=pad2(hrs);
+	    //var mins5=pad2(mins);
+	    //alert(hrs5+":"+mins5);
+	    tm=parseFloat(tm);
+	    var hrs=(tm/60).toFixed(2);
+	    hours.val(hrs);
+	    rate=rate.val().toString();
+	    rate=rate.substring(1,rate.length);
+	    var rate5=parseFloat(rate);
+	    //var min_rate=rate5/60;
+        //var pay5=tm*min_rate;
+        var pay5=hrs*rate5;
+        pay.val('$'+pay5.toFixed(2));
+ 	}
+
+</script>
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
+Nuts<%=@selected_shour%><br/>
+<%=@selected_smin%><br/>
+<%=@selected_fhour%><br/>
+<%=@selected_fmin%><br/>
 
 <fieldset class="mystyle">
 	<legend>Record Pay</legend>
 <%= form_for @record_pay_form, :url => savepay_employee_url do |rp| %>
+	    <%=rp.hidden_field :id, :value=>@id%>
 
 		<table border="1" class="mystyle">
 				<tr class="cell">
@@ -18,21 +84,34 @@ WHY NATALIE!!!
 		            <th><b>Ftime Log</b></th><td><%=@ws.ftime.to_s.slice(11,16) %></td>
 				</tr>
 				<tr class="cell">
-					<th><b>Stime</b></th><td><%=rp.select :shr, options_for_select(@hour_options, @selected_hour)%>:
-											<%=rp.select :smin, options_for_select(@min_options, @selected_min)%></td>
+					<th><b>Stime</b></th><td>
+						<%= select_tag(:shr, options_for_select([['07', 7], ['08', 8], ['09', 9], ['10', 10], ['11', 11], ['12', 12], ['13', 13],
+						['14', 14], ['15', 15], ['16', 16], ['17', 17], ['18', 18], ['19', 19], ['20', 20]], @selected_shour5),:onchange=>"calcTime()",:id=>"shr") %>
+						:<%= select_tag(:smin, options_for_select([['00', 0], ['05', 5], ['10', 10],
+						 ['15', 15], ['20', 20], ['25', 25], ['30', 30],['35', 35], ['40', 40], ['45', 45], ['50', 50], ['55', 55]], @selected_smin5),:onchange=>"calcTime()",:id=>"smin") %>
+						</td>
 				</tr>
 				<tr class="cell">
-					<th><b>Ftime</b></th><td><%=rp.select :fhr, options_for_select(@hour_options, @selected_hour)%>:
-											<%=rp.select :fmin, options_for_select(@min_options, @selected_min)%></td>
+					<th><b>Ftime</b></th><td>
+						<!--
+						<%=rp.select :fhr, options_for_select(@hour_options, @selected_fhour)%>:
+						<%=rp.select :fmin, options_for_select(@min_options, @selected_fmin)%></td>
+	                   -->
+						<%= select_tag(:fhr, options_for_select([['07', 7], ['08', 8], ['09', 9], ['10', 10], ['11', 11], ['12', 12], ['13', 13],
+						['14', 14], ['15', 15], ['16', 16], ['17', 17], ['18', 18], ['19', 19], ['20', 20]], @selected_fhour5),:onchange=>"calcTime()",:id=>"fhr") %>
+						:<%= select_tag(:fmin, options_for_select([['00', 0], ['05', 5], ['10', 10],
+						 ['15', 15], ['20', 20], ['25', 25], ['30', 30],['35', 35], ['40', 40], ['45', 45], ['50', 50], ['55', 55]], @selected_fmin5),:onchange=>"calcTime()",:id=>"fmin") %>
+						</td>
+	
 				</tr>
 				<tr class="cell">
 					<th><b>Hours</b></th><td><b><%=rp.text_field :hours, :value=>@hours , :size=>"5x1" %></b></td>
 				</tr>
 				<tr class="cell">
-					<th><b>Rate</b></th><td><b><%=rp.text_field :rate, :value=>@rate , :size=>"5x1" %></b></td>
+					<th><b>Rate</b></th><td><b><%=rp.text_field :rate, :value=> number_to_currency(@rate),:onkeyup=>"calcTime()" , :size=>"5x1" %></b></td>
 				</tr>
 				<tr class="cell">
-					<th><b>Pay</b></th><td><b><%=rp.text_field :pay, :value=>@pay , :size=>"5x1" %></b></td>
+					<th><b>Pay</b></th><td><b><%=rp.text_field :pay, :value=> number_to_currency(@pay) , :size=>"5x1" %></b></td>
 				</tr>
 				<tr class="cell">
 					<th><b>Notes</b></th><td><b><%=rp.text_field :notes, :value=>@ws.notes , :size=>"5x1" %></b></td>

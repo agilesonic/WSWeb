@@ -1,6 +1,8 @@
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
+
 <%= form_for @sdf, :url => datacheck_functions_url do |cc| %>
 	<fieldset class="mystyle">
-		<legend>Create Sale</legend>
+		<legend>Show Data Check</legend>
 		<table border="1" class="mystyle">
 			<tr border="1" class="cell">
 				<td><%=cc.label 'Start Date' %></td>

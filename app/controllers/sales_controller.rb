@@ -13,6 +13,17 @@ class SalesController < ApplicationController
     @syear_options=HomeHelper::YEARS
     @smonth_options=HomeHelper::MONTHS
     @sday_options=HomeHelper::DAYS
+    
+    d=Date.today.to_s
+    @selected_syear=d[0..3]
+    month=d[5..6]
+    @selected_smonth=HomeHelper.get_month_from_num month
+    @selected_sday=d[8..9]
+    @selected_fyear=d[0..3]
+    @selected_fmonth=HomeHelper.get_month_from_num month
+    @selected_fday=d[8..9]
+
+    
     names=Employee.active_sales_people_only
     @caller_options=[]
     names.each do |name|
@@ -194,6 +205,7 @@ class SalesController < ApplicationController
 
     emps=Employee.active_sales_people
     @salesp_options=[]
+    @salesp_options<<'Unassigned'
     emps.each do|emp|
       @salesp_options<<emp.name
     end        
@@ -204,46 +216,56 @@ class SalesController < ApplicationController
   def actionclients
     acf=ActionClientForm.new(params[:action_client_form])
     profile=acf.profile
-    action=acf.action
     limit=acf.limit
     from=acf.from
-    emp=Employee.find_by_name from
-    from_hrid=emp.first.HRID
-    to=acf.to
-    emp=Employee.find_by_name to
-    to_hrid=emp.first.HRID
-#        lowcf='CF00039366'
-puts action,profile,from_hrid
-    if action=='unassign'
-    if profile=='4.0=>4.1 clients'
-      cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.0', '4.1')
-    elsif profile=='4.2=>4.3 clients'
-      cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.2', '4.3')
-    elsif profile=='4.4=>4.5 clients'
-      cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.4', '4.5')
-    elsif profile=='4.6=>4.7 clients'
-      cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.6', '4.7')
-    elsif profile=='3.7=>3.9 clients'
-      cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '3.7', '3.9')
-    elsif profile=='3.3=>3.6 clients'
-      cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '3.3', '3.6')
-    elsif profile=='New Estimates'
-      cc=Convertcalls.search_assigned_by_holder_newestimates_cc from_hrid  
-    elsif profile=='Used Us Last Summer'
-      cc=Convertcalls.search_assigned_by_holder_lastsummer_cc from_hrid  
+    from_hrid=nil
+    to_hrid=nil
+    
+    if from=='Unassigned'
+      from_hrid=nil
+    else
+      emp=Employee.find_by_name from
+      from_hrid=emp.first.HRID
     end
+    to=acf.to
+    if to=='Unassigned'
+      to_hrid=nil
+    else
+      emp=Employee.find_by_name to
+      to_hrid=emp.first.HRID
+    end
+#        lowcf='CF00039366'
+#puts action,profile,from_hrid
+#    if action=='unassign'
+      if profile=='4.0=>4.1 clients'
+        cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.0', '4.1')
+      elsif profile=='4.2=>4.3 clients'
+        cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.2', '4.3')
+      elsif profile=='4.4=>4.5 clients'
+        cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.4', '4.5')
+      elsif profile=='4.6=>4.7 clients'
+        cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.6', '4.7')
+      elsif profile=='3.7=>3.9 clients'
+        cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '3.7', '3.9')
+      elsif profile=='3.3=>3.6 clients'
+        cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '3.3', '3.6')
+      elsif profile=='New Estimates'
+        cc=Convertcalls.search_assigned_by_holder_newestimates_cc from_hrid  
+      elsif profile=='Used Us Last Summer'
+        cc=Convertcalls.search_assigned_by_holder_lastsummer_cc from_hrid  
+      end
     puts 'CC SIZE.......',cc.size
     i=0
     lim=limit.to_i
-    cc.each do |c|
-      if i==lim
-        break 
+      cc.each do |c|
+        if i==lim
+          break 
+        end
+        c.hrid=to_hrid
+        c.save!
+        puts 'TRANSFERRED TO '.concat(c.cfid.to_s).concat(c.hrid.to_s)
+        i+=1   
       end
-      c.hrid=nil
-      c.save!
-      i+=1   
-    end
-    end
     redirect_to findclients_sales_url    
   end
   

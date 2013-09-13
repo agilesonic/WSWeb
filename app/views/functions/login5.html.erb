@@ -112,7 +112,7 @@
 		<li id="mainMenuProduction">
 			<b>Production</b>
 			<ul>
-				<li><%= link_to 'Make Production Stats', stats_production_functions_path%></li>
+				<li><%= link_to 'Crew Tracker', tracker_crews_path%></li>
 			</ul>
 		</li>
 		<li id="mainMenuTasks">
@@ -124,31 +124,37 @@
 		<li id="mainMenuHumanResources">
 			<b>HR</b>
 			<ul>
-				<li><%= link_to 'Verify Pay', verpay_employees_path%></li>
+				<%if @username=='Roger' || @username=='shantz'%>
+					<li><%= link_to 'Verify Pay', verpay_employees_path%></li>
+				<%end%>
 			</ul>
 		</li>
 		<li id="mainMenuStats">
 			<b>Stats</b>
 			<ul>
-				<li><%= link_to 'Read Co Sales Stats', stats1_functions_path%></li>
-				<li><%= link_to 'Make Co Sales Stats', co_stats_functions_path%></li>
-				<li><%= link_to 'Make Ind Sales Stats7', ind_stats_7_functions_path%></li>
-				<li><%= link_to 'Make Ind Sales Stats', ind_stats_functions_path%></li>
-				<li><%= link_to 'Make Schedule Stats', stats_schedule_functions_path%></li>
-				<li><%= link_to 'Make Production Stats', stats_production_functions_path%></li>
+				<%if @username=='Roger' || @username=='shantz'%>
+					<li><%= link_to 'Read Co Sales Stats', stats1_functions_path%></li>
+					<li><%= link_to 'Make Co Sales Stats', co_stats_functions_path%></li>
+					<li><%= link_to 'Make Ind Sales Stats7', ind_stats_7_functions_path%></li>
+					<li><%= link_to 'Make Ind Sales Stats', ind_stats_functions_path%></li>
+					<li><%= link_to 'Make Schedule Stats', stats_schedule_functions_path%></li>
+					<li><%= link_to 'Make Production Stats', stats_production_functions_path%></li>
+				<%end%>
 			</ul>
 		</li>
 		
 		<li id="mainMenuManagement">
 			<b>Management</b>
 			<ul>
-				<li><%= link_to 'Data Check', showdatacheck_functions_path%></li>
-				<li><%= link_to 'Send Estimate', send_estimate_mail_functions_path%></li>
-				<li><%= link_to 'Call Log', newcalllog5_sales_path%></li>
-				<li><%= link_to 'Find Clients', findclients_sales_path%></li>
-				<li><%= link_to 'Call Profile', callprofile_sales_path%></li>
-				<li><%= link_to 'Add New Estimates to Call List (EHEH)', screenconvertcalls_sales_path%></li>
-				<li><%= link_to 'Add Sale Info to Call List (EHEH)', screensales_sales_path%></li>
+				<%if @username=='Roger' || @username=='shantz'%>
+					<li><%= link_to 'Data Check', showdatacheck_functions_path%></li>
+					<li><%= link_to 'Send Estimate', send_estimate_mail_functions_path%></li>
+					<li><%= link_to 'Call Log', newcalllog5_sales_path%></li>
+					<li><%= link_to 'Find Clients', findclients_sales_path%></li>
+					<li><%= link_to 'Call Profile', callprofile_sales_path%></li>
+					<li><%= link_to 'Add New Estimates to Call List (EHEH)', screenconvertcalls_sales_path%></li>
+					<li><%= link_to 'Add Sale Info to Call List (EHEH)', screensales_sales_path%></li>
+				<%end%>
 			</ul>
 		</li>
 	</ul>
@@ -157,6 +163,9 @@
 
 <br/>
 <br/>
+		<%if !@messsales.nil?%>
+			<b><%=@messsales%></b>
+		<%end%> 
 
 
 		<b><a href="http://www.whiteshark.ca/internal">White Shark Internal</a></b><br/><br/>

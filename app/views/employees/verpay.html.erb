@@ -1,6 +1,7 @@
 
 
 HI HO
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
 
 <fieldset class="mystyle">
 <legend>Open/Closed Sessions</legend>
@@ -52,8 +53,8 @@ HI HO
 				<td>nil</td>	
 			<%end%>
 				<td><%=ws.hours%></td>
-				<td><%=ws.rate%></td>
-				<td><%=ws.pay%></td>
+				<td><%=number_to_currency ws.rate%></td>
+				<td><%=number_to_currency ws.pay%></td>
 				<td><b><%=ws.notes%></b></td>
 				<td><b><%= link_to 'Record Pay', recordpay_employee_path(:id => ws.id),:style=>"color: yellow"%></b></td>
 			</tr>

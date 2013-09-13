@@ -1,9 +1,10 @@
 HI HO
 
 <b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
+<b></b><%= link_to 'Show Data Check', showdatacheck_functions_path%></b><br/>
 
 <fieldset class="mystyle">
-	<legend>Sales History</legend>
+	<legend>Data Check</legend>
 	<%if !@data.nil? && !@data.empty? then%>
 	<b>Data Check</b>
 		<table border="1" class="mystyle">
@@ -40,11 +41,11 @@ HI HO
 					<%=cc.hidden_field :fmonth, :value=>@fmonth%>
 					<%=cc.hidden_field :fday, :value=>@fday%>
 					<td><b><%= d.type %></b></td>
-					<td><b><%= d.id %></b></td>
+					<td><b><%= d.register %></b></td>
 					<td><b><%=cc.text_field :hon, :value=>d.hon, :size=>'7'%></b></td>
-					<td><b><%=cc.text_field :fname, :value=>d.fname, :size=>'12'%></b></td>
-					<td><b><%=cc.text_field :lname, :value=>d.lname, :size=>'12'%></b></td>
-					<td><b><%=cc.text_field :address, :value=>d.address, :size=>'15'%></b></td>
+					<td><b><%=cc.text_field :fname, :value=>d.fname, :size=>'15'%></b></td>
+					<td><b><%=cc.text_field :lname, :value=>d.lname, :size=>'15'%></b></td>
+					<td><b><%=cc.text_field :address, :value=>d.address, :size=>'20'%></b></td>
 					<td><b><%=cc.text_field :perly, :value=>d.perly, :size=>'10'%></b></td>
 					<td><b><%=cc.text_field :postcode, :value=>d.postcode, :size=>'7'%></b></td>
 					<td><b><%=cc.text_field :city, :value=>d.city, :size=>'7'%></b></td>

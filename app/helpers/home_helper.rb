@@ -36,7 +36,7 @@ module HomeHelper
           cbl.ts=c.callmade
           cbl.type='Conn Call'
           cbl.object=c.CFID+' '+client.full_name
-          cbl.notes=c.CFID+' '+client.full_name
+          cbl.notes=client.full_name.concat(".....").concat(c.tstatus).concat(".....").concat(c.followup.to_s)
           call_log[c.callmade]=cbl
         end
       end

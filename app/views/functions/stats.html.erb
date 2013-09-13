@@ -1,6 +1,7 @@
-<b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
+<b><%= link_to 'Main Menu', login1_functions_path%></b>
+
 <%if !@sbs.nil? && !@sbs.empty? then%>
-		<b>Company Summer Sales&nbsp;&nbsp;&nbsp;Stats Last Generated:<%=@ts_co%></b>
+		<b>Company Summer Sales Sales&nbsp;&nbsp;&nbsp;Stats Last Generated:<%=@ts_co%></b>
 		<table border="1" class="mystyle">
 				<tr class="cell">
 					<th><b>YEAR</b></th>
@@ -35,8 +36,83 @@
 		</table>
 <%end%>
 <br/><br/>
+
+<%if !@sbs_septoct.nil? && !@sbs_septoct.empty? then%>
+		<b>Company SEPT/OCT Sales&nbsp;&nbsp;&nbsp;Stats Last Generated:<%=@ts_co_septoct%></b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>YEAR</b></th>
+					<th><b>Current</b></th>
+					<th><b>YTD</b></th>
+					<th><b>Yesterday</b></th>
+					<th><b>Last Seven Days</b></th>
+					<th><b>Tomorrow</b></th>
+					<th><b>2 Days Out</b></th>
+					<th><b>3 Days Out</b></th>
+					<th><b>4 Days Out</b></th>
+					<th><b>5 Days Out</b></th>
+					<th><b>Next Seven Days</b></th>
+				</tr>	
+			<%@sbs_septoct.each do |sb|
+			  class5='cell'	
+			%>
+				<tr class=<%=class5%>>
+					<td><b><%= sb.year %></b></td>
+					<td><b><%= sb.salescurr %></b></td>
+					<td><b><%= sb.salesytd %></b></td>
+					<td><b><%= sb.yesterday %></b></td>
+					<td><b><%= sb.lastseven %></b></td>
+					<td><b><%= sb.tomorrow %></b></td>
+					<td><b><%= sb.two %></b></td>
+					<td><b><%= sb.three %></b></td>
+					<td><b><%= sb.four %></b></td>
+					<td><b><%= sb.five %></b></td>
+					<td><b><%= sb.nextseven %></b></td>
+				</tr>	
+			<%end%>
+		</table>
+<%end%>
+<br/><br/>
+
+<%if !@sbs_novdec.nil? && !@sbs_novdec.empty? then%>
+		<b>Company NOV/DEC Sales&nbsp;&nbsp;&nbsp;Stats Last Generated:<%=@ts_co_novdec%></b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>YEAR</b></th>
+					<th><b>Current</b></th>
+					<th><b>YTD</b></th>
+					<th><b>Yesterday</b></th>
+					<th><b>Last Seven Days</b></th>
+					<th><b>Tomorrow</b></th>
+					<th><b>2 Days Out</b></th>
+					<th><b>3 Days Out</b></th>
+					<th><b>4 Days Out</b></th>
+					<th><b>5 Days Out</b></th>
+					<th><b>Next Seven Days</b></th>
+				</tr>	
+			<%@sbs_novdec.each do |sb|
+			  class5='cell'	
+			%>
+				<tr class=<%=class5%>>
+					<td><b><%= sb.year %></b></td>
+					<td><b><%= sb.salescurr %></b></td>
+					<td><b><%= sb.salesytd %></b></td>
+					<td><b><%= sb.yesterday %></b></td>
+					<td><b><%= sb.lastseven %></b></td>
+					<td><b><%= sb.tomorrow %></b></td>
+					<td><b><%= sb.two %></b></td>
+					<td><b><%= sb.three %></b></td>
+					<td><b><%= sb.four %></b></td>
+					<td><b><%= sb.five %></b></td>
+					<td><b><%= sb.nextseven %></b></td>
+				</tr>	
+			<%end%>
+		</table>
+<%end%>
+<br/><br/>
+
 <%if !@indstats7.nil? && !@indstats7.empty? then%>
-		<b>Individual Performance Last Seven Days(Summer Sales)&nbsp;&nbsp;&nbsp;Stats Last Generated:<%=@ts_ind7%></b>
+		<b>Individual Performance Last Seven Days(SEPT/OCT Sales)&nbsp;&nbsp;&nbsp;Stats Last Generated:<%=@ts_ind7%></b>
 		<table border="1" class="mystyle">
 				<tr class="cell">
 					<th><b>Name</b></th>
@@ -71,7 +147,7 @@
 <br/><br/>
 
 <%if !@indstats.nil? && !@indstats.empty? then%>
-		<b>Individual Performance YTD(Summer Sales)&nbsp;&nbsp;&nbsp;Stats Last Generated:<%=@ts_ind%></b>
+		<b>Individual Performance YTD(SEPT/OCT)&nbsp;&nbsp;&nbsp;Stats Last Generated:<%=@ts_ind%></b>
 		<table border="1" class="mystyle">
 				<tr class="cell">
 					<th><b>Name</b></th>

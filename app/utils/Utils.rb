@@ -2,9 +2,13 @@ class Utils
   @user5=nil
   @@jobid=nil
   @@stats=[]
+  @@stats_septoct=[]
+  @@stats_novdec=[]
   @@indstats=[]
   @@indstats7=[]
   @@stat_co_time=nil
+  @@stat_co_septoct_time=nil
+  @@stat_co_novdec_time=nil
   @@stat_ind_time=nil
   @@stat_ind_time7=nil
   
@@ -40,12 +44,32 @@ class Utils
     puts Date.new.to_s + " " + message
   end
   
+
   def self.record_stat_co_time(ts)
     @@stat_co_time=ts
   end 
   
   def self.get_stat_co_time
     @@stat_co_time
+  end 
+
+
+
+
+  def self.record_stat_co_septoct_time(ts)
+    @@stat_co_septoct_time=ts
+  end 
+  
+  def self.get_stat_co_septoct_time
+    @@stat_co_septoct_time
+  end 
+
+  def self.record_stat_co_novdec_time(ts)
+    @@stat_co_septoct_time=ts
+  end 
+  
+  def self.get_stat_co_novdec_time
+    @@stat_co_septoct_time
   end 
 
   def self.record_stat_ind_time(ts)
@@ -82,6 +106,23 @@ class Utils
   def self.withdraw_stats  
     @@stats
   end
+
+  def self.deposit_stats_septoct(stats1)  
+    @@stats_septoct=stats1
+  end
+
+  def self.withdraw_stats_septoct  
+    @@stats_septoct
+  end
+
+  def self.deposit_stats_novdec(stats1)  
+    @@stats_novdec=stats1
+  end
+
+  def self.withdraw_stats_novdec  
+    @@stats_novdec
+  end
+
 
   def self.deposit_indstats(stats1)  
     @@indstats=stats1

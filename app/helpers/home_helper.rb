@@ -52,7 +52,12 @@ module HomeHelper
             cbl.type='Notes'
           end
           cbl.object=n.objectid
-          cbl.notes=n.notes
+
+          if !n.objectid.nil?
+            cbl.notes=n.notes.concat('[').concat(n.objectid).concat(']')
+          else
+            cbl.notes=n.notes
+          end  
           call_log[n.ts]=cbl
         end
       end
@@ -73,7 +78,11 @@ module HomeHelper
         cbl.ts=m.ts
         cbl.type='Resolved Message'
         cbl.object=''
-        cbl.notes=m.message
+        if !m.cfid.nil?
+          cbl.notes='['.concat(m.cfid).concat(']').concat(m.message)
+        else
+          cbl.notes=m.message
+        end  
         call_log[m.ts]=cbl
       end
       
@@ -83,18 +92,26 @@ module HomeHelper
         cbl.ts=m.ts
         cbl.type='Took Message'
         cbl.object=''
-        cbl.notes=m.message
+        if !m.cfid.nil?
+          cbl.notes='['.concat(m.cfid).concat(']').concat(m.message)
+        else
+          cbl.notes=m.message
+        end  
         call_log[m.ts]=cbl
       end
       
       jobs=Job.calllog hrid, date
       jobs.each do |j|
         cbl=CallLogBundle.new
-        cbl.ts=j.createts
+        cbl.ts=j.timeSold
         cbl.type='SALE'
         cbl.object=''
-        cbl.notes=j.JobDesc
-        call_log[j.createts]=cbl
+        type='Fltr'
+        if j.Sdate==j.Fdate
+          type='Appt'
+        end
+        cbl.notes='['.concat(type).concat(']').concat(j.JobDesc).concat(' ').concat(j.Sdate.to_s)
+        call_log[j.timeSold]=cbl
       end
       
       trans=Transactions.calllog hrid, date

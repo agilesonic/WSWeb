@@ -78,10 +78,10 @@ Nuts<%=@selected_shour%><br/>
 					<th><b>Date</b></th><td><%=@ws.profiledate.to_formatted_s(:long_ordinal) %></td>
 				</tr>
 				<tr class="cell">
-		            <th><b>Stime Log</b></th><td><%=@ws.stime.to_s.slice(11,16) %></td>
+		            <th><b>Stime Log</b></th><td><%=@ws.stime.to_s[11..15] %></td>
 				</tr>
 				<tr class="cell">
-		            <th><b>Ftime Log</b></th><td><%=@ws.ftime.to_s.slice(11,16) %></td>
+		            <th><b>Ftime Log</b></th><td><%=@ws.ftime.to_s[11..15] %></td>
 				</tr>
 				<tr class="cell">
 					<th><b>Stime</b></th><td>
@@ -142,7 +142,7 @@ Nuts<%=@selected_shour%><br/>
 			%>
 			    
 				<tr class='<%=class5%>'>
-					<td><b><%= cl.ts.to_s.slice(11,16)%></b></td>
+					<td><b><%= cl.ts.to_s[11..15]%></b></td>
 					<td><b><%= cl.type%></b></td>
 					<td><b><%= cl.notes%></b></td>
 				</tr>	

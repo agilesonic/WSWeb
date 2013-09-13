@@ -54,6 +54,17 @@
         	else if(month=='Dec')
         	  	return '11';
         }
+ 
+ 		function show_earlyeaves(){
+			var eh=$('#create_sale_form_eh');
+			var ee=$('#show_earlyeaves');
+			if(eh.val()=='1'){
+				ee.show();
+			}else{
+				ee.hide();
+			}
+		}
+
         
         function setDates(){
 			var bookoption=$('#bookoption');
@@ -262,6 +273,7 @@
 		
 		function job_desc(){
 			  disabs();
+			  show_earlyeaves();
 			  var w1=$('#create_sale_form_w1');
 	          var w1PriceText =$('#create_sale_form_w1price');
 	          var w1Price=parseFloat(w1PriceText.val());
@@ -755,7 +767,7 @@
 				</tr>
 				
 				<tr border="1" class="cell">
-					<td><%=cc.check_box :eh, :onclick=>'job_desc()'%><%=cc.label :eh, 'EH' %><%=cc.text_field :ehprice,:size=>'7', :value=>eh,:onkeyup=>'job_desc()' %></td>
+					<td><%=cc.check_box :eh, :onclick=>'job_desc()' %><%=cc.label :eh, 'EH' %><%=cc.text_field :ehprice,:size=>'7', :value=>eh,:onkeyup=>'job_desc()' %></td>
 					<td><%=cc.check_box :eg, :onclick=>'job_desc()'%><%=cc.label :eg, 'EG' %><%=cc.text_field :egprice,:size=>'7', :value=>eg,:onkeyup=>'job_desc()' %></td>
 					
 					<td colspan=2><%=cc.check_box :cages, :onclick=>'job_desc()'%><%=cc.label :cages, 'Cages' %>
@@ -770,6 +782,12 @@
 				</tr>
 			</table><br/>	
 		<%end%>
+		
+		<table border="1" class="mystyle"  id="show_earlyeaves" style="display: none;">
+			<tr border="1" class="cell">
+				<td colspan=3><%=cc.check_box :early_eaves %><%=cc.label :early_eaves, 'Client agreed to Early Eaves Cleaning' %></td>
+			</tr>
+        </table>		
 		<table border="1" class="mystyle">
 			<tr border="1" class="cell">
 				<td colspan=3><%=cc.text_area :jobdesc, :size=>'60x4'%></td>
@@ -780,9 +798,7 @@
 				<td><%=cc.label :jobhst, 'HST' %><%=cc.text_field :jobhst, :size=>'7'%></td>
 				<td><%=cc.label :jobtotal, 'Total' %><%=cc.text_field :jobtotal, :size=>'7'%></td>
 			</tr>
-
-
- 			<tr style="padding-top:10px" border="1" class="cell">
+	 		<tr style="padding-top:10px" border="1" class="cell">
 				<td colspan=3, align=center><%= cc.submit "Create Sale", :id=>'makesale', :onclick=>'disable_makesale()' %></td>
 			</tr>
 		</table>

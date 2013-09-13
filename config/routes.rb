@@ -68,6 +68,8 @@ WSWeb::Application.routes.draw do
       get 'nextsat'
       get 'login1'
       get 'co_stats'
+      get 'co_stats_septoct'
+      get 'co_stats_novdec'
       get 'ind_stats'
       get 'ind_stats_7'
       get 'stats1'

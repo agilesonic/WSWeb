@@ -402,6 +402,15 @@ class Convertcalls < ActiveRecord::Base
   Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between '"+datesold1.to_s+"' and '"+datesold2.to_s+"' and cc.hrid=j.salesid1 and j.salesid1= '"+"#{salesid}"+"'").count
     end
 
+
+  def self.sales_by_assist_sdates(datesold1, datesold2, salesid, sdate1, sdate2)
+    Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between '"+datesold1.to_s+"' and '"+datesold2.to_s+"' and cc.hrid= '"+"#{salesid}"+"' and cc.summcalls>'0' and sdate between '"+sdate1.to_s+"' and '"+sdate2.to_s+"'").count
+  end
+  
+  def self.sales_by_direct_sdates(datesold1, datesold2, salesid, sdate1, sdate2)
+    Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between '"+datesold1.to_s+"' and '"+datesold2.to_s+"' and cc.hrid=j.salesid1 and j.salesid1= '"+"#{salesid}"+"' and sdate between '"+sdate1.to_s+"' and '"+sdate2.to_s+"'").count
+  end
+
   def self.max_datesold
     maximum("lastjob")
   end

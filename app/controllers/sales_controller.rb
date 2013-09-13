@@ -42,7 +42,6 @@ class SalesController < ApplicationController
     hrids=Employee.just_id_from_name name 
     hrid=hrids[0]
     date=Date.parse(syear+'-'+smonth+'-'+sday)
-    
     @call_log=HomeHelper.generate_calllog hrid, date
   end
 
@@ -50,12 +49,14 @@ class SalesController < ApplicationController
     @name=params[:name]
     emp=Employee.find_by_name @name
     hrid=emp.first.HRID
-    @today=Date.today
-    @cc=Clientcontact.calllog hrid, @today
-    @cc.each do |c|
-      client=Client.find c.CFID
-      c.CFID=c.CFID+' '+client.full_name
-    end
+    date=Date.today
+#    @cc=Clientcontact.calllog hrid, @today
+#    @cc.each do |c|
+#      client=Client.find c.CFID
+#      c.CFID=c.CFID+'  '+client.full_name
+#    end
+    @call_log=HomeHelper.generate_calllog hrid, date
+    render 'calllog5'
   end
   
   def saleshistory
@@ -1178,16 +1179,27 @@ class SalesController < ApplicationController
     if (j5.nil? || (j5.Sdate!=job.Sdate || j5.Fdate!=job.Fdate || j5.JobDesc!=job.JobDesc || j5.JobInfoID!=job.JobInfoID))
       job.save!
       if(csf.notes!='')
-        note=Notes.new
-        note.recorder=session[:hrid]
-        note.notes=csf.notes
-        note.objectid=jobid
-        note.destgroup='Job Notes To Be Printed on Runsheets;;;;;;Job Scheduling Notes';
-        note.destitem='Job Notes To Be Printed on Runsheets;;;;;;Job Scheduling Notes';
-        note.id1=jobid
-        note.for_invoice='N' 
-        note.save!   
-      end
+          note=Notes.new
+          note.recorder=session[:hrid]
+          note.notes=csf.notes
+          note.objectid=jobid
+          note.destgroup='Job Notes To Be Printed on Runsheets;;;;;;Job Scheduling Notes';
+          note.destitem='Job Notes To Be Printed on Runsheets;;;;;;Job Scheduling Notes';
+          note.id1=jobid
+          note.for_invoice='N' 
+          note.save!
+       end   
+       if(csf.early_eaves=='1')
+          note=Notes.new
+          note.recorder=session[:hrid]
+          note.notes="Client agreed to Early Eaves Cleaning"
+          note.objectid=jobid
+          note.destgroup='Job Notes To Be Printed on Runsheets;;;;;;Job Scheduling Notes';
+          note.destitem='Job Notes To Be Printed on Runsheets;;;;;;Job Scheduling Notes';
+          note.id1=jobid
+          note.for_invoice='N' 
+          note.save!
+        end
       if @function=='callclient'
         record_contact(cfid, 'SALE', Date.today, '')
         tsj=Telesalejobs.new

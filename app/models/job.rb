@@ -20,7 +20,7 @@ class Job < ActiveRecord::Base
   end
 
   def self.calllog hrid, date
-    where("SalesID1 = ? and timeSold like ? ",hrid, '%#{date}%')
+    where("SalesID1 = ? and timeSold like ? ",hrid, '%'+"#{date}"+'%') 
   end
 
 
@@ -81,9 +81,21 @@ class Job < ActiveRecord::Base
     where("datesold between ? and ? and sdate < ?", date1, date2, date3).count 
   end
 
+  def self.number_jobs_sold_sdates(date1, date2, date3, date4) 
+    where("datesold between ? and ? and sdate between ? and ?", date1, date2, date3, date4).count 
+  end
+  
+
+
+
   def self.number_jobs_sold_ind_curr(id, date) 
     where("salesid1 = ? and datesold = ? and sdate < '2013-09-30'", id, date).count 
   end
+
+  def self.number_jobs_sold_ind_curr_septoct(id, date) 
+    where("salesid1 = ? and datesold = ? and sdate between '2013-09-01' and '2013-10-31'", id, date).count 
+  end
+ 
  
   def self.sales_people 
     #where("datesold between ? and ?", date1, date2)

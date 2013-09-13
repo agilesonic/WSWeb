@@ -1,5 +1,5 @@
-Hi Ho
-
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/>
+<b><%= link_to 'Back To Stats', stats1_functions_path%></b><br/><br/>
 
 <%if !@call_log.nil? && !@call_log.empty? %>
 		<table border="1" class="mystyle">
@@ -17,7 +17,7 @@ Hi Ho
 			%>
 			    
 				<tr class='<%=class5%>'>
-					<td><b><%= cl.ts.to_s.slice(11,16)%></b></td>
+					<td><b><%= cl.ts.to_s[11..15]%></b></td>
 					<td><b><%= cl.type%></b></td>
 					<td><b><%= cl.notes%></b></td>
 				</tr>	

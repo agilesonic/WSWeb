@@ -39,4 +39,13 @@ class Clientcontact < ActiveRecord::Base
     where("cfid = ? and dateatt between '2013-09-01' and '2013-12-31'", "#{key1}").count 
  end
 
+ def self.num_cfcontacts_fall2013_ind(key1) 
+    where("caller = ? and dateatt between '2013-09-01' and '2013-12-31'", "#{key1}").count 
+ end
+
+ def self.num_cfcontacts_fall2013_ind_curr(key1, date) 
+    where("caller = ? and dateatt = ?", "#{key1}", date).count 
+ end
+
+
 end

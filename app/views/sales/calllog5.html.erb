@@ -2,6 +2,7 @@
 <b><%= link_to 'Back To Stats', stats1_functions_path%></b><br/><br/>
 
 <%if !@call_log.nil? && !@call_log.empty? %>
+<h3>Activity for <%=@name%> on <%=@date.to_formatted_s(:long_ordinal)%></h3>
 		<table border="1" class="mystyle">
 				<tr class="cell">
 					<th><b>Time</b></th>

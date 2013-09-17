@@ -26,6 +26,8 @@ class SalesController < ApplicationController
     
     names=Employee.active_sales_people_only
     @caller_options=[]
+    @caller_options<<'George Patsas'
+    @caller_options<<'Ryan Carreira'
     names.each do |name|
         @caller_options<<name
     end
@@ -34,28 +36,28 @@ class SalesController < ApplicationController
   
   def calllog5
     cpf=params[:call_profile_form]
-    name=cpf[:caller] 
+    @name=cpf[:caller] 
     syear=cpf[:syear] 
     smonth=cpf[:smonth] 
     smonth=HomeHelper.get_num_from_month(smonth)
     sday=cpf[:sday]
-    hrids=Employee.just_id_from_name name 
+    hrids=Employee.just_id_from_name @name 
     hrid=hrids[0]
-    date=Date.parse(syear+'-'+smonth+'-'+sday)
-    @call_log=HomeHelper.generate_calllog hrid, date
+    @date=Date.parse(syear+'-'+smonth+'-'+sday)
+    @call_log=HomeHelper.generate_calllog hrid, @date
   end
 
   def calllog
     @name=params[:name]
     emp=Employee.find_by_name @name
     hrid=emp.first.HRID
-    date=Date.today
+    @date=Date.today
 #    @cc=Clientcontact.calllog hrid, @today
 #    @cc.each do |c|
 #      client=Client.find c.CFID
 #      c.CFID=c.CFID+'  '+client.full_name
 #    end
-    @call_log=HomeHelper.generate_calllog hrid, date
+    @call_log=HomeHelper.generate_calllog hrid, @date
     render 'calllog5'
   end
   

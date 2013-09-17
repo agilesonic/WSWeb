@@ -76,7 +76,10 @@
 							<td>nil</td>	
 						<%end%>
 						<td><b><%=cc.text_field :notes, :value=> ws.notes, :size=>"20x1" %></b></td>
-						<td><%= cc.submit "Log Out" %></td>
+						<%if @username=='shantz' || @username=='Roger'%>
+							<td><%= link_to 'Call Log', calllog_sales_path(:name => ws.HRID),:style=>"color: yellow"%></td>
+						<%end%>
+    					<td><%= cc.submit "Log Out" %></td>
 					</tr>
 				<%end%>		
 			<%end%>
@@ -127,6 +130,7 @@
 			<ul>
 				<%if @username=='Roger' || @username=='shantz'%>
 					<li><%= link_to 'Verify Pay', verpay_employees_path%></li>
+					<li><%= link_to 'Individual Pay', showindpay_employees_path%></li>
 				<%end%>
 			</ul>
 		</li>
@@ -135,7 +139,9 @@
 			<ul>
 				<%if @username=='Roger' || @username=='shantz'%>
 					<li><%= link_to 'Read Co Sales Stats', stats1_functions_path%></li>
-					<li><%= link_to 'Make Co Sales Stats', co_stats_functions_path%></li>
+					<li><%= link_to 'Kill Stats', kill_stats_functions_path%></li>
+					
+					<li><%= link_to 'Make Co Summer Sales Stats', co_stats_functions_path%></li>
 					<li><%= link_to 'Make Co Sept/Oct Sales Stats', co_stats_septoct_functions_path%></li>
 					<li><%= link_to 'Make Co Nov/Dec Sales Stats', co_stats_novdec_functions_path%></li>
 					<li><%= link_to 'Make Ind Sales Stats7', ind_stats_7_functions_path%></li>

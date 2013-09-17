@@ -54,7 +54,16 @@ module HomeHelper
           cbl.object=n.objectid
 
           if !n.objectid.nil?
-            cbl.notes=n.notes.concat('[').concat(n.objectid).concat(']')
+            if !n.notes.index('Went To House').nil?
+              if n.objectid.index('JB')==0
+                j=Job.find n.objectid
+                cbl.notes=n.notes.concat('[').concat(n.objectid).concat(' - ').concat(j.property.address).concat('//').concat(j.property.perly).concat(']')
+              else  
+                cbl.notes=n.notes.concat('[').concat(n.objectid).concat(']')
+              end
+            else
+              cbl.notes=n.notes.concat('[').concat(n.objectid).concat(']')
+            end
           else
             cbl.notes=n.notes
           end  
@@ -75,14 +84,31 @@ module HomeHelper
       mess=Messages.calllog_resolved_message hrid, date
       mess.each do |m|
         cbl=CallLogBundle.new
+        puts 'IN RESOLVED'.concat(m.ts.to_s)
         cbl.ts=m.ts
         cbl.type='Resolved Message'
         cbl.object=''
-        if !m.cfid.nil?
-          cbl.notes='['.concat(m.cfid).concat(']').concat(m.message)
-        else
-          cbl.notes=m.message
-        end  
+        if !m.message.index('Pick Up Sign').nil?
+          cbl.notes='[Pick Up Sign'
+          if !m.jobid.nil? && m.jobid!=''
+            j=Job.find m.jobid
+            cbl.notes=cbl.notes.concat('-').concat(j.property.address).concat('//').concat(j.property.perly)
+          end
+          cbl.notes=cbl.notes.concat(']')
+        elsif !m.message.index('Written Win/Eaves').nil?
+          cbl.notes='[Window Estimate'
+          if !m.cfid.nil? && m.cfid!=''
+            c=Client.find m.cfid
+            cbl.notes=cbl.notes.concat('-').concat(c.address).concat('//').concat(c.perly)
+          end
+          cbl.notes=cbl.notes.concat(']')
+        else    
+          if !m.cfid.nil?
+            cbl.notes='['.concat(m.cfid).concat(']').concat(m.message)
+          else
+            cbl.notes=m.message
+          end  
+        end
         call_log[m.ts]=cbl
       end
       
@@ -110,7 +136,7 @@ module HomeHelper
         if j.Sdate==j.Fdate
           type='Appt'
         end
-        cbl.notes='['.concat(type).concat(']').concat(j.JobDesc).concat(' ').concat(j.Sdate.to_s)
+        cbl.notes=j.JobID.concat('//').concat(j.property.address).concat('[').concat(type).concat(']').concat(j.JobDesc).concat('   ').concat(j.Sdate.to_s)
         call_log[j.timeSold]=cbl
       end
       
@@ -134,6 +160,7 @@ module HomeHelper
       lastcl=nil
       i=0
       call_log.each do |k,cl|
+        puts k
         cl.class5='ok'
         if i==0
           lastcl=cl

@@ -1,4 +1,3 @@
-WHY NATALIE!!!
 <script text="text/javascript" type="text/javascript">
 
 //              var startTotMin=startHour.value*60 + startMin.value;
@@ -60,6 +59,14 @@ WHY NATALIE!!!
 
 </script>
 <b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
+<b><%= link_to 'Back to Pay Range', back_rangepay_employees_path(:hrid => @hrid, :person=>@person, :syear=>@selected_syear, :smonth=>@selected_smonth, :sday=>@selected_sday, :fyear=>@selected_fyear, :fmonth=>@selected_fmonth, :fday=>@selected_fday, :source=>'showindpay')%></b><br/><br/>
+<b><%= link_to 'Back to Verify Pay', back_verpay_employees_path%></b><br/><br/>
+
+
+
+
+
+
 Nuts<%=@selected_shour%><br/>
 <%=@selected_smin%><br/>
 <%=@selected_fhour%><br/>
@@ -67,7 +74,7 @@ Nuts<%=@selected_shour%><br/>
 
 <fieldset class="mystyle">
 	<legend>Record Pay</legend>
-<%= form_for @record_pay_form, :url => savepay_employee_url do |rp| %>
+<%= form_for @record_pay_form, :url => savepay_employee_url(:hrid => @hrid, :person=>@person, :syear=>@selected_syear, :smonth=>@selected_smonth, :sday=>@selected_sday, :fyear=>@selected_fyear, :fmonth=>@selected_fmonth, :fday=>@selected_fday, :source=>'showindpay') do |rp| %>
 	    <%=rp.hidden_field :id, :value=>@id%>
 
 		<table border="1" class="mystyle">

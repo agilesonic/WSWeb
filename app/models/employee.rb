@@ -30,6 +30,10 @@ class Employee < ActiveRecord::Base
     where("jobdesc like '%Sales Agent%' and status='active'").order('name').pluck('name')
   end
 
+  def self.active_people_only 
+    where("status='active'").order('name').pluck('name')
+  end
+
 
 end
   

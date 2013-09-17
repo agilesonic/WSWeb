@@ -1,6 +1,5 @@
 
 
-HI HO
 <b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
 
 <fieldset class="mystyle">
@@ -57,6 +56,7 @@ HI HO
 				<td><%=number_to_currency ws.pay%></td>
 				<td><b><%=ws.notes%></b></td>
 				<td><b><%= link_to 'Record Pay', recordpay_employee_path(:id => ws.id),:style=>"color: yellow"%></b></td>
+				<td><b><%= link_to 'Delete Pay', deletepay_employee_path(:id => ws.id), :style=>"color: yellow", :confirm=>"Are you sure Sexy Twain?"  %></b></td>
 			</tr>
 		<%end%>
 	</table>
@@ -73,10 +73,6 @@ HI HO
 				<td>Date</td>
 				<td>Start Time</td>
 				<td>Finish Time</td>
-				<td>Hours</td>
-				<td>Rate</td>
-				<td>Pay</td>
-				<td>Notes</td>
 			</tr>
     	<% @open_sessions.each do |ws|
     		String shour=ws.stime.hour.to_s 
@@ -89,7 +85,6 @@ HI HO
     	    end
     	%>
 
-			<%if !ws.ftime.nil?%>
 					<tr  class="cell" border="1">
 						<td><%=ws.HRID %></td>
 						<td><%=ws.profiledate.to_formatted_s(:long_ordinal) %></td>
@@ -99,51 +94,8 @@ HI HO
 						<%else%>
 							<td>nil</td>	
 						<%end%>
-						<%if !ws.ftime.nil?
-			    		String fhour=ws.ftime.hour.to_s 
-			    	    if fhour.length==1
-			    	    	fhour='0'+fhour	
-			    	    end
-			    		String fmin=ws.ftime.min.to_s 
-			    	    if fmin.length==1
-			    	    	fmin='0'+fmin	
-			    	    end
-						%>
-							<td><%=fhour.concat(':').concat(fmin) %></td>
-						<%else%>
 							<td>nil</td>	
-						<%end%>
-						<td><%=ws.hours%></td>
-						<td><%=ws.rate%></td>
-						<td><%=ws.pay%></td>
-						<td><b><%=ws.notes%></b></td>
 					</tr>
-			<%else%>
-					<tr  class="cell" border="1">
-						<td><%=ws.HRID %></td>
-						<td><%=ws.profiledate.to_formatted_s(:long_ordinal) %></td>
-						
-						<%if !ws.stime.nil?%>
-							<td><%=shour.concat(':').concat(smin) %></td>
-						<%else%>
-							<td>nil</td>	
-						<%end%>
-						<%if !ws.ftime.nil?
-				    		String fhour=ws.ftime.hour.to_s 
-				    	    if fhour.length==1
-				    	    	fhour='0'+fhour	
-				    	    end
-				    		String fmin=ws.ftime.min.to_s 
-				    	    if fmin.length==1
-				    	    	fmin='0'+fmin	
-				    	    end
-						%>
-							<td><%=fhour.concat(':').concat(fmin) %></td>
-						<%else%>
-							<td>nil</td>	
-						<%end%>
-					</tr>
-			<%end%>
 		<%end%>
 	</table>
 <%end%>

@@ -37,7 +37,7 @@ class FunctionsController <  ApplicationController
       session[:fullname]=names[0]
       session[:hrid]=user.HRID
       session[:verify]='all good'
-      @work_schedule_form=WorkScheduleForm.new
+#      @work_schedule_form=WorkScheduleForm.new
       render_login(hrid)
     else  
       redirect_to new_function_url(:mess=>'*****Incorrect Username/Password*****')
@@ -46,6 +46,7 @@ class FunctionsController <  ApplicationController
   
   def render_login(hrid)
       @loghours=nil
+      @username=session[:username]
       @wslist=ws_list(hrid)
       if @wslist.nil? || @wslist.empty?
          @loghours='ok'
@@ -57,20 +58,24 @@ class FunctionsController <  ApplicationController
       end  
       @hrid=hrid
       @wslist.each do |ws|
-        ws.HRID=session[:fullname]
+        names=Employee.just_name_from_id(ws.HRID)
+        ws.HRID=names.first
       end
       @work_schedule_form=WorkScheduleForm.new
-      @notes=Notes.calllog 'HR00005392', Date.today
-      puts '***NOTES*****'
-      @notes.each do |n|
-        puts n.notes
-      end
-      @username=session[:username]
+#      @notes=Notes.calllog 'HR00005392', Date.today
+#      puts '***NOTES*****'
+#      @notes.each do |n|
+#        puts n.notes
+#      end
       render 'login5'
   end
   
   def ws_list(hrid)
-    wslist=Workschedule.current_ind(hrid, Date.today)
+    if @username=='Roger' || @username=='shantz'
+      wslist=Workschedule.current_ind_all(Date.today)
+    else   
+      wslist=Workschedule.current_ind(hrid, Date.today)
+    end
   end
   
   def loginuser
@@ -1836,7 +1841,19 @@ class FunctionsController <  ApplicationController
     redirect_to login1_functions_url
   end
 
-
+  def kill_stats
+    Utils.record_stat_co_time(nil)
+    Utils.record_stat_co_septoct_time(nil)
+    Utils.record_stat_co_novdec_time(nil)
+    Utils.record_stat_ind_time(nil)
+    Utils.record_stat_ind_time7(nil)
+    Utils.deposit_stats(nil)  
+    Utils.deposit_stats_septoct(nil)  
+    Utils.deposit_stats_novdec(nil)  
+    Utils.deposit_indstats(nil)  
+    Utils.deposit_indstats7(nil)  
+    redirect_to login1_functions_url
+  end 
    
   def stats_schedule
     @sched_stats=[]
@@ -2260,9 +2277,6 @@ class FunctionsController <  ApplicationController
   
   def datacheck
     sdf=params[:show_datacheck_form] 
-    sdf.each do |k,v|
-      puts k,v
-    end 
     @syear=sdf[:syear]
     @smonth=sdf[:smonth]
     @sday=sdf[:sday]

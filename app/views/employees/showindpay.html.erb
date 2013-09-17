@@ -1,0 +1,126 @@
+<b><%= link_to 'Main Menu', login1_functions_path%></b>
+
+<%= form_for @spf, :url => indpay_employees_url do |cc| %>
+	<fieldset class="mystyle">
+		<legend>Show Pays</legend>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<td><%=cc.label 'Start Date' %></td>
+				<td>
+					<%=cc.select :syear, options_for_select(@year_options, @selected_syear)%>
+					<%=cc.select :smonth, options_for_select(@month_options, @selected_smonth)%>
+					<%=cc.select :sday, options_for_select(@day_options, @selected_sday)%>
+				</td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%=cc.label 'Finish Date' %></td>
+				<td>
+					<%=cc.select :fyear, options_for_select(@year_options, @selected_fyear)%>
+					<%=cc.select :fmonth, options_for_select(@month_options, @selected_fmonth)%>
+					<%=cc.select :fday, options_for_select(@day_options, @selected_fday)%>
+				</td>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%=cc.label 'Group/Individual' %></td>
+				<td>
+					<%=cc.select :person, options_for_select(@caller_options, @person)%>
+				</td>
+			</tr>
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td colspan=3, align=center><%= cc.submit "Load Pays" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>
+
+
+<%= form_for @cpf, :url=>createpay_employees_url do |cc| %>
+    <%=cc.hidden_field :hrid, value: @hrid%>
+    <%=cc.hidden_field :person, value: @person%>
+	<%=cc.hidden_field :syear, value: @selected_syear%>
+	<%=cc.hidden_field :smonth, value: @selected_smonth%>
+	<%=cc.hidden_field :sday, value: @selected_sday%>
+	<%=cc.hidden_field :fyear, value: @selected_fyear%>
+	<%=cc.hidden_field :fmonth, value: @selected_fmonth%>
+	<%=cc.hidden_field :fday, value: @selected_fday%>
+	<fieldset class="mystyle">
+		<legend>Create Pay for&nbsp;<%=@person%></legend>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<td><%=cc.label 'Date' %></td>
+				<td>
+					<%=cc.select :year5, options_for_select(@year_options, @selected_year5)%>
+					<%=cc.select :month5, options_for_select(@month_options, @selected_month5)%>
+					<%=cc.select :day5, options_for_select(@day_options, @selected_day5)%>
+				</td>
+				<td><%= cc.submit "Create Pay" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>
+
+
+
+
+
+<fieldset class="mystyle">
+<legend>Open/Closed Sessions</legend>
+<%if !@sessions.nil? && !@sessions.empty?%>
+ 	<table class="mystyle" border="1">
+		<tr class="cell" border="1">
+			<td>Name</td>
+			<td>Date</td>
+			<td>Start Time</td>
+			<td>Finish Time</td>
+			<td>Hours</td>
+			<td>Rate</td>
+			<td>Pay</td>
+			<td>Notes</td>
+		</tr>
+    	<% @sessions.each do |ws|
+    		if !ws.stime.nil?
+	    		String shour=ws.stime.hour.to_s 
+	    	    if shour.length==1
+	    	    	shour='0'+shour	
+	    	    end
+	    		String smin=ws.stime.min.to_s 
+	    	    if smin.length==1
+	    	    	smin='0'+smin	
+	    	    end
+    	    end
+    	%>
+		<tr class="cell" border="1">
+			<td><%=ws.HRID %></td>
+			<td><%=ws.profiledate.to_formatted_s(:long_ordinal) %></td>
+			<%if !ws.stime.nil?%>
+				<td><%=shour.concat(':').concat(smin) %></td>
+			<%else%>
+				<td>nil</td>	
+			<%end%>
+			<%if !ws.ftime.nil?
+		   		String fhour=ws.ftime.hour.to_s 
+		   	    if fhour.length==1
+		   	    	fhour='0'+fhour	
+		   	    end
+		   		String fmin=ws.ftime.min.to_s 
+		   	    if fmin.length==1
+		   	    	fmin='0'+fmin	
+		   	    end
+			%>
+				<td><%=fhour.concat(':').concat(fmin) %></td>
+			<%else%>
+				<td>nil</td>	
+			<%end%>
+				<td><%=ws.hours%></td>
+				<td><%=number_to_currency ws.rate%></td>
+				<td><%=number_to_currency ws.pay%></td>
+				<td><b><%=ws.notes%></b></td>
+				<td><b><%= link_to 'Record Pay', recordpay_employee_path(:id=>ws.id, :hrid => @hrid, :person=>@person, :syear=>@selected_syear, :smonth=>@selected_smonth, :sday=>@selected_sday, :fyear=>@selected_fyear, :fmonth=>@selected_fmonth, :fday=>@selected_fday, :source=>'showindpay'),:style=>"color: yellow"%></b></td>
+				<td><b><%= link_to 'Delete Pay', deletepay_employee_path(:id=>ws.id,:hrid => @hrid, :person=>@person, :syear=>@selected_syear, :smonth=>@selected_smonth, :sday=>@selected_sday, :fyear=>@selected_fyear, :fmonth=>@selected_fmonth, :fday=>@selected_fday, :source=>'showindpay'), :style=>"color: yellow", :confirm=>"Are you sure Sexy Twain?"  %></b></td>
+			</tr>
+		<%end%>
+	</table>
+<%end%>
+
+    

@@ -39,10 +39,19 @@ WSWeb::Application.routes.draw do
   resources :employees do
     collection do
       get 'verpay'
+      get 'showindpay'
+      get 'showrangepay'
+      post 'indpay'
+      get 'rangepay'
+      get 'deletepay'
+      post 'createpay'
+      get 'back_verpay'
+      get 'back_rangepay'
     end
     member do
       get 'recordpay'
       post 'savepay'
+      get 'deletepay'
     end
   end
 
@@ -77,6 +86,7 @@ WSWeb::Application.routes.draw do
       get 'stats_production'
       get 'new'
       get 'send_estimate_mail'
+      get 'kill_stats'
     end
     member do
       get 'new'

@@ -16,6 +16,11 @@ class Workschedule < ActiveRecord::Base
     where("stime is not null and ftime is not null and stime<>ftime and profiledate>=?",Date.today-2).order('rate')
   end
 
+  def self.find_sessions sdate, fdate, hrid
+    where("profiledate between ? and ? and hrid=?",
+    sdate, fdate, hrid).order('profiledate').reverse_order
+  end
+
 
   def self.hours_worked(hrid, date1, date2)
     where("hrid= ? and profiledate between ? and ?", hrid, date1, date2).count
@@ -24,5 +29,10 @@ class Workschedule < ActiveRecord::Base
   def self.current_ind(hrid, date1)
     where("hrid= ? and profiledate=?", hrid, date1).order('id')
   end
+
+  def self.current_ind_all(date1)
+    where("profiledate=?", date1).order('id')
+  end
+  
   
 end

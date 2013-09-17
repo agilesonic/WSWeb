@@ -3,6 +3,7 @@
 class EmployeesController <  ApplicationController
   layout "application1"
 
+
   def verpay
     @open_sessions=Workschedule.find_open_sessions
     @open_sessions.each do |ws|
@@ -16,19 +17,52 @@ class EmployeesController <  ApplicationController
     end
   end
   
+  def move_params params
+      prep_showindpay
+      @hrid=params[:hrid]    
+      @person=params[:person]
+      @selected_syear=params[:syear]
+      @selected_smonth=params[:smonth]
+      @selected_sday=params[:sday]
+      @selected_fyear=params[:fyear]
+      @selected_fmonth=params[:fmonth]
+      @selected_fday=params[:fday]
+      @selected_year5=params[:year5]
+      @selected_month5=params[:month5]
+      @selected_day5=params[:day5]
+      sdate=Date.parse(@selected_syear+'-'+@selected_smonth+'-'+@selected_sday)
+      fdate=Date.parse(@selected_fyear+'-'+@selected_fmonth+'-'+@selected_fday)
+  
+      @sessions=Workschedule.find_sessions sdate, fdate, @hrid
+      @sessions.each do |ws5|
+        names=Employee.just_name_from_id ws5.HRID
+        ws5.HRID=names.first
+      end
+
+  end
     
   
   def recordpay
     @id=params[:id]
+    
     @ws=Workschedule.find @id
     date=@ws.profiledate
     hrid=@ws.HRID
-    @shour=@ws.stime.hour
-    @smin=@ws.stime.min
-    @fhour=@ws.ftime.hour
-    @fmin=@ws.ftime.min
+    if(!@ws.stime.nil?)
+      @shour=@ws.stime.hour
+      @smin=@ws.stime.min
+    end
+    if(!@ws.ftime.nil?)
+      @fhour=@ws.ftime.hour
+      @fmin=@ws.ftime.min
+    end
+    @rate=nil
     @rate='15.00'
     @rate=@rate.to_f
+    if @ws.rate!='0.00'
+      @rate=@ws.rate
+      @rate=@rate.to_f
+    end
     min_rate=@rate/60
     @rate=@rate.to_s
     puts 'shour',@shour
@@ -98,6 +132,10 @@ class EmployeesController <  ApplicationController
     @hours=total_min/60.to_f
     @hours=(@hours*100).round / 100.0
     @rate='15.00'
+    if @ws.rate!='0.00'
+      @rate=@ws.rate
+      @rate=@rate.to_f
+    end
     @pay=@hours*@rate.to_f
 
     
@@ -110,6 +148,10 @@ class EmployeesController <  ApplicationController
     @record_pay_form=RecordPayForm.new
     @hour_options=HomeHelper::HOURS
     @min_options=HomeHelper::MIN
+    source=params[:source]
+    if source=='showindpay'
+      move_params params
+    end    
   end 
   
   def savepay
@@ -138,7 +180,137 @@ class EmployeesController <  ApplicationController
     @ws.notes=notes
     @ws.type5='Office'
     @ws.save!
+    source=params[:source]
+    if source=='showindpay'
+      move_params params
+      render 'showindpay'
+      return
+    else    
+      redirect_to verpay_employees_url
+    end  
+  end
+ #:id => @hrid, :person=>@person, syear=>@selected_syear, :smonth=>@selected_smonth, :sday=>@selected_sday,
+ # :fyear=>@selected_fyear, :fmonth=>@selected_fmonth, :fday=>@selected_fday, :source=>'showindpay' 
+  def deletepay
+    id=params[:id]
+    
+    ws=Workschedule.find id
+    ws.destroy
+    
+    source=params[:source]
+    if source=='showindpay'
+      puts '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   IN RIGHT PLACE'
+      move_params params
+      render 'showindpay'
+      return  
+    else
+      redirect_to verpay_employees_url
+      return
+    end    
+  end
+  
+  def prep_showindpay
+    @spf=ShowPayForm.new
+    @cpf=CreatePayForm.new
+    @year_options=HomeHelper::YEARS  
+    @month_options=HomeHelper::MONTHS
+    @day_options=HomeHelper::DAYS
+    d=Date.today.to_s
+    @selected_syear=d[0..3]
+    month=d[5..6]
+    @selected_smonth=HomeHelper.get_month_from_num month
+    @selected_sday=d[8..9]
+    @selected_fyear=d[0..3]
+    @selected_fmonth=HomeHelper.get_month_from_num month
+    @selected_fday=d[8..9]
+    names=Employee.active_people_only
+    @caller_options=[]
+    @caller_options<<'Everyone'
+    @caller_options<<'Sales'
+    @caller_options<<'Crew'
+    names.each do |name|
+        @caller_options<<name
+    end
+    
+  end 
+   
+  def showindpay
+    prep_showindpay
+  end
+  
+  def showrangepay
+    
+  end
+
+  
+  def indpay
+    spf=params[:show_pay_form]
+    prep_showindpay
+    @person=spf[:person]
+    names=Employee.just_id_from_name @person
+    @hrid=names.first
+    @selected_syear=spf[:syear]
+    @selected_smonth=spf[:smonth]
+    @selected_sday=spf[:sday]
+    @selected_fyear=spf[:fyear]
+    @selected_fmonth=spf[:fmonth]
+    @selected_fday=spf[:fday]
+    sdate=Date.parse(@selected_syear+'-'+@selected_smonth+'-'+@selected_sday)
+    fdate=Date.parse(@selected_fyear+'-'+@selected_fmonth+'-'+@selected_fday)
+
+    @sessions=Workschedule.find_sessions sdate, fdate, @hrid
+    @sessions.each do |ws5|
+      names=Employee.just_name_from_id ws5.HRID
+      ws5.HRID=names.first
+    end
+    
+    render 'showindpay'  
+  end
+  
+  def createpay
+    cpf=params[:create_pay_form]
+    prep_showindpay
+    @hrid=cpf[:hrid]    
+    @person=cpf[:person]
+    @selected_syear=cpf[:syear]
+    @selected_smonth=cpf[:smonth]
+    @selected_sday=cpf[:sday]
+    @selected_fyear=cpf[:fyear]
+    @selected_fmonth=cpf[:fmonth]
+    @selected_fday=cpf[:fday]
+    @selected_year5=cpf[:year5]
+    @selected_month5=cpf[:month5]
+    @selected_day5=cpf[:day5]
+    date=Date.parse(@selected_year5+'-'+@selected_month5+'-'+@selected_day5)
+    ws=Workschedule.new
+    ws.profiledate=date
+    ws.HRID=@hrid
+    ws.save
+
+    sdate=Date.parse(@selected_syear+'-'+@selected_smonth+'-'+@selected_sday)
+    fdate=Date.parse(@selected_fyear+'-'+@selected_fmonth+'-'+@selected_fday)
+
+    @sessions=Workschedule.find_sessions sdate, fdate, @hrid
+    @sessions.each do |ws5|
+      names=Employee.just_name_from_id ws5.HRID
+      ws5.HRID=names.first
+    end
+    render 'showindpay'  
+  end
+
+  def back_rangepay
+    source=params[:source]
+    if source=='showindpay'
+      move_params params
+      render 'showindpay'
+      return
+    end  
+  end
+  
+  def back_verpay
     redirect_to verpay_employees_url
   end
-   
+
+  
+      
 end

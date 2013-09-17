@@ -554,7 +554,11 @@ class FunctionsController <  ApplicationController
         name=emp.name
       end
       job_bundle.salesp=name
-      job_bundle.datesold=job.Datesold.to_formatted_s(:long_ordinal)
+      if job.Datesold.nil?
+        job_bundle.datesold='unknown';
+      else
+        job_bundle.datesold=job.Datesold.to_formatted_s(:long_ordinal)
+      end
       partner="".to_s
       empList=Employee.find_by_name(job.CrewName)
       emp=empList.last

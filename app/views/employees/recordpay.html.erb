@@ -74,7 +74,7 @@ Nuts<%=@selected_shour%><br/>
 
 <fieldset class="mystyle">
 	<legend>Record Pay</legend>
-<%= form_for @record_pay_form, :url => savepay_employee_url(:hrid => @hrid, :person=>@person, :syear=>@selected_syear, :smonth=>@selected_smonth, :sday=>@selected_sday, :fyear=>@selected_fyear, :fmonth=>@selected_fmonth, :fday=>@selected_fday, :source=>'showindpay') do |rp| %>
+<%= form_for @record_pay_form, :url => savepay_employee_url(:hrid => @hrid, :person=>@person, :syear=>@selected_syear, :smonth=>@selected_smonth, :sday=>@selected_sday, :fyear=>@selected_fyear, :fmonth=>@selected_fmonth, :fday=>@selected_fday, :source=>@source) do |rp| %>
 	    <%=rp.hidden_field :id, :value=>@id%>
 
 		<table border="1" class="mystyle">

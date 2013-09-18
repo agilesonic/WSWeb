@@ -30,8 +30,8 @@ class EmployeesController <  ApplicationController
       @selected_year5=params[:year5]
       @selected_month5=params[:month5]
       @selected_day5=params[:day5]
-      sdate=Date.parse(@selected_syear+'-'+@selected_smonth+'-'+@selected_sday)
-      fdate=Date.parse(@selected_fyear+'-'+@selected_fmonth+'-'+@selected_fday)
+      sdate=Date.parse(@selected_syear.concat('-').conact(@selected_smonth).concat('-').concat(@selected_sday))
+      fdate=Date.parse(@selected_fyear.concat('-').conact(@selected_fmonth).concat('-').concat(@selected_fday))
   
       @sessions=Workschedule.find_sessions sdate, fdate, @hrid
       @sessions.each do |ws5|
@@ -44,7 +44,6 @@ class EmployeesController <  ApplicationController
   
   def recordpay
     @id=params[:id]
-    
     @ws=Workschedule.find @id
     date=@ws.profiledate
     hrid=@ws.HRID
@@ -121,18 +120,23 @@ class EmployeesController <  ApplicationController
     total_min=ftotal_min-stotal_min
     @pay=total_min*min_rate
     
-    @hr_pay, @min_pay=total_min.divmod 60
-    puts 'Hr_Pay', @hr_pay
-    puts 'Min_Pay', @min_pay
-    puts 'PAY',@pay
-    @hr_pay=HomeHelper.pad_num2 @hr_pay
-    @min_pay=HomeHelper.pad_num2 @min_pay
-    @hours=@hr_pay.to_s.concat(':').concat(@min_pay.to_s)
+    #@hr_pay, 
+    #@min_pay=total_min.divmod 60
+    #puts 'Hr_Pay', @hr_pay
+    #puts 'Min_Pay', @min_pay
+    #puts 'PAY',@pay
+    #if @hr_pay.nil?
+    #  @hr_pay='0.00'
+    #else
+    #  @hr_pay=HomeHelper.pad_num2 @hr_pay
+    #end
+    #min_pay=HomeHelper.pad_num2 @min_pay
+    #@hours=@hr_pay.to_s.concat(':').concat(@min_pay.to_s)
     
     @hours=total_min/60.to_f
     @hours=(@hours*100).round / 100.0
     @rate='15.00'
-    if @ws.rate!='0.00'
+    if !@ws.rate.nil? && @ws.rate.to_f>'0.00'.to_f
       @rate=@ws.rate
       @rate=@rate.to_f
     end
@@ -148,8 +152,8 @@ class EmployeesController <  ApplicationController
     @record_pay_form=RecordPayForm.new
     @hour_options=HomeHelper::HOURS
     @min_options=HomeHelper::MIN
-    source=params[:source]
-    if source=='showindpay'
+    @source=params[:source]
+    if @source=='showindpay'
       move_params params
     end    
   end 
@@ -181,16 +185,19 @@ class EmployeesController <  ApplicationController
     @ws.type5='Office'
     @ws.save!
     source=params[:source]
+    puts 'FUCKING SOURCE IS ',source
     if source=='showindpay'
       move_params params
       render 'showindpay'
       return
     else    
-      redirect_to verpay_employees_url
+      redirect_to verpay_employees_url(:source=>source)
     end  
   end
+
  #:id => @hrid, :person=>@person, syear=>@selected_syear, :smonth=>@selected_smonth, :sday=>@selected_sday,
  # :fyear=>@selected_fyear, :fmonth=>@selected_fmonth, :fday=>@selected_fday, :source=>'showindpay' 
+
   def deletepay
     id=params[:id]
     

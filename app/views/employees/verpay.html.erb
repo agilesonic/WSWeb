@@ -7,6 +7,44 @@
 <%if !@loghours.nil? %>
 	<%= link_to 'Log Me In', loginuser_functions_path(:hrid=>@hrid)%><br/><br/>
 <%end%>
+
+
+<%if !@open_sessions.nil? && !@open_sessions.empty?%>
+ 	<table class="mystyle" border="1">
+			<tr class="cell" border="1">
+				<td>Name</td>
+				<td>Date</td>
+				<td>Start Time</td>
+				<td>Finish Time</td>
+			</tr>
+    	<% @open_sessions.each do |ws|
+    		String shour=ws.stime.hour.to_s 
+    	    if shour.length==1
+    	    	shour='0'+shour	
+    	    end
+    		String smin=ws.stime.min.to_s 
+    	    if smin.length==1
+    	    	smin='0'+smin	
+    	    end
+    	%>
+
+					<tr  class="cell" border="1">
+						<td><%=ws.HRID %></td>
+						<td><%=ws.profiledate.to_formatted_s(:long_ordinal) %></td>
+						
+						<%if !ws.stime.nil?%>
+							<td><%=shour.concat(':').concat(smin) %></td>
+						<%else%>
+							<td>nil</td>	
+						<%end%>
+							<td>nil</td>	
+					</tr>
+		<%end%>
+	</table>
+<%end%>
+<br/>	
+
+
 <%if !@closed_sessions.nil? && !@closed_sessions.empty?%>
  	<table class="mystyle" border="1">
 		<tr class="cell" border="1">
@@ -55,49 +93,11 @@
 				<td><%=number_to_currency ws.rate%></td>
 				<td><%=number_to_currency ws.pay%></td>
 				<td><b><%=ws.notes%></b></td>
-				<td><b><%= link_to 'Record Pay', recordpay_employee_path(:id => ws.id),:style=>"color: yellow"%></b></td>
+				<td><b><%= link_to 'Record Pay', recordpay_employee_path(:id => ws.id, :source=>'verpay'),:style=>"color: yellow"%></b></td>
 				<td><b><%= link_to 'Delete Pay', deletepay_employee_path(:id => ws.id), :style=>"color: yellow", :confirm=>"Are you sure Sexy Twain?"  %></b></td>
 			</tr>
 		<%end%>
 	</table>
 <%end%>
 
-<br/>	
-<br/>	
-<br/>	
-<br/>	
-<%if !@open_sessions.nil? && !@open_sessions.empty?%>
- 	<table class="mystyle" border="1">
-			<tr class="cell" border="1">
-				<td>Name</td>
-				<td>Date</td>
-				<td>Start Time</td>
-				<td>Finish Time</td>
-			</tr>
-    	<% @open_sessions.each do |ws|
-    		String shour=ws.stime.hour.to_s 
-    	    if shour.length==1
-    	    	shour='0'+shour	
-    	    end
-    		String smin=ws.stime.min.to_s 
-    	    if smin.length==1
-    	    	smin='0'+smin	
-    	    end
-    	%>
-
-					<tr  class="cell" border="1">
-						<td><%=ws.HRID %></td>
-						<td><%=ws.profiledate.to_formatted_s(:long_ordinal) %></td>
-						
-						<%if !ws.stime.nil?%>
-							<td><%=shour.concat(':').concat(smin) %></td>
-						<%else%>
-							<td>nil</td>	
-						<%end%>
-							<td>nil</td>	
-					</tr>
-		<%end%>
-	</table>
-<%end%>
-</fieldset>
 

@@ -12,9 +12,22 @@ class Workschedule < ActiveRecord::Base
     where("stime is not null and ftime is null and pay='0.00' and profiledate>'2013-09-01'")
   end
 
-  def self.find_closed_sessions
-    where("((stime is not null and ftime is not null and stime<>ftime) or pay='0.00') and profiledate>=?",Date.today-2).order('profiledate').reverse_order
+  def self.find_closed_sessions_zero
+    where("pay='0.00' and profiledate>=?",Date.today-2).order('profiledate').reverse_order
   end
+
+  def self.find_closed_sessions_notzero
+    where("stime is not null and ftime is not null and stime<>ftime and pay<>'0.00' and profiledate>=?",Date.today-2).order('profiledate').reverse_order
+  end
+
+
+  def self.find_closed_sessions
+    a=find_closed_sessions_zero 
+    b=find_closed_sessions_notzero
+    c=a+b 
+  end
+
+
 
   def self.find_sessions sdate, fdate, hrid
     where("profiledate between ? and ? and hrid=?",

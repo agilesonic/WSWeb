@@ -35,7 +35,6 @@ WSWeb::Application.routes.draw do
   end
 
 
-
   resources :employees do
     collection do
       get 'verpay'

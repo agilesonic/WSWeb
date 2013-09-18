@@ -34,5 +34,9 @@ class Workschedule < ActiveRecord::Base
     where("profiledate=?", date1).order('id')
   end
   
+  def self.current_open_sessions(hrid, date1)
+    where("hrid= ? and profiledate=? and stime is not null and ftime is null", hrid, date1).count
+  end
+
   
 end

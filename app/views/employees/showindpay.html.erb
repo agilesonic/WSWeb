@@ -116,8 +116,8 @@
 				<td><%=number_to_currency ws.rate%></td>
 				<td><%=number_to_currency ws.pay%></td>
 				<td><b><%=ws.notes%></b></td>
-				<td><b><%= link_to 'Record Pay', recordpay_employee_path(:id=>ws.id, :hrid => @hrid, :person=>@person, :syear=>@selected_syear, :smonth=>@selected_smonth, :sday=>@selected_sday, :fyear=>@selected_fyear, :fmonth=>@selected_fmonth, :fday=>@selected_fday, :source=>'showindpay'),:style=>"color: yellow"%></b></td>
-				<td><b><%= link_to 'Delete Pay', deletepay_employee_path(:id=>ws.id,:hrid => @hrid, :person=>@person, :syear=>@selected_syear, :smonth=>@selected_smonth, :sday=>@selected_sday, :fyear=>@selected_fyear, :fmonth=>@selected_fmonth, :fday=>@selected_fday, :source=>'showindpay'), :style=>"color: yellow", :confirm=>"Are you sure Sexy Twain?"  %></b></td>
+				<td><b><%= link_to 'Record Pay', recordpay_employee_path(:id=>ws.id, :hrid => @hrid, :person=>@person, :syear=>@selected_syear, :smonth=>@selected_smonth, :sday=>@selected_sday, :fyear=>@selected_fyear, :fmonth=>@selected_fmonth, :fday=>@selected_fday, :source=>'showindpay'), :style=>"color: yellow"%></b></td>
+				<td><b><%= link_to 'Delete Pay', deletepay_employee_path(:id=>ws.id, :hrid => @hrid, :person=>@person, :syear=>@selected_syear, :smonth=>@selected_smonth, :sday=>@selected_sday, :fyear=>@selected_fyear, :fmonth=>@selected_fmonth, :fday=>@selected_fday, :source=>'showindpay'), :style=>"color: yellow", :html=>{:confirm=>"Are you sure??"} %></b></td>
 			</tr>
 		<%end%>
 	</table>

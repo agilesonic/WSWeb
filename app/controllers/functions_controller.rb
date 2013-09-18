@@ -76,6 +76,7 @@ class FunctionsController <  ApplicationController
     else   
       wslist=Workschedule.current_ind(hrid, Date.today)
     end
+    @open_sessions=Workschedule.current_open_sessions(hrid, Date.today)
   end
   
   def loginuser

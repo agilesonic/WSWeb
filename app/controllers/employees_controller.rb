@@ -30,8 +30,8 @@ class EmployeesController <  ApplicationController
       @selected_year5=params[:year5]
       @selected_month5=params[:month5]
       @selected_day5=params[:day5]
-      sdate=Date.parse(@selected_syear.concat('-').conact(@selected_smonth).concat('-').concat(@selected_sday))
-      fdate=Date.parse(@selected_fyear.concat('-').conact(@selected_fmonth).concat('-').concat(@selected_fday))
+      sdate=Date.parse(@selected_syear.concat('-').concat(@selected_smonth).concat('-').concat(@selected_sday))
+      fdate=Date.parse(@selected_fyear.concat('-').concat(@selected_fmonth).concat('-').concat(@selected_fday))
   
       @sessions=Workschedule.find_sessions sdate, fdate, @hrid
       @sessions.each do |ws5|

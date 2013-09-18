@@ -49,6 +49,9 @@
 							<td>nil</td>	
 						<%end%>
 						<td><b><%=ws.notes%></b></td>
+						<%if @username=='shantz' || @username=='Roger'%>
+							<td><%= link_to 'Call Log', calllog_sales_path(:name => ws.HRID),:style=>"color: yellow"%></td>
+						<%end%>
 					</tr>
 			<%else%>
 				<%= form_for @work_schedule_form, :url =>logoutuser_functions_url(:hrid=>@hrid)  do |cc| %>
@@ -91,7 +94,7 @@
 <br/>
 <br/>
 <br/>
-<%if @open_session>0 || (@username=='shantz' || @username=='Roger')%>
+<%if @open_sessions>0 || (@username=='shantz' || @username=='Roger')%>
 <fieldset class="mystyle">
 	<legend>Menu</legend>
 <div id="nav">

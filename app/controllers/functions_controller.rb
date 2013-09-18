@@ -37,7 +37,6 @@ class FunctionsController <  ApplicationController
       session[:fullname]=names[0]
       session[:hrid]=user.HRID
       session[:verify]='all good'
-#      @work_schedule_form=WorkScheduleForm.new
       render_login(hrid)
     else  
       redirect_to new_function_url(:mess=>'*****Incorrect Username/Password*****')
@@ -62,11 +61,7 @@ class FunctionsController <  ApplicationController
         ws.HRID=names.first
       end
       @work_schedule_form=WorkScheduleForm.new
-#      @notes=Notes.calllog 'HR00005392', Date.today
-#      puts '***NOTES*****'
-#      @notes.each do |n|
-#        puts n.notes
-#      end
+      @open_sessions=Workschedule.current_open_sessions(hrid, Date.today)
       render 'login5'
   end
   
@@ -76,9 +71,10 @@ class FunctionsController <  ApplicationController
     else   
       wslist=Workschedule.current_ind(hrid, Date.today)
     end
-    @open_sessions=Workschedule.current_open_sessions(hrid, Date.today)
+    return wslist
   end
   
+
   def loginuser
     hrid=params[:hrid]
     @wslist=ws_list(hrid)

@@ -144,9 +144,9 @@ module HomeHelper
       trans.each do |t|
         cbl=CallLogBundle.new
         cbl.ts=t.updatets
-        cbl.type='Process Payment'
+        cbl.type='Transaction'
         cbl.object=''
-        cbl.notes=t.JobID
+        cbl.notes=('[').concat(t.JobID).concat(']').concat(t.TranType).concat(' // ').concat(t.TranDesc)
         call_log[t.updatets]=cbl
       end
       

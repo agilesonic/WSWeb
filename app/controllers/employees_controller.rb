@@ -185,7 +185,6 @@ class EmployeesController <  ApplicationController
     @ws.type5='Office'
     @ws.save!
     source=params[:source]
-    puts 'FUCKING SOURCE IS ',source
     if source=='showindpay'
       move_params params
       render 'showindpay'
@@ -230,6 +229,9 @@ class EmployeesController <  ApplicationController
     @selected_fyear=d[0..3]
     @selected_fmonth=HomeHelper.get_month_from_num month
     @selected_fday=d[8..9]
+    @selected_year5=d[0..3]
+    @selected_month5=HomeHelper.get_month_from_num month
+    @selected_day5=d[8..9]
     names=Employee.active_people_only
     @caller_options=[]
     @caller_options<<'Everyone'
@@ -318,6 +320,80 @@ class EmployeesController <  ApplicationController
     redirect_to verpay_employees_url
   end
 
+  def recruiting_menu
+    
+  end
+   
+  def recruiters
+    @recsupps= Recsupp.get_recruiters
+  end  
   
+  def recruits
+    @recs= Recruit.get_recruits
+  end  
+
+  def new_recruiters
+    @new_recruiters_form=NewRecruitersForm.new
+    @recsupps= Recsupp.get_recruiters
+  end  
+  
+  def new_recruits
+    @new_recruit_form=NewRecruitForm.new
+    @recs= Recruit.get_recruits
+    #  attr_accessor :name, :address :shop, :phone, :email, :drive :ladder
+    @year_options=HomeHelper::YEARS  
+    @month_options=HomeHelper::MONTHS
+    @day_options=HomeHelper::DAYS
+    d=Date.today.to_s
+    month=d[5..6]
+    @selected_year=d[0..3]
+    @selected_month=HomeHelper.get_month_from_num month
+    @selected_day=d[8..9]
+    
+    @source_options=HomeHelper::SOURCE
+    @shop_options=HomeHelper::SHOP
+    @drive_options=HomeHelper::DRIVE
+    @ladder_options=HomeHelper::LADDER
+    @source_options=[]
+    recs=Recsupp.get_recruiters
+    recs.each do |rec|
+      @source_options<<rec.company
+    end
+    
+  end
+ 
+ 
+  def save_recruiter
+    nrf=params[:new_recruiters_form]
+    rec=Recsupp.new
+    rec.company=nrf[:company]
+    rec.name=nrf[:name]
+    rec.phone=nrf[:phone]
+    rec.email=nrf[:email1].concat('@').concat(nrf[:email2]).concat('.').concat(nrf[:email3])
+    rec.save
+    redirect_to new_recruiters_employees_url
+  end  
+
+
+#:year, :month, :day, :source, :name, :address, :shop, :phone, :email1, :email2, :email3, :drive, :ladder
+  def save_recruit
+    nrf=params[:new_recruit_form]
+    rec=Recruit.new
+    @selected_year=nrf[:year]
+    @selected_month=nrf[:month]
+    @selected_day=nrf[:day]
+    date=Date.parse(@selected_year.concat('-').concat(@selected_month).concat('-').concat(@selected_day))
+    rec.date=date  
+    rec.source=nrf[:source]
+    rec.name=nrf[:name]
+    rec.address=nrf[:address]
+    rec.shop=nrf[:shop]
+    rec.phone=nrf[:phone]
+    rec.email=nrf[:email1].concat('@').concat(nrf[:email2]).concat('.').concat(nrf[:email3])
+    rec.drive=nrf[:drive]
+    rec.ladder=nrf[:ladder]
+    rec.save
+    redirect_to new_recruits_employees_url
+  end  
       
 end

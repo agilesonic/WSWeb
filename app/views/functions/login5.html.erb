@@ -94,7 +94,7 @@
 <br/>
 <br/>
 <br/>
-<%if @open_sessions>0 || (@username=='shantz' || @username=='Roger')%>
+<%if @open_sessions>0 || (@username=='shantz' || @username=='Roger' || @username=='derek')%>
 <fieldset class="mystyle">
 	<legend>Menu</legend>
 <div id="nav">
@@ -132,9 +132,10 @@
 		<li id="mainMenuHumanResources">
 			<b>HR</b>
 			<ul>
-				<%if @username=='Roger' || @username=='shantz'%>
+				<%if @username=='Roger' || @username=='shantz' || @username=='derek'%>
 					<li><%= link_to 'Verify Pay', verpay_employees_path%></li>
 					<li><%= link_to 'Individual Pay', showindpay_employees_path%></li>
+					<li><%= link_to 'Recruiting Menu', recruiting_menu_employees_path%></li>
 				<%end%>
 			</ul>
 		</li>

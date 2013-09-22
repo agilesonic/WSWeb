@@ -46,6 +46,15 @@ WSWeb::Application.routes.draw do
       post 'createpay'
       get 'back_verpay'
       get 'back_rangepay'
+      get 'recruiting_menu'
+      get 'recruiters'
+      get 'recruits'
+      get 'new_recruiters'
+      get 'new_recruits'
+      post 'save_recruiter'
+      post 'save_recruit'
+      
+      
     end
     member do
       get 'recordpay'

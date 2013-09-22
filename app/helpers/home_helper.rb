@@ -25,6 +25,10 @@ module HomeHelper
       'THURS => Mississauga, Oakville, Brampton','FRI => Keep light for Rain Days','SAT => 1/2 Crews working and 50% more labor cost']
     HOURS=['07','08','09','10','11','12','13','14','15','16','17','18','19','20']
     MIN=['00','05','10','15','20','25','30','35','40','45','50','55']
+    SOURCE=['TORONTO SUN', 'METRO']
+    SHOP=['East(Carlaw Ave/Lakeshore Blvd)', 'West(Dundas St West/Bloor St West)']
+    DRIVE=['No License','Valid G License', 'Valid G2 License']
+    LADDER=['No Experience', 'Some Experience', 'Very Experienced']
     
     def self.generate_calllog hrid, date
       call_log={}

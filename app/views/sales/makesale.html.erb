@@ -679,7 +679,7 @@
 	</select>
 </fieldset>
 
-<%= form_for @csf_form, :url => makesalefromcfdetails_sale_url(:CFID => @cfid, :jobid1=>@jobid1, :source => @source, :function=>@function),:html => { :method => :post,:id=>'makesaleform' }do |cc| %>
+<%= form_for @csf_form, :url => makesalefromcfdetails_sale_url(:CFID => @cfid, :jobid1=>@jobid1, :source => @source, :function=>@function),:html => {:method => :post,:id=>'makesaleform'} do |cc| %>
 	<fieldset class="mystyle">
 		<legend>Create Sale</legend>
 		    <%=cc.hidden_field :cfid, :value=>@cfid%>

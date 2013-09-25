@@ -340,7 +340,6 @@ class EmployeesController <  ApplicationController
   def new_recruits
     @new_recruit_form=NewRecruitForm.new
     @recs= Recruit.get_recruits
-    #  attr_accessor :name, :address :shop, :phone, :email, :drive :ladder
     @year_options=HomeHelper::YEARS  
     @month_options=HomeHelper::MONTHS
     @day_options=HomeHelper::DAYS
@@ -349,17 +348,15 @@ class EmployeesController <  ApplicationController
     @selected_year=d[0..3]
     @selected_month=HomeHelper.get_month_from_num month
     @selected_day=d[8..9]
-    
     @source_options=HomeHelper::SOURCE
     @shop_options=HomeHelper::SHOP
     @drive_options=HomeHelper::DRIVE
     @ladder_options=HomeHelper::LADDER
     @source_options=[]
-    recs=Recsupp.get_recruiters
-    recs.each do |rec|
-      @source_options<<rec.company
+    @recsupps= Recsupp.get_recruiters
+    @recsupps.each do |r|
+      @source_options<<r.company
     end
-    
   end
  
  
@@ -370,6 +367,11 @@ class EmployeesController <  ApplicationController
     rec.name=nrf[:name]
     rec.phone=nrf[:phone]
     rec.email=nrf[:email1].concat('@').concat(nrf[:email2]).concat('.').concat(nrf[:email3])
+    rec.offphone=nrf[:offphone]
+    rec.offext=nrf[:offext]
+    rec.fax=nrf[:fax]
+    rec.assname=nrf[:assname]
+    rec.assphone=nrf[:assphone]
     rec.save
     redirect_to new_recruiters_employees_url
   end  
@@ -392,8 +394,111 @@ class EmployeesController <  ApplicationController
     rec.email=nrf[:email1].concat('@').concat(nrf[:email2]).concat('.').concat(nrf[:email3])
     rec.drive=nrf[:drive]
     rec.ladder=nrf[:ladder]
+    rec.status='B'
     rec.save
     redirect_to new_recruits_employees_url
   end  
+  
+  def delete_recruiter
+    @rec= Recsupp.find(params[:id])
+    @rec.destroy
+    redirect_to recruiters_employees_url
+  end  
+     
+  def delete_recruit
+    @rec= Recruit.find(params[:id])
+    @rec.destroy
+    redirect_to recruits_employees_url
+  end  
+     
+  def edit_recruit
+    @rec=Recruit.find(params[:id])
+    @edit_recruit_form=NewRecruitForm.new
+    @year_options=HomeHelper::YEARS  
+    @month_options=HomeHelper::MONTHS
+    @day_options=HomeHelper::DAYS
+    d=Date.today.to_s
+    month=d[5..6]
+    @selected_year=d[0..3]
+    @selected_month=HomeHelper.get_month_from_num month
+    @selected_day=d[8..9]
+    @source_options=HomeHelper::SOURCE
+    @shop_options=HomeHelper::SHOP
+    @drive_options=HomeHelper::DRIVE
+    @ladder_options=HomeHelper::LADDER
+    @status_options=HomeHelper::STATUS
+    @source_options=[]
+    @recsupps= Recsupp.get_recruiters
+    @recsupps.each do |r|
+      @source_options<<r.company
+    end
+    @selected_name=@rec.name
+    @selected_address=@rec.address
+    @selected_phone=@rec.phone
+    @selected_ladder=@rec.ladder
+    @selected_email=@rec.email
+    @selected_status=@rec.status
+    @selected_id=@rec.id
+  end  
+
+  def save_edit_recruit
+    erf=params[:new_recruit_form]
+    rec=Recruit.find(erf[:id])
+    @selected_year=erf[:year]
+    @selected_month=erf[:month]
+    @selected_day=erf[:day]
+    date=Date.parse(@selected_year.concat('-').concat(@selected_month).concat('-').concat(@selected_day))
+    rec.date=date  
+    rec.source=erf[:source]
+    rec.name=erf[:name]
+    rec.address=erf[:address]
+    rec.shop=erf[:shop]
+    rec.phone=erf[:phone]
+    rec.email=erf[:email1]
+    rec.drive=erf[:drive]
+    rec.ladder=erf[:ladder]
+    rec.status=erf[:status]
+    rec.save
+    redirect_to recruits_employees_url
+  end
+     
+  def call_recruit
+    @id=params[:id]
+    @rec=Recruit.find(@id)
+    @call_recruit_form=CallRecruitForm.new
+    @rec=Recruit.find(params[:id])
+    @edit_recruit_form=NewRecruitForm.new
+    @year_options=HomeHelper::YEARS  
+    @month_options=HomeHelper::MONTHS
+    @day_options=HomeHelper::DAYS
+    d=Date.today.to_s
+    month=d[5..6]
+    @selected_year=d[0..3]
+    @selected_month=HomeHelper.get_month_from_num month
+    @selected_day=d[8..9]
+    @category_options=HomeHelper::RECCALL
+    @calls=Reccontact.calls_to_recruit(@id)
+  end  
+
+  def save_call_recruit
+    crf=params[:call_recruit_form]
+    rec=Reccontact.new
+    rec.recruit=crf[:id]
+    @selected_year=crf[:year]
+    @selected_month=crf[:month]
+    @selected_day=crf[:day]
+    date=Date.parse(@selected_year.concat('-').concat(@selected_month).concat('-').concat(@selected_day))
+    rec.date=date
+    rec.category=crf[:category] 
+    rec.notes=crf[:notes] 
+    @selected_year=crf[:actionyear]
+    @selected_month=crf[:actionmonth]
+    @selected_day=crf[:actionday]
+    actiondate=Date.parse(@selected_year.concat('-').concat(@selected_month).concat('-').concat(@selected_day))
+    rec.actiondate=actiondate
+    rec.save
+    redirect_to recruits_employees_url
+  end  
+
       
 end

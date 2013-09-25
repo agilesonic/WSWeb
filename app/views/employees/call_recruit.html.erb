@@ -1,0 +1,59 @@
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/>
+<b><%= link_to 'Recruiting Menu', recruiting_menu_employees_path%></b><br/><br/>
+
+
+<%= form_for @call_recruit_form, :url => save_call_recruit_employees_url do |rec| %>
+    <%=rec.hidden_field :id, :value=>@id %>
+	<fieldset class="mystyle">
+		<legend>Call Recruit</legend>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<th>Date</th>
+				<td>
+					<%=rec.select :year, options_for_select(@year_options, @selected_year)%>
+					<%=rec.select :month, options_for_select(@month_options, @selected_month)%>
+					<%=rec.select :day, options_for_select(@day_options, @selected_day)%>
+				</td>
+			</tr>
+			<tr class="cell">
+				<th><b>Category</b></th><td><b><%=rec.select :category, options_for_select(@category_options, @selected_category)%></b></td>
+			</tr>
+			<tr class="cell">
+				<th><b>Notes</b></th><td><b><%=rec.text_area :notes, :size=>"34x5" %></b></td>
+			</tr>
+			<th>Action Date</th>
+				<td>
+					<%=rec.select :actionyear, options_for_select(@year_options, @selected_actionyear)%>
+					<%=rec.select :actionmonth, options_for_select(@month_options, @selected_actionmonth)%>
+					<%=rec.select :actionday, options_for_select(@day_options, @selected_actionday)%>
+				</td>
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td colspan=3, align=center><%= rec.submit "Save Call To Recruit" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>
+
+<br/><br/>
+<fieldset class="mystyle">
+	<legend>Recruit Calls</legend>
+	<%if !@calls.nil? && !@calls.empty?%>
+	 	<table class="mystyle" border="1">
+			<tr class="cell" border="1">
+				<td>Date</td>
+				<td>Category</td>
+				<td>Notes</td>
+				<td>Action Date</td>
+			</tr>
+	    	<% @calls.each do |ws| %>
+				<tr class="cell" border="1">
+					<td><%=ws.date.to_s%></td>
+					<td><%=ws.category%></td>
+					<td><%=ws.notes%></td>
+					<td><%=ws.actiondate%></td>
+				</tr>
+			<%end%>
+		</table>
+	<%end%>
+</fieldset>
+

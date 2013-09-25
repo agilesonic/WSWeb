@@ -1,0 +1,37 @@
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/>
+<b><%= link_to 'Recruiting Menu', recruiting_menu_employees_path%></b><br/><br/>
+
+
+<fieldset class="mystyle">
+	<legend>Recruiters</legend>
+	<%if !@recsupps.nil? && !@recsupps.empty?%>
+	 	<table class="mystyle" border="1">
+			<tr class="cell" border="1">
+				<td>Company</td>
+				<td>Name</td>
+				<td>Office Phone</td>
+				<td>Cell Phone</td>
+				<td>E-Mail</td>
+				<td>Fax</td>
+				<td>Associate</td>
+				<td>Associate Phone</td>
+			</tr>
+	    	<% @recsupps.each do |ws| %>
+				<tr class="cell" border="1">
+					<td><%=ws.company%></td>
+					<td><%=ws.name%></td>
+					<td><%=ws.offphone%>&nbsp;&nbsp;Ext:<%=ws.offext%></td>
+					<td><%=ws.phone%></td>
+					<td><%=ws.email%></td>
+					<td><%=ws.fax%></td>
+					<td><%=ws.assname%></td>
+					<td><%=ws.assphone%></td>
+					<td><%= link_to 'Delete', delete_recruiter_employee_path(:id => ws.id),{:style=>"color: yellow"}%></td>
+				</tr>
+			<%end%>
+		</table>
+	<%end%>
+</fieldset>
+
+
+

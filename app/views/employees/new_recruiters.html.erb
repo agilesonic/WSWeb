@@ -13,14 +13,27 @@
 				<th><b>Name</b></th><td><b><%=rec.text_field :name, :size=>"30x1" %></b></td>
 			</tr>
 			<tr class="cell">
-				<th><b>Phone</b></th><td><b><%=rec.text_field :phone, :size=>"30x1" %></b></td>
+				<th><b>Office Phone</b></th><td><b><%=rec.text_field :offphone, :size=>"15x1"%></b>
+					<b><%=rec.text_field :offext, :size=>"5x1"%></b>
+				</td>
+			</tr>
+			<tr class="cell">
+				<th><b>Cell Phone</b></th><td><b><%=rec.text_field :phone, :size=>"30x1" %></b></td>
+			</tr>
+			<tr class="cell">
+				<th><b>Fax</b></th><td><b><%=rec.text_field :fax, :size=>"30x1" %></b></td>
 			</tr>
 			<tr class="cell">
 				<th><b>E-Mail</b></th><td><b><%=rec.text_field :email1, :size=>"15x1"%></b><b>@</b>
 					<b><%=rec.text_field :email2, :size=>"15x1"%></b><b>.</b><b><%=rec.text_field :email3, :size=>"5x1"%></b>
 				</td>
 			</tr>
-			
+			<tr class="cell">
+				<th><b>Associate</b></th><td><b><%=rec.text_field :assname, :size=>"30x1" %></b></td>
+			</tr>
+			<tr class="cell">
+				<th><b>Associate Phone</b></th><td><b><%=rec.text_field :assphone, :size=>"30x1" %></b></td>
+			</tr>
 			<tr style="padding-top:10px" border="1" class="cell">
 				<td colspan=3, align=center><%= rec.submit "Save New Recruiter" %></td>
 			</tr>
@@ -38,15 +51,23 @@
 			<tr class="cell" border="1">
 				<td>Company</td>
 				<td>Name</td>
-				<td>Phone</td>
+				<td>Office Phone</td>
+				<td>Cell Phone</td>
 				<td>E-Mail</td>
+				<td>Fax</td>
+				<td>Associate</td>
+				<td>Associate Phone</td>
 			</tr>
 	    	<% @recsupps.each do |ws| %>
 				<tr class="cell" border="1">
 					<td><%=ws.company%></td>
 					<td><%=ws.name%></td>
+					<td><%=ws.offphone%>&nbsp;&nbsp;Ext:<%=ws.offext%></td>
 					<td><%=ws.phone%></td>
 					<td><%=ws.email%></td>
+					<td><%=ws.fax%></td>
+					<td><%=ws.assname%></td>
+					<td><%=ws.assphone%></td>
 				</tr>
 			<%end%>
 		</table>

@@ -1,0 +1,51 @@
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/>
+<b><%= link_to 'Recruiting Menu', recruiting_menu_employees_path%></b><br/><br/>
+
+
+<%= form_for @edit_recruit_form, :url => save_edit_recruit_employees_url do |rec| %>
+  <%=rec.hidden_field :id, :value=>@selected_id %>
+  <fieldset class="mystyle">
+    <legend>New Recruit</legend>
+    <table border="1" class="mystyle">
+      <tr border="1" class="cell">
+        <th>Date</th>
+        <td>
+          <%=rec.select :year, options_for_select(@year_options, @selected_year)%>
+          <%=rec.select :month, options_for_select(@month_options, @selected_month)%>
+          <%=rec.select :day, options_for_select(@day_options, @selected_day)%>
+        </td>
+      </tr>
+      <tr class="cell">
+        <th><b>Source</b></th><td><b><%=rec.select :source, options_for_select(@source_options, @selected_source)%></b></td>
+      </tr>
+      <tr class="cell">
+        <th><b>Name</b></th><td><b><%=rec.text_field :name, :value=>@selected_name, :size=>"25x1" %></b></td>
+      </tr>
+      <tr class="cell">
+        <th><b>Address</b></th><td><b><%=rec.text_field :address, :value=>@selected_address, :size=>"25x1" %></b></td>
+      </tr>
+      <tr class="cell">
+        <th><b>Shop</b></th><td><b><%=rec.select :shop, options_for_select(@shop_options, @selected_shop), :size=>"25x1" %></b></td>
+      </tr>
+      <tr class="cell">
+        <th><b>Phone</b></th><td><b><%=rec.text_field :phone, :value=>@selected_phone, :size=>"25x1" %></b></td>
+      </tr>
+      <tr class="cell">
+        <th><b>E-Mail</b></th><td><b><%=rec.text_field :email1, :value=>@selected_email,:size=>"25x1"%></b>
+        </td>
+      </tr>
+      <tr class="cell">
+        <th><b>Valid G/G2</b></th><td><b><%=rec.select :drive, options_for_select(@drive_options, @selected_drive), :size=>"25x1" %></b></td>
+      </tr>
+      <tr class="cell">
+        <th><b>Previous Ladder Exp</b></th><td><b><%=rec.select :ladder, options_for_select(@ladder_options, @selected_ladder), :size=>"25x1" %></b></td>
+      </tr>
+      <tr class="cell">
+        <th><b>Status</b></th><td><b><%=rec.select :status, options_for_select(@status_options, @selected_status), :size=>"25x1" %></b></td>
+      </tr>
+      <tr style="padding-top:10px" border="1" class="cell">
+        <td colspan=3, align=center><%= rec.submit "EDIT" %></td>
+      </tr>
+    </table>
+  </fieldset>
+<%end%>

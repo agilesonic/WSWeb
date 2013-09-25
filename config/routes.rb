@@ -53,13 +53,18 @@ WSWeb::Application.routes.draw do
       get 'new_recruits'
       post 'save_recruiter'
       post 'save_recruit'
-      
+      post 'save_edit_recruit'
+      post 'save_call_recruit'
       
     end
     member do
       get 'recordpay'
       post 'savepay'
       get 'deletepay'
+      get 'delete_recruit'
+      get 'delete_recruiter'
+      get 'edit_recruit'
+      get 'call_recruit'
     end
   end
 

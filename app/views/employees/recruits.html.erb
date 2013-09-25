@@ -1,0 +1,40 @@
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/>
+<b><%= link_to 'Recruiting Menu', recruiting_menu_employees_path%><br/><br/></b>
+
+<fieldset class="mystyle">
+	<legend>Recruits</legend>
+	<%if !@recs.nil? && !@recs.empty?%>
+	 	<table class="mystyle" border="1">
+			<tr class="cell" border="1">
+				<td>Date</td>
+				<td>Source</td>
+				<td>Name</td>
+				<td>Address</td>
+				<td>Phone</td>
+				<td>E-Mail</td>
+				<td>Shop</td>
+				<td>Drive</td>
+				<td>Ladder</td>
+				<td>Status</td>
+			</tr>
+	    	<% @recs.each do |ws| %>
+				<tr class="cell" border="1">
+					<td><%=ws.date.to_s%></td>
+					<td><%=ws.source%></td>
+					<td><%=ws.name%></td>
+					<td><%=ws.address%></td>
+					<td><%=ws.phone%></td>
+					<td><%=ws.email%></td>
+					<td><%=ws.shop%></td>
+					<td><%=ws.drive%></td>
+					<td><%=ws.ladder%></td>
+					<td><%=ws.status%></td>
+					<td><%= link_to 'Edit', edit_recruit_employee_path(:id => ws.id),{:style=>"color: yellow"}%></td>
+					<td><%= link_to 'Delete', delete_recruit_employee_path(:id => ws.id),{:style=>"color: yellow"}%></td>
+					<td><%= link_to 'Recruit Call', call_recruit_employee_path(:id => ws.id),{:style=>"color: yellow"}%></td>
+				</tr>
+			<%end%>
+		</table>
+	<%end%>
+</fieldset>
+

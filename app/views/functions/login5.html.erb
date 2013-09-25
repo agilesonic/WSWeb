@@ -163,7 +163,9 @@
 				<%if @username=='Roger' || @username=='shantz'%>
 					<li><%= link_to 'Data Check', showdatacheck_functions_path%></li>
 					<li><%= link_to 'Send Estimate', send_estimate_mail_functions_path%></li>
+				<%if @username=='Roger' || @username=='shantz' || @username=='derek'%>
 					<li><%= link_to 'Call Log', newcalllog5_sales_path%></li>
+				<%end%>	
 					<li><%= link_to 'Find Clients', findclients_sales_path%></li>
 					<li><%= link_to 'Call Profile', callprofile_sales_path%></li>
 					<li><%= link_to 'Add New Estimates to Call List (EHEH)', screenconvertcalls_sales_path%></li>

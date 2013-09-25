@@ -329,8 +329,31 @@ class EmployeesController <  ApplicationController
   end  
   
   def recruits
-    @recs= Recruit.get_recruits
+    @recs=[]
+    recs= Recruit.get_recruits
+    recs.each do |rec|
+      rb=RecruitBundle.new
+#      date=Date.parse((rec.year).concat('-').concat(rec.month).concat('-').concat(rec.day))
+      rb.date=rec.date  
+      rb.source=rec.source
+      rb.name=rec.name
+      rb.address=rec.address
+      rb.shop=rec.shop
+      rb.phone=rec.phone
+      rb.phone1=rec.phone1
+      rb.email=rec.email
+      rb.drive=rec.drive
+      rb.ladder=rec.ladder
+      rb.id=rec.id
+      rb.status=rec.status
+      calls=Reccontact.calls_to_recruit(rec.id)
+      call=calls.last
+      rb.category=call.category
+      rb.catdate=call.actiondate
+      @recs<<rb
+     end
   end  
+
 
   def new_recruiters
     @new_recruiters_form=NewRecruitersForm.new
@@ -391,6 +414,7 @@ class EmployeesController <  ApplicationController
     rec.address=nrf[:address]
     rec.shop=nrf[:shop]
     rec.phone=nrf[:phone]
+    rec.phone1=nrf[:phone1]
     rec.email=nrf[:email1].concat('@').concat(nrf[:email2]).concat('.').concat(nrf[:email3])
     rec.drive=nrf[:drive]
     rec.ladder=nrf[:ladder]
@@ -435,6 +459,7 @@ class EmployeesController <  ApplicationController
     @selected_name=@rec.name
     @selected_address=@rec.address
     @selected_phone=@rec.phone
+    @selected_phone1=@rec.phone1
     @selected_ladder=@rec.ladder
     @selected_email=@rec.email
     @selected_status=@rec.status
@@ -454,6 +479,7 @@ class EmployeesController <  ApplicationController
     rec.address=erf[:address]
     rec.shop=erf[:shop]
     rec.phone=erf[:phone]
+    rec.phone1=erf[:phone1]
     rec.email=erf[:email1]
     rec.drive=erf[:drive]
     rec.ladder=erf[:ladder]

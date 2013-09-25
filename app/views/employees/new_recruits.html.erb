@@ -27,7 +27,10 @@
 				<th><b>Shop</b></th><td><b><%=rec.select :shop, options_for_select(@shop_options, @selected_shop), :size=>"25x1" %></b></td>
 			</tr>
 			<tr class="cell">
-				<th><b>Phone</b></th><td><b><%=rec.text_field :phone, :size=>"25x1" %></b></td>
+				<th><b>Cell Phone</b></th><td><b><%=rec.text_field :phone, :size=>"25x1" %></b></td>
+			</tr>
+			<tr class="cell">
+				<th><b>Home Phone</b></th><td><b><%=rec.text_field :phone1, :size=>"25x1" %></b></td>
 			</tr>
 			<tr class="cell">
 				<th><b>E-Mail</b></th><td><b><%=rec.text_field :email1, :size=>"15x1"%></b><b>@</b>

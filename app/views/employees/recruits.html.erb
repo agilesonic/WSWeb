@@ -10,12 +10,15 @@
 				<td>Source</td>
 				<td>Name</td>
 				<td>Address</td>
-				<td>Phone</td>
+				<td>Cell Phone</td>
+				<td>Home Phone</td>
 				<td>E-Mail</td>
 				<td>Shop</td>
 				<td>Drive</td>
 				<td>Ladder</td>
 				<td>Status</td>
+				<td>Category</td>
+				<td>Cat Date</td>
 			</tr>
 	    	<% @recs.each do |ws| %>
 				<tr class="cell" border="1">
@@ -24,11 +27,14 @@
 					<td><%=ws.name%></td>
 					<td><%=ws.address%></td>
 					<td><%=ws.phone%></td>
+					<td><%=ws.phone1%></td>
 					<td><%=ws.email%></td>
 					<td><%=ws.shop%></td>
 					<td><%=ws.drive%></td>
 					<td><%=ws.ladder%></td>
 					<td><%=ws.status%></td>
+					<td><%=ws.category%></td>
+					<td><%=ws.catdate%></td>
 					<td><%= link_to 'Edit', edit_recruit_employee_path(:id => ws.id),{:style=>"color: yellow"}%></td>
 					<td><%= link_to 'Delete', delete_recruit_employee_path(:id => ws.id),{:style=>"color: yellow"}%></td>
 					<td><%= link_to 'Recruit Call', call_recruit_employee_path(:id => ws.id),{:style=>"color: yellow"}%></td>

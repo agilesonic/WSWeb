@@ -347,9 +347,11 @@ class EmployeesController <  ApplicationController
       rb.id=rec.id
       rb.status=rec.status
       calls=Reccontact.calls_to_recruit(rec.id)
-      call=calls.last
-      rb.category=call.category
-      rb.catdate=call.actiondate
+      if calls.size!=0
+        call=calls.last
+        rb.category=call.category
+        rb.catdate=call.actiondate
+      end
       @recs<<rb
      end
   end  

@@ -6,32 +6,22 @@
 	<%if !@recs.nil? && !@recs.empty?%>
 	 	<table class="mystyle" border="1">
 			<tr class="cell" border="1">
-				<td>Date</td>
-				<td>Source</td>
 				<td>Name</td>
-				<td>Address</td>
 				<td>Cell Phone</td>
 				<td>Home Phone</td>
-				<td>E-Mail</td>
-				<td>Shop</td>
+				<td>Source</td>
 				<td>Drive</td>
-				<td>Ladder</td>
 				<td>Status</td>
 				<td>Category</td>
-				<td>Cat Date</td>
+				<td>Action Date</td>
 			</tr>
 	    	<% @recs.each do |ws| %>
 				<tr class="cell" border="1">
-					<td><%=ws.date.to_s%></td>
-					<td><%=ws.source%></td>
 					<td><%=ws.name%></td>
-					<td><%=ws.address%></td>
 					<td><%=ws.phone%></td>
 					<td><%=ws.phone1%></td>
-					<td><%=ws.email%></td>
-					<td><%=ws.shop%></td>
+					<td><%=ws.source%></td>
 					<td><%=ws.drive%></td>
-					<td><%=ws.ladder%></td>
 					<td><%=ws.status%></td>
 					<td><%=ws.category%></td>
 					<td><%=ws.catdate%></td>

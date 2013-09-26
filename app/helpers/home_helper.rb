@@ -29,7 +29,7 @@ module HomeHelper
     SHOP=['East(Carlaw Ave/Lakeshore Blvd)', 'West(Dundas St West/Bloor St West)']
     DRIVE=['No License','Valid G License', 'Valid G2 License']
     LADDER=['No Experience', 'Some Experience', 'Very Experienced']
-    STATUS=['A', 'B', 'C', 'DEAD', 'WAIT LIST']
+    STATUS=['A', 'B', 'C', 'DEAD', 'WAIT LIST', 'IN PRODUCTION']
     RECCALL=['CALL TO RECRUIT', 'LMM TO RECRUIT', 'SCHEDULE TRAINING-LADDER', 'SCHEDULE TRAINING-CLASSROOM',
       'SCHEDULE TRAINING-TRAINING HOUSES', 'CONFIRM CALL', 'CALLED BACK', 'TRAINING FEEDBACK-LADDER', 
       'TRAINING FEEDBACK-CLASSROOM', 'TRAINING FEEDBACK-TRAINING HOUSES', 'FIELD READY', 'DEAD', 'WAIT LIST']

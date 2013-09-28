@@ -527,6 +527,92 @@ class EmployeesController <  ApplicationController
     rec.save
     redirect_to recruits_employees_url
   end  
+  
+  def make_schedule
+    @make_schedule_form=MakeScheduleForm.new
+    @year_options=HomeHelper::YEARS  
+    @month_options=HomeHelper::MONTHS
+    @day_options=HomeHelper::DAYS
+    d=Date.today.to_s
+    month=d[5..6]
+    @selected_year=d[0..3]
+    @selected_month=HomeHelper.get_month_from_num month
+    @selected_day=d[8..9]
+    @office_options=HomeHelper::OFFICE_OPTIONS
+    @times_options=HomeHelper::TIMES_OPTIONS
+    @sched=Schedule.get_schedule
+    @sched.each do |ws|
+      names=Employee.just_name_from_id ws.hrid
+      ws.hrid=names.first
+    end
+    
+    
+  end
+  
+  # attr_accessor :year, :month, :day, :conn, :voicemail, :payments, :recble15, :recble30, :recble45, :gth, :estsigns 
+
+  
+  def save_schedule
+    msf=params[:make_schedule_form]
+    sched=Schedule.new
+    tasks=''
+    @selected_year=msf[:year]
+    @selected_month=msf[:month]
+    @selected_day=msf[:day]
+    date=Date.parse(@selected_year.concat('-').concat(@selected_month).concat('-').concat(@selected_day))
+    sched.date=date
+    if msf[:conn]=='1'
+      tasks+='Conn Calls//'
+    end
+    if msf[:voicemail]=='1'
+      tasks+='Voice Mail//'
+    end
+    if msf[:voicemailw]=='1'
+      tasks+='Voice Mail Wknd//'
+    end
+    if msf[:payments]=='1'
+      tasks+='Process Payments//'
+    end
+    if msf[:recble15]=='1'
+      tasks+='Recble15//'
+    end
+    if msf[:recble30]=='1'
+      tasks+='Recble30//'
+    end
+    if msf[:recble45]=='1'
+      tasks+='Recble45//'
+    end
+    if msf[:sats]=='1'
+      tasks+='Sats//'
+    end
+    if msf[:gth]=='1'
+      tasks+='GTH//'
+    end
+    if msf[:estsigns]=='1'
+      tasks+='Ests Signs//'
+    end
+    notes=msf[:notes]
+    sched.tasks=tasks
+    sched.notes=notes
+    sched.stime=msf[:stime]
+    sched.ftime=msf[:ftime]
+    person=msf[:person]
+    ids=Employee.just_id_from_name person
+    id=ids.first
+    sched.hrid=id
+    sched.save    
+    redirect_to make_schedule_employees_url
+  end
+  
+  def deleteschedule
+    id=params[:id]
+    sched=Schedule.find id
+    sched.destroy
+    redirect_to make_schedule_employees_url
+  end
+  
+  def schedule
+  end
 
       
 end

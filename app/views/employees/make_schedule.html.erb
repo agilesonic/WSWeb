@@ -1,0 +1,77 @@
+where bee yoo
+
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
+
+
+<%= form_for @make_schedule_form, :url => save_schedule_employees_url do |msf| %>
+	<fieldset class="mystyle">
+		<legend>Make Schedule</legend>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<th>Date</th>
+				<td>
+					<%=msf.select :year, options_for_select(@year_options, @selected_year)%>
+					<%=msf.select :month, options_for_select(@month_options, @selected_month)%>
+					<%=msf.select :day, options_for_select(@day_options, @selected_day)%>
+				</td>
+				<th><b>Person</b></th><td><b><%=msf.select :person, options_for_select(@office_options, @selected_person), :size=>"25x1" %></b></td>
+				<th><b>Start Time</b></th><td><b><%=msf.select :stime, options_for_select(@times_options, @selected_stime), :size=>"25x1" %></b></td>
+				<th><b>Finish Time</b></th><td><b><%=msf.select :ftime, options_for_select(@times_options, @selected_ftime), :size=>"25x1" %></b></td>
+			</tr>
+			
+
+			
+			<tr class="cell">
+				<th><b>Connection Calls</b></th><td><b><%=msf.check_box :conn, :size=>"25x1" %></b></td>
+				<th><b>Satisfaction Calls</b></th><td><b><%=msf.check_box :sats, :size=>"25x1" %></b></td>
+				<th><b>Voice Mail</b></th><td><b><%=msf.check_box :voicemail, :size=>"25x1" %></b></td>
+				<th><b>Voice Mail Weekend</b></th><td><b><%=msf.check_box :voicemail, :size=>"25x1" %></b></td>
+				<th><b>Process Payments</b></th><td><b><%=msf.check_box :payments, :size=>"25x1" %></b></td>
+			</tr>
+			<tr class="cell">
+				<th><b>Recble 15</b></th><td><b><%=msf.check_box :recble15, :size=>"25x1" %></b></td>
+				<th><b>Recble 30</b></th><td><b><%=msf.check_box :recble30, :size=>"25x1" %></b></td>
+				<th><b>Recble 45</b></th><td><b><%=msf.check_box :recble45, :size=>"25x1" %></b></td>
+				<th><b>Go To House</b></th><td><b><%=msf.check_box :gth, :size=>"25x1" %></b></td>
+				<th><b>Estimates/Signs</b></th><td><b><%=msf.check_box :estsigns, :size=>"25x1" %></b></td>
+			</tr>
+			<tr class="cell">
+				<th><b>Notes</b></th><td><b><%=msf.text_area :notes, :size=>"25x4" %></b></td>
+			</tr>
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td colspan=3, align=center><%= msf.submit "Save Schedule" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>
+
+<br/><br/>
+
+<fieldset class="mystyle">
+	<legend>Schedule</legend>
+	<%if !@sched.nil? && !@sched.empty?%>
+	 	<table class="mystyle" border="1">
+			<tr class="cell" border="1">
+				<td>Date</td>
+				<td>Name</td>
+				<td>Start Time</td>
+				<td>Finish Time</td>
+				<td>Tasks</td>
+				<td>Notes</td>
+			</tr>
+	    	<% @sched.each do |ws| %>
+				<tr class="cell" border="1">
+					<td><%=ws.date.to_s%></td>
+					<td><%=ws.hrid%></td>
+					<td><%=ws.stime%></td>
+					<td><%=ws.ftime%></td>
+					<td><%=ws.tasks%></td>
+					<td><%=ws.notes%></td>
+		     		<td><b><%= link_to 'Delete Schedule', deleteschedule_employee_path(:id=>ws.id), :style=>"color: yellow" %></b></td>
+		
+				</tr>
+			<%end%>
+		</table>
+	<%end%>
+</fieldset>
+

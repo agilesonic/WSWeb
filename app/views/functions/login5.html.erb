@@ -49,7 +49,7 @@
 							<td>nil</td>	
 						<%end%>
 						<td><b><%=ws.notes%></b></td>
-						<%if @username=='shantz' || @username=='Roger'%>
+						<%if @username=='shantz' || @username=='roger'|| @username=='mattia'%>
 							<td><%= link_to 'Call Log', calllog_sales_path(:name => ws.HRID),:style=>"color: yellow"%></td>
 						<%end%>
 					</tr>
@@ -79,7 +79,7 @@
 							<td>nil</td>	
 						<%end%>
 						<td><b><%=cc.text_field :notes, :value=> ws.notes, :size=>"20x1" %></b></td>
-						<%if @username=='shantz' || @username=='Roger'%>
+						<%if @username=='shantz' || @username=='roger'|| @username=='mattia'%>
 							<td><%= link_to 'Call Log', calllog_sales_path(:name => ws.HRID),:style=>"color: yellow"%></td>
 						<%end%>
     					<td><%= cc.submit "Log Out" %></td>
@@ -94,7 +94,7 @@
 <br/>
 <br/>
 <br/>
-<%if @open_sessions>0 || (@username=='shantz' || @username=='Roger' || @username=='derek')%>
+<%if @open_sessions>0 || (@username=='shantz' || @username=='roger' || @username=='derek'|| @username=='mattia')%>
 <fieldset class="mystyle">
 	<legend>Menu</legend>
 <div id="nav">
@@ -132,17 +132,19 @@
 		<li id="mainMenuHumanResources">
 			<b>HR</b>
 			<ul>
-				<%if @username=='Roger' || @username=='shantz' || @username=='derek'%>
+				<%if @username=='roger' || @username=='shantz' || @username=='derek'|| @username=='mattia'%>
 					<li><%= link_to 'Verify Pay', verpay_employees_path%></li>
 					<li><%= link_to 'Individual Pay', showindpay_employees_path%></li>
 					<li><%= link_to 'Recruiting Menu', recruiting_menu_employees_path%></li>
+					<li><%= link_to 'Make Schedule', make_schedule_employees_path%></li>
+					<li><%= link_to 'Schedule', schedule_employees_path%></li>
 				<%end%>
 			</ul>
 		</li>
 		<li id="mainMenuStats">
 			<b>Stats</b>
 			<ul>
-				<%if @username=='Roger' || @username=='shantz'%>
+				<%if @username=='roger' || @username=='shantz'|| @username=='mattia'%>
 					<li><%= link_to 'Read Co Sales Stats', stats1_functions_path%></li>
 					<li><%= link_to 'Kill Stats', kill_stats_functions_path%></li>
 					
@@ -160,10 +162,10 @@
 		<li id="mainMenuManagement">
 			<b>Management</b>
 			<ul>
-				<%if @username=='Roger' || @username=='shantz' || @username=='derek'%>
+				<%if @username=='roger' || @username=='shantz' || @username=='derek'|| @username=='mattia'%>
 					<li><%= link_to 'Call Log', newcalllog5_sales_path%></li>
 				<%end%>	
-				<%if @username=='Roger' || @username=='shantz'%>
+				<%if @username=='roger' || @username=='shantz'|| @username=='mattia'%>
 					<li><%= link_to 'Data Check', showdatacheck_functions_path%></li>
 					<li><%= link_to 'Send Estimate', send_estimate_mail_functions_path%></li>
 					<li><%= link_to 'Find Clients', findclients_sales_path%></li>
@@ -185,9 +187,9 @@
 
 
 		<b><a href="http://www.whiteshark.ca/internal">White Shark Internal</a></b><br/><br/>
-	<%if @username=='Roger' || @username=='shantz' || @username=='Mac'%>
+	<%if @username=='roger' || @username=='shantz' || @username=='mattia'%>
 	<%end%>	
-	<%if @username=='Roger' || @username=='shantz'%>
+	<%if @username=='roger' || @username=='shantz'|| @username=='mattia'%>
 		<%if !@messsales.nil?%>
 			<b><%=@messsales%></b>
 		<%end%> 

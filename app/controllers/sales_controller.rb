@@ -972,7 +972,7 @@ class SalesController < ApplicationController
     jobdesc=esf.jobdesc
     price=esf.jobprice
     hst=esf.jobhst
-    w1=nil;
+    w1=nil
     w2=nil
     w3=nil
     w4=nil

@@ -18,6 +18,9 @@ module HomeHelper
     CALL_OPTIONS=['LMM', 'LMP', 'Pending', 'Pending Summer 2014', 'Pending Fall 2014', 'NC', 'Moved', 'Phone Out Of Service'] 
     PROFILE_OPTIONS=['New Estimates','3.3=>3.6 clients','3.7=>3.9 clients','4.0=>4.1 clients','4.2=>4.3 clients',
       '4.4=>4.5 clients', '4.6=>4.7 clients']
+
+    OFFICE_OPTIONS=['Diana Price','George Patas', 'Joshua Roes', 'Megan Atkinson', 'Nicole Robitaille', 'Neil S Samchand','Natasha D Angelo', 'Ryan Carreira']
+
     CLIENT_CONTACT_STATUS=['Normal Client', 'No Phone Call', 'No Mail', 'No Phone Call and No Mail', 'Ask Client To Pay Promptly',
                            "Client doesn't want us", "We don't want the client"]
     
@@ -33,6 +36,9 @@ module HomeHelper
     RECCALL=['CALL TO RECRUIT', 'LMM TO RECRUIT', 'SCHEDULE TRAINING-LADDER', 'SCHEDULE TRAINING-CLASSROOM',
       'SCHEDULE TRAINING-TRAINING HOUSES', 'CONFIRM CALL', 'CALLED BACK', 'TRAINING FEEDBACK-LADDER', 
       'TRAINING FEEDBACK-CLASSROOM', 'TRAINING FEEDBACK-TRAINING HOUSES', 'FIELD READY', 'DEAD', 'WAIT LIST']
+    TIMES_OPTIONS=['8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm']
+
+
     
     def self.generate_calllog hrid, date
       call_log={}

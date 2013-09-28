@@ -55,6 +55,11 @@ WSWeb::Application.routes.draw do
       post 'save_recruit'
       post 'save_edit_recruit'
       post 'save_call_recruit'
+      get 'make_schedule'
+      get 'schedule'
+      post 'save_schedule'
+        
+
       
     end
     member do
@@ -65,6 +70,7 @@ WSWeb::Application.routes.draw do
       get 'delete_recruiter'
       get 'edit_recruit'
       get 'call_recruit'
+      get 'deleteschedule'
     end
   end
 

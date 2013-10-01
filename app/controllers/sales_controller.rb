@@ -966,7 +966,7 @@ class SalesController < ApplicationController
            redirect_to modifysale_sale_path(:jobid => @jobid, :jobid1=>@jobid1, :nosale=>nosale, :source=>@source, :function=>@function)
            return
          end
-      else
+      end
     end
 
     jobdesc=esf.jobdesc

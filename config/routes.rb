@@ -56,12 +56,11 @@ WSWeb::Application.routes.draw do
       post 'save_edit_recruit'
       post 'save_call_recruit'
       get 'make_schedule'
-      get 'schedule'
+      post 'schedule'
       post 'save_schedule'
-        
-
-      
+      get 'show_schedule'
     end
+    
     member do
       get 'recordpay'
       post 'savepay'

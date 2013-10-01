@@ -966,7 +966,7 @@ class SalesController < ApplicationController
            redirect_to modifysale_sale_path(:jobid => @jobid, :jobid1=>@jobid1, :nosale=>nosale, :source=>@source, :function=>@function)
            return
          end
-      end
+      else
     end
 
     jobdesc=esf.jobdesc
@@ -1030,9 +1030,12 @@ class SalesController < ApplicationController
     job.CustomDesc=customdesc
     job.Revenue=price
     job.gst=hst
-    job.Stime=stime
     job.Sdate=sdate
     job.Fdate=fdate
+    job.Stime=stime
+    if sdate!=fdate
+      job.Stime=nil
+    end
     job.save!
     
     if(esf.notes!='')
@@ -1172,7 +1175,10 @@ class SalesController < ApplicationController
     job.Datesold=Date.today
     job.Sdate=sdate
     job.Fdate=fdate
-    
+    if sdate!=fdate
+      job.Stime=nil
+    end
+   
     jobid5=Job.max_id_prop jobinfoid
     j5=nil
     if !jobid5.nil?

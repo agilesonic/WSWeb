@@ -19,7 +19,7 @@ module HomeHelper
     PROFILE_OPTIONS=['New Estimates','3.3=>3.6 clients','3.7=>3.9 clients','4.0=>4.1 clients','4.2=>4.3 clients',
       '4.4=>4.5 clients', '4.6=>4.7 clients']
 
-    OFFICE_OPTIONS=['Diana Price','George Patas', 'Joshua Roes', 'Megan Atkinson', 'Nicole Robitaille', 'Neil S Samchand','Natasha D Angelo', 'Ryan Carreira']
+    OFFICE_OPTIONS=['Diana Price','George Patas', 'Joshua Roes', 'Megan Atkinson','Natasha D Angelo', 'Neil S Samchand', 'Nicole Robitaille', 'Ryan Carreira']
 
     CLIENT_CONTACT_STATUS=['Normal Client', 'No Phone Call', 'No Mail', 'No Phone Call and No Mail', 'Ask Client To Pay Promptly',
                            "Client doesn't want us", "We don't want the client"]
@@ -37,6 +37,80 @@ module HomeHelper
       'SCHEDULE TRAINING-TRAINING HOUSES', 'CONFIRM CALL', 'CALLED BACK', 'TRAINING FEEDBACK-LADDER', 
       'TRAINING FEEDBACK-CLASSROOM', 'TRAINING FEEDBACK-TRAINING HOUSES', 'FIELD READY', 'DEAD', 'WAIT LIST']
     TIMES_OPTIONS=['8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm']
+    
+    def self.check_missing tasks, task
+      miss='';
+      puts 'TASKS',tasks
+      if tasks.index(task).nil?
+        miss=task.concat(' / ')
+      end
+      return miss
+    end
+    
+    def self.missing_notes tasks
+      missing=''
+      missing+=check_missing tasks, 'Open'
+      missing+=check_missing tasks, 'Line 1'
+      missing+=check_missing tasks, 'Line 2+'
+      missing+=check_missing tasks, 'Conn Calls'
+      missing+=check_missing tasks, 'Voice Mail'
+      missing+=check_missing tasks, 'Voice Mail Wknd'
+      missing+=check_missing tasks, 'Check Emails'
+      missing+=check_missing tasks, 'Recble15'
+      missing+=check_missing tasks, 'Recble30'
+      missing+=check_missing tasks, 'Recble45'
+      missing+=check_missing tasks, 'Process Payments'
+      missing+=check_missing tasks, 'Sats'
+      missing+=check_missing tasks, 'GTH'
+      missing+=check_missing tasks, 'Ests Signs'
+      missing+=check_missing tasks, 'Get Mail'
+      missing+=check_missing tasks, 'Newsletter'
+      missing+=check_missing tasks, 'Close'
+      return missing
+    end
+
+    def self.sort_schedule sched, username
+      s1={}
+      dates=[]
+      sched.each do |ws|
+        names=Employee.just_name_from_id ws.hrid
+        ws.hrid=names.first
+        s1[ws.date.to_s.concat(ws.hrid).concat(ws.id.to_s)]=ws
+        dates<<ws.date
+      end
+      
+      #get unique dates
+      #create missing bundle
+      if username=='roger' || username=='shantz' || username=='mattia' || username=='derek'
+        tasks=''
+        dates=dates.uniq
+        dates.each do |d|
+          tasks=''
+          ws=Schedule.new
+          scheds=Schedule.get_schedule_date d
+            scheds.each do |s|
+            tasks=tasks.concat(s.tasks)
+            end
+          ws.date=d
+          ws.id='a'
+          ws.hrid='MISSING SHIT'
+          ws.notes=missing_notes tasks
+          s1[ws.date.to_s.concat('zzzzzzz').concat(ws.id.to_s)]=ws
+        end
+      end
+      
+      
+#    @indstats=@indstats.sort_by{|sales, pb| sales}
+
+      
+      sched5=[]
+      s1=s1.sort_by{|k,v| k}
+      s1.each do |k,v|
+        sched5<<v
+      end
+      return sched5
+    end
+
 
 
     

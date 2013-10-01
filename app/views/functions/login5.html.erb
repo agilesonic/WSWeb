@@ -137,7 +137,7 @@
 					<li><%= link_to 'Individual Pay', showindpay_employees_path%></li>
 					<li><%= link_to 'Recruiting Menu', recruiting_menu_employees_path%></li>
 					<li><%= link_to 'Make Schedule', make_schedule_employees_path%></li>
-					<li><%= link_to 'Schedule', schedule_employees_path%></li>
+					<li><%= link_to 'Show Schedule', show_schedule_employees_path%></li>
 				<%end%>
 			</ul>
 		</li>
@@ -196,4 +196,33 @@
 	<%end%>
 
 </fieldset>
+
+<fieldset class="mystyle">
+	<legend>Schedule</legend>
+	<%if !@sched.nil? && !@sched.empty?%>
+	 	<table class="mystyle" border="1">
+			<tr class="cell" border="1">
+				<td>Date</td>
+				<td>Name</td>
+				<td>Start Time</td>
+				<td>Finish Time</td>
+				<td>Tasks</td>
+				<td>Notes</td>
+			</tr>
+	    	<% @sched.each do |ws| %>
+	    	    
+				<tr class="cell" border="1">
+					<td><%=ws.date.strftime("%a%t%b%t%d")%></td>
+					<td><%=ws.hrid%></td>
+					<td><%=ws.stime%></td>
+					<td><%=ws.ftime%></td>
+					<td><%=ws.tasks%></td>
+					<td><%=ws.notes%></td>
+				</tr>
+			<%end%>
+		</table>
+	<%end%>
+</fieldset>
 <%end%>
+
+

@@ -62,6 +62,14 @@ class FunctionsController <  ApplicationController
       end
       @work_schedule_form=WorkScheduleForm.new
       @open_sessions=Workschedule.current_open_sessions(hrid, Date.today)
+
+      date10=Date.today + 10
+      if @username=='roger' || @username=='shantz' || @username=='mattia' || @username=='derek'
+        @sched=Schedule.get_schedule_all Date.today, date10
+      else
+        @sched=Schedule.get_schedule_ind @hrid, Date.today, date10
+      end
+      @sched=HomeHelper.sort_schedule @sched, @username
       render 'login5'
   end
   

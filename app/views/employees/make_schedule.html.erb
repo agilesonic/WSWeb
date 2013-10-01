@@ -22,24 +22,40 @@ where bee yoo
 
 			
 			<tr class="cell">
-				<th><b>Connection Calls</b></th><td><b><%=msf.check_box :conn, :size=>"25x1" %></b></td>
-				<th><b>Satisfaction Calls</b></th><td><b><%=msf.check_box :sats, :size=>"25x1" %></b></td>
-				<th><b>Voice Mail</b></th><td><b><%=msf.check_box :voicemail, :size=>"25x1" %></b></td>
-				<th><b>Voice Mail Weekend</b></th><td><b><%=msf.check_box :voicemail, :size=>"25x1" %></b></td>
-				<th><b>Process Payments</b></th><td><b><%=msf.check_box :payments, :size=>"25x1" %></b></td>
+				<th><b>Open</b></th><td><b><%=msf.check_box :open, :size=>"25x1" %></b></td>
+				<th><b>Line 1</b></th><td><b><%=msf.check_box :line1, :size=>"25x1" %></b></td>
+				<th><b>Line 2+</b></th><td><b><%=msf.check_box :otherlines, :size=>"25x1" %></b></td>
+				<th><b>Check Emails</b></th><td><b><%=msf.check_box :emails, :size=>"25x1" %></b></td>
 			</tr>
 			<tr class="cell">
 				<th><b>Recble 15</b></th><td><b><%=msf.check_box :recble15, :size=>"25x1" %></b></td>
 				<th><b>Recble 30</b></th><td><b><%=msf.check_box :recble30, :size=>"25x1" %></b></td>
 				<th><b>Recble 45</b></th><td><b><%=msf.check_box :recble45, :size=>"25x1" %></b></td>
+				<th><b>Process Payments</b></th><td><b><%=msf.check_box :payments, :size=>"25x1" %></b></td>
 				<th><b>Go To House</b></th><td><b><%=msf.check_box :gth, :size=>"25x1" %></b></td>
-				<th><b>Estimates/Signs</b></th><td><b><%=msf.check_box :estsigns, :size=>"25x1" %></b></td>
 			</tr>
 			<tr class="cell">
-				<th><b>Notes</b></th><td><b><%=msf.text_area :notes, :size=>"25x4" %></b></td>
+				<th><b>Connection Calls</b></th><td><b><%=msf.check_box :conn, :size=>"25x1" %></b></td>
+				<th><b>Satisfaction Calls</b></th><td><b><%=msf.check_box :sats, :size=>"25x1" %></b></td>
+				<th><b>Estimates/Signs</b></th><td><b><%=msf.check_box :estsigns, :size=>"25x1" %></b></td>
+				<th><b>Voice Mail</b></th><td><b><%=msf.check_box :voicemail, :size=>"25x1" %></b></td>
+				<th><b>Voice Mail Weekend</b></th><td><b><%=msf.check_box :voicemail, :size=>"25x1" %></b></td>
+			</tr>
+			<tr class="cell">
+				<th><b>Get Mail</b></th><td><b><%=msf.check_box :getmail, :size=>"25x1" %></b></td>
+				<th><b>Newsletter</b></th><td><b><%=msf.check_box :newsletter, :size=>"25x1" %></b></td>
+				<th><b>Close</b></th><td><b><%=msf.check_box :close, :size=>"25x1" %></b></td>
+			</tr>
+
+			<tr class="cell">
+				<th><b>Notes</b></th><td colspan=10><b><%=msf.text_area :notes, :size=>"110x3" %></b></td>
+			</tr>
+			<tr class="cell">
+				<th><b>Same Day</b></th><td><b><%=msf.radio_button :nextday,"same", :checked=>@checked_same  %></b></td>
+				<th><b>Next Day</b></th><td><b><%=msf.radio_button :nextday,"next", :checked=>@checked_next %></b></td>
 			</tr>
 			<tr style="padding-top:10px" border="1" class="cell">
-				<td colspan=3, align=center><%= msf.submit "Save Schedule" %></td>
+				<td colspan=10, align=center><%= msf.submit "Save Schedule" %></td>
 			</tr>
 		</table>
 	</fieldset>

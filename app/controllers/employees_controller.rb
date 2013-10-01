@@ -240,7 +240,6 @@ class EmployeesController <  ApplicationController
     names.each do |name|
         @caller_options<<name
     end
-    
   end 
    
   def showindpay
@@ -538,15 +537,36 @@ class EmployeesController <  ApplicationController
     @selected_year=d[0..3]
     @selected_month=HomeHelper.get_month_from_num month
     @selected_day=d[8..9]
+
+    @checked_same=true
+    @checked_next=false
+    
+
+    year=params[:year]
+    if !year.nil?
+      @selected_year=year[0..3]
+      @selected_month=HomeHelper.get_num_from_month params[:month]
+      @selected_day=params[:day]
+      date=Date.parse(@selected_year.concat('-').concat(@selected_month).concat('-').concat(@selected_day))
+      @selected_month=HomeHelper.get_month_from_num month
+      if params[:nextday]=='next'   
+        date=date+1
+        date=date.to_s
+        puts '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',year
+        month=date[5..6]
+        @selected_year=date[0..3]
+        @selected_month=HomeHelper.get_month_from_num month
+        @selected_day=date[8..9]
+        @checked_same=false
+        @checked_next=true
+      end
+    end
+
     @office_options=HomeHelper::OFFICE_OPTIONS
     @times_options=HomeHelper::TIMES_OPTIONS
     @sched=Schedule.get_schedule
-    @sched.each do |ws|
-      names=Employee.just_name_from_id ws.hrid
-      ws.hrid=names.first
-    end
-    
-    
+    @username=session[:username]
+   @sched=HomeHelper.sort_schedule @sched
   end
   
   # attr_accessor :year, :month, :day, :conn, :voicemail, :payments, :recble15, :recble30, :recble45, :gth, :estsigns 
@@ -557,10 +577,21 @@ class EmployeesController <  ApplicationController
     sched=Schedule.new
     tasks=''
     @selected_year=msf[:year]
+    x=msf[:year]
+    puts '555555555555555555555555555555555',x
     @selected_month=msf[:month]
     @selected_day=msf[:day]
     date=Date.parse(@selected_year.concat('-').concat(@selected_month).concat('-').concat(@selected_day))
     sched.date=date
+    if msf[:open]=='1'
+      tasks+='Open//'
+    end
+    if msf[:line1]=='1'
+      tasks+='Line 1//'
+    end
+    if msf[:otherlines]=='1'
+      tasks+='Line 2+//'
+    end
     if msf[:conn]=='1'
       tasks+='Conn Calls//'
     end
@@ -570,8 +601,8 @@ class EmployeesController <  ApplicationController
     if msf[:voicemailw]=='1'
       tasks+='Voice Mail Wknd//'
     end
-    if msf[:payments]=='1'
-      tasks+='Process Payments//'
+    if msf[:emails]=='1'
+      tasks+='Check Emails//'
     end
     if msf[:recble15]=='1'
       tasks+='Recble15//'
@@ -582,6 +613,9 @@ class EmployeesController <  ApplicationController
     if msf[:recble45]=='1'
       tasks+='Recble45//'
     end
+    if msf[:payments]=='1'
+      tasks+='Process Payments//'
+    end
     if msf[:sats]=='1'
       tasks+='Sats//'
     end
@@ -591,6 +625,16 @@ class EmployeesController <  ApplicationController
     if msf[:estsigns]=='1'
       tasks+='Ests Signs//'
     end
+    if msf[:getmail]=='1'
+      tasks+='Get Mail//'
+    end
+    if msf[:newsletter]=='1'
+      tasks+='Newsletter//'
+    end
+    if msf[:close]=='1'
+      tasks+='Close//'
+    end
+    
     notes=msf[:notes]
     sched.tasks=tasks
     sched.notes=notes
@@ -600,10 +644,11 @@ class EmployeesController <  ApplicationController
     ids=Employee.just_id_from_name person
     id=ids.first
     sched.hrid=id
-    sched.save    
-    redirect_to make_schedule_employees_url
+    sched.save
+    nextday=msf[:nextday]
+    redirect_to make_schedule_employees_url(:year=>msf[:year], :month=>msf[:month], :day=>msf[:day], :nextday=>nextday)
   end
-  
+
   def deleteschedule
     id=params[:id]
     sched=Schedule.find id
@@ -611,8 +656,60 @@ class EmployeesController <  ApplicationController
     redirect_to make_schedule_employees_url
   end
   
-  def schedule
+  def show_schedule
+    @spf=ShowPayForm.new
+    @year_options=HomeHelper::YEARS  
+    @month_options=HomeHelper::MONTHS
+    @day_options=HomeHelper::DAYS
+    d=Date.today.to_s
+    @selected_syear=d[0..3]
+    month=d[5..6]
+    @selected_smonth=HomeHelper.get_month_from_num month
+    @selected_sday=d[8..9]
+    @selected_fyear=d[0..3]
+    @selected_fmonth=HomeHelper.get_month_from_num month
+    @selected_fday=d[8..9]
+    @selected_year5=d[0..3]
+    @selected_month5=HomeHelper.get_month_from_num month
+    @selected_day5=d[8..9]
+    @caller_options=[]
+    @caller_options<<'Everyone'
+    @office_options=HomeHelper::OFFICE_OPTIONS
+    @office_options.each do |emp|
+      @caller_options<<emp
+    end
   end
+  
+  def schedule
+    spf=params[:show_pay_form]
 
-      
+    @selected_syear=spf[:syear]
+    @selected_smonth=spf[:smonth]
+    @selected_sday=spf[:sday]
+    @selected_fyear=spf[:fyear]
+    @selected_fmonth=spf[:fmonth]
+    @selected_fday=spf[:fday]
+    sdate=Date.parse(@selected_syear+'-'+@selected_smonth+'-'+@selected_sday)
+    fdate=Date.parse(@selected_fyear+'-'+@selected_fmonth+'-'+@selected_fday)
+
+    @person=spf[:person]
+    @sched=[]
+    if @person=='Everyone'
+      @sched=Schedule.get_schedule_all sdate, fdate
+    else
+      names=Employee.just_id_from_name @person
+      @hrid=names.first
+      @sched=Schedule.get_schedule_ind @hrid, sdate, fdate
+    end
+    @sched.each do |ws|
+      names=Employee.just_name_from_id ws.hrid
+      ws.hrid=names.first
+    end
+    @username=session[:username]
+    @sched=HomeHelper.sort_schedule @sched, @username
+  end   
+   
 end
+
+
+

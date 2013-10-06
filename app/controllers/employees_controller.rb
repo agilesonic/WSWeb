@@ -564,9 +564,16 @@ class EmployeesController <  ApplicationController
 
     @office_options=HomeHelper::OFFICE_OPTIONS
     @times_options=HomeHelper::TIMES_OPTIONS
-    @sched=Schedule.get_schedule
+    @sched5=Schedule.get_schedule
     @username=session[:username]
-   @sched=HomeHelper.sort_schedule @sched
+    @sched=[]
+    sched=HomeHelper.sort_schedule @sched5, @username
+    #puts 'HI HO HI HO HI HO',sched.size 
+    sched.each do |ws| 
+         if (ws.date-Date.today).to_i>=0
+           @sched<<ws
+         end
+    end
   end
   
   # attr_accessor :year, :month, :day, :conn, :voicemail, :payments, :recble15, :recble30, :recble45, :gth, :estsigns 

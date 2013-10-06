@@ -1691,13 +1691,15 @@ class FunctionsController <  ApplicationController
     Utils.record_stat_co_time ts
     redirect_to login1_functions_url
   end
+  
+  
 
   def ind_stats
     @date_summer1=Date.parse('2013-04-01')
     @date_summer2=Date.today
     
     sdate1=Date.parse('2013-09-01')
-    sdate2=Date.parse('2013-10-31')
+    sdate2=Date.parse('2013-12-31')
     
     ids=Clientcontact.callers
 
@@ -1776,7 +1778,7 @@ class FunctionsController <  ApplicationController
     @date_summer2=Date.today
     
     sdate1=Date.parse('2013-09-01')
-    sdate2=Date.parse('2013-10-31')
+    sdate2=Date.parse('2013-12-31')
     
     ids=Clientcontact.callers
 

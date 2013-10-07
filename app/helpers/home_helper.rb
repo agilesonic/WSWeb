@@ -29,11 +29,11 @@ module HomeHelper
     HOURS=['07','08','09','10','11','12','13','14','15','16','17','18','19','20']
     MIN=['00','05','10','15','20','25','30','35','40','45','50','55']
     SOURCE=['TORONTO SUN', 'METRO']
-    SHOP=['East(Carlaw Ave/Lakeshore Blvd)', 'West(Dundas St West/Bloor St West)']
+    SHOP=['East(Carlaw Ave/Lakeshore Blvd)', 'Central(Morse/Osler)', 'West(Dundas St West/Bloor St West)']
     DRIVE=['No License','Valid G License', 'Valid G2 License']
     LADDER=['No Experience', 'Some Experience', 'Very Experienced']
     STATUS=['A', 'B', 'C', 'DEAD', 'WAIT LIST', 'IN PRODUCTION']
-    RECCALL=['CALL TO RECRUIT', 'LMM TO RECRUIT', 'SCHEDULE TRAINING-LADDER', 'SCHEDULE TRAINING-CLASSROOM',
+    RECCALL=['CALL TO RECRUIT', 'LMM TO RECRUIT', 'SCHEDULE TRAINING', 'SCHEDULE TRAINING-LADDER', 
       'SCHEDULE TRAINING-TRAINING HOUSES', 'CONFIRM CALL', 'CALLED BACK', 'TRAINING FEEDBACK-LADDER', 
       'TRAINING FEEDBACK-CLASSROOM', 'TRAINING FEEDBACK-TRAINING HOUSES', 'FIELD READY', 'DEAD', 'WAIT LIST']
     TIMES_OPTIONS=['8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm']

@@ -1,5 +1,7 @@
 <b><%= link_to 'Main Menu', login1_functions_path%></b><br/>
-<b><%= link_to 'Recruiting Menu', recruiting_menu_employees_path%><br/><br/></b>
+<b><%= link_to 'Recruiting Menu', recruiting_menu_employees_path%></b><br/>
+<b><%= link_to 'Recruits', show_recruits_employees_path%></b><br/><br/>
+
 
 <fieldset class="mystyle">
 	<legend>Recruits</legend>
@@ -14,6 +16,7 @@
 				<td>Status</td>
 				<td>Category</td>
 				<td>Action Date</td>
+				<td>Training</td>
 			</tr>
 	    	<% @recs.each do |ws| %>
 				<tr class="cell" border="1">
@@ -25,6 +28,7 @@
 					<td><%=ws.status%></td>
 					<td><%=ws.category%></td>
 					<td><%=ws.catdate%></td>
+					<td><%=ws.training%></td>
 					<td><%= link_to 'Edit', edit_recruit_employee_path(:id => ws.id),{:style=>"color: yellow"}%></td>
 					<td><%= link_to 'Delete', delete_recruit_employee_path(:id => ws.id),{:style=>"color: yellow"}%></td>
 					<td><%= link_to 'Recruit Call', call_recruit_employee_path(:id => ws.id),{:style=>"color: yellow"}%></td>

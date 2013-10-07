@@ -327,7 +327,23 @@ class EmployeesController <  ApplicationController
     @recsupps= Recsupp.get_recruiters
   end  
   
+  def show_recruits
+    @show_recruits_form=ShowRecruitsForm.new
+    @training_options=[]
+    @training_options<<'none'
+    @trainings= Training.find_trainings
+    @trainings.each do |t|
+      @training_options<<t.tdate.to_s
+    end
+    @status_options=['All']
+    s1=HomeHelper::RECCALL
+    s1.each do |s|
+      @status_options<<s
+    end
+  end
+  
   def recruits
+    srf=params[:show_recruits_form]
     @recs=[]
     recs= Recruit.get_recruits
     recs.each do |rec|
@@ -345,14 +361,25 @@ class EmployeesController <  ApplicationController
       rb.ladder=rec.ladder
       rb.id=rec.id
       rb.status=rec.status
+      if rec.training.nil?
+        rb.training='none'
+      else  
+        rb.training=rec.training
+      end
+      
       calls=Reccontact.calls_to_recruit(rec.id)
       if calls.size!=0
         call=calls.last
         rb.category=call.category
         rb.catdate=call.actiondate
       end
-      @recs<<rb
-     end
+      if srf[:status]=='All'
+        @recs<<rb
+      elsif srf[:status]==rb.category && srf[:training]==rb.training
+        @recs<<rb
+      end
+      
+    end
   end  
 
 
@@ -457,6 +484,14 @@ class EmployeesController <  ApplicationController
     @recsupps.each do |r|
       @source_options<<r.company
     end
+
+    @training_options=[]
+    @training_options<<'none'
+    @trainings= Training.find_trainings
+    @trainings.each do |t|
+      @training_options<<t.tdate.to_s
+    end
+
     @selected_name=@rec.name
     @selected_address=@rec.address
     @selected_phone=@rec.phone
@@ -464,6 +499,7 @@ class EmployeesController <  ApplicationController
     @selected_ladder=@rec.ladder
     @selected_email=@rec.email
     @selected_status=@rec.status
+    @selected_training=@rec.training
     @selected_id=@rec.id
   end  
 
@@ -485,7 +521,12 @@ class EmployeesController <  ApplicationController
     rec.drive=erf[:drive]
     rec.ladder=erf[:ladder]
     rec.status=erf[:status]
-    rec.save
+    if erf[:training].nil?
+      rec.training=nil
+    else
+      rec.training=erf[:training]
+    end
+    rec.save!
     redirect_to recruits_employees_url
   end
      
@@ -714,7 +755,38 @@ class EmployeesController <  ApplicationController
     end
     @username=session[:username]
     @sched=HomeHelper.sort_schedule @sched, @username
+  end
+  
+  def show_training
+    @make_training_form=MakeTrainingForm.new
+    @year_options=HomeHelper::YEARS  
+    @month_options=HomeHelper::MONTHS
+    @day_options=HomeHelper::DAYS
+    d=Date.today.to_s
+    @selected_syear=d[0..3]
+    month=d[5..6]
+    @selected_smonth=HomeHelper.get_month_from_num month
+    @selected_sday=d[8..9]
+    @trainings=Training.find_trainings
   end   
+
+  def save_training
+    mtf=params[:make_training_form]
+    year=mtf[:year]
+    month=mtf[:month]
+    day=mtf[:day]
+    t=Training.new
+    t.tdate=Date.parse(year+'-'+month+'-'+day)
+    t.save!
+    redirect_to show_training_employees_url
+  end
+  
+  def delete_training
+    id=params[:id]
+    t=Training.find id
+    t.destroy
+    redirect_to show_training_employees_url
+  end
    
 end
 

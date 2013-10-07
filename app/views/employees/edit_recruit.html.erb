@@ -46,6 +46,9 @@
       <tr class="cell">
         <th><b>Status</b></th><td><b><%=rec.select :status, options_for_select(@status_options, @selected_status), :size=>"25x1" %></b></td>
       </tr>
+      <tr class="cell">
+        <th><b>Training</b></th><td><b><%=rec.select :training, options_for_select(@training_options, @selected_training), :size=>"25x1" %></b></td>
+      </tr>
       <tr style="padding-top:10px" border="1" class="cell">
         <td colspan=3, align=center><%= rec.submit "EDIT" %></td>
       </tr>

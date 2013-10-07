@@ -48,7 +48,7 @@ WSWeb::Application.routes.draw do
       get 'back_rangepay'
       get 'recruiting_menu'
       get 'recruiters'
-      get 'recruits'
+      post 'recruits'
       get 'new_recruiters'
       get 'new_recruits'
       post 'save_recruiter'
@@ -59,6 +59,9 @@ WSWeb::Application.routes.draw do
       post 'schedule'
       post 'save_schedule'
       get 'show_schedule'
+      get 'show_training'
+      post 'save_training'
+      get 'show_recruits'
     end
     
     member do
@@ -70,6 +73,7 @@ WSWeb::Application.routes.draw do
       get 'edit_recruit'
       get 'call_recruit'
       get 'deleteschedule'
+      get 'delete_training'
     end
   end
 

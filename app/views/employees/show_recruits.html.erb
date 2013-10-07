@@ -1,0 +1,23 @@
+AAA
+
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/>
+<b><%= link_to 'Recruiting Menu', recruiting_menu_employees_path%></b><br/><br/>
+
+
+<%= form_for @show_recruits_form, :url => recruits_employees_url do |rec| %>
+	<fieldset class="mystyle">
+		<legend>Show Recruits</legend>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<th>Status</th>
+				<td><%=rec.select :status, options_for_select(@status_options, @selected_status)%></td>
+			</tr>
+			<tr class="cell">
+				<th><b>Training</b></th><td><b><%=rec.select :training, options_for_select(@training_options, @selected_training)%></b></td>
+			</tr>
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td colspan=3, align=center><%= rec.submit "Search Recruits" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>

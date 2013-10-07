@@ -1,0 +1,42 @@
+AAA
+
+<b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
+
+
+<%= form_for @make_training_form, :url => save_training_employees_url do |mtf| %>
+	<fieldset class="mystyle">
+		<legend>Make Training</legend>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<th>Date</th>
+				<td>
+					<%=mtf.select :year, options_for_select(@year_options, @selected_year)%>
+					<%=mtf.select :month, options_for_select(@month_options, @selected_month)%>
+					<%=mtf.select :day, options_for_select(@day_options, @selected_day)%>
+				</td>
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td colspan=3, align=center><%= mtf.submit "Save Training" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>
+
+<br/><br/>
+
+<fieldset class="mystyle">
+	<legend>Scheduled Trainings</legend>
+	<%if !@trainings.nil? && !@trainings.empty?%>
+	 	<table class="mystyle" border="1">
+			<tr class="cell" border="1">
+				<td>Date</td>
+			</tr>
+	    	<% @trainings.each do |t| %>
+				<tr class="cell" border="1">
+					<td><%=t.tdate.to_s%></td>
+		     		<td><b><%= link_to 'Delete Training', delete_training_employee_path(:id=>t.id), :style=>"color: yellow" %></b></td>
+				</tr>
+			<%end%>
+		</table>
+	<%end%>
+</fieldset>
+

@@ -12,6 +12,8 @@ class Client < ActiveRecord::Base
   has_many :done_jobs_2013, :class_name => "Job", :through => :properties, :conditions => "datebi>='2013-01-01'", :order=>"datebi desc", :source => :jobs
   has_many :upcoming_jobs, :class_name => "Job", :through => :properties, :conditions => "sdate is not null and datebi is null", :order=>"sdate", :source => :jobs
   
+  
+  
   def self.max_CFID 
     maximum("cfid") 
   end

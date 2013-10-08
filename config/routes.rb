@@ -80,6 +80,7 @@ WSWeb::Application.routes.draw do
  
   resources :functions do
     collection do
+      get 'sales_stats'
       post 'savedatacheck'
       post 'datacheck' 
       get 'showdatacheck' 

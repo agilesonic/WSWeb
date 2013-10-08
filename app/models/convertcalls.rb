@@ -2,7 +2,7 @@
 class Convertcalls < ActiveRecord::Base
   self.table_name="convertcalls"
   
-  belongs_to :client, :foreign_key => "cfid"
+  belongs_to :client
   has_many :properties, :foreign_key => "cfid"
   has_many :jobs, :through => :properties
 
@@ -10,6 +10,9 @@ class Convertcalls < ActiveRecord::Base
     maximum("cfid") 
   end
 
+  def self.find_by_cfid cfid
+    where("cfid=?", "#{cfid}") 
+  end
 
 
   def self.search__calls (hrid, r1, r2, date,calls)

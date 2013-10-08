@@ -2722,6 +2722,88 @@ class FunctionsController <  ApplicationController
     Utils.record_stat_co_novdec_time ts
     redirect_to login1_functions_url
   end
+  
+  def make_sbs name
+    sb=SalesStatsBundle.new
+    sb.name=name
+    sb.assists=0
+    sb.sales=0
+    sb.sales1=0
+    sb.sales2=0
+    return sb
+  end
+  
+  def find_sb sbs, name
+    sbs.each do |sb|
+      if sb.name==name
+        return sb
+      end
+    end
+  end
+  
+  
+  def sales_stats
+    sbs=[]
+    sb=make_sbs 'Derek Boyd'
+    sbs<<sb
+    sb=make_sbs 'Diana Price'
+    sbs<<sb
+    sb=make_sbs 'Joshua Roes'
+    sbs<<sb
+    sb=make_sbs 'Maribel V Campollo'
+    sbs<<sb
+    sb=make_sbs 'Megan Atkinson'
+    sbs<<sb
+    sb=make_sbs 'Natasha D Angelo'
+    sbs<<sb
+    sb=make_sbs 'Neil S Samchand'
+    sbs<<sb
+    sb=make_sbs 'Nicole Robitaille'
+    sbs<<sb
+    sb=make_sbs 'Shanti Ramcharan'
+    sbs<<sb
+    sb=make_sbs 'www.whiteshark.ca'
+    sbs<<sb
+    sbtot=make_sbs 'TOTAL'
+    sbs<<sb
+    jobs=Job.jobs_sold_today Date.today-1
+
+    jobs.each do |j|
+      sb=SalesStatsBundle.new
+      emps=Employee.just_name_from_id j.SalesID1
+      name=emps.first
+      sb=find_sb sbs, name
+      p=j.property
+      cc=Convertcalls.find_by_cfid p.CFID
+      cc=cc.first
+      if !cc.nil? && !cc.hrid.nil? && cc.hrid!=j.SalesID1
+        emps=Employee.just_name_from_id cc.hrid
+        name=emps.first
+        sb1=find_sb sbs, name
+        sb1.assists=sb1.assists+1
+      end 
+      sb.sales=sb.sales+1
+      sbtot.sales=sbtot.sales+1
+      if j.Sdate>=Date.parse('2013-10-01') and j.Sdate<=Date.parse('2013-10-31')
+        sb.sales1=sb.sales1+1
+        sbtot.sales1=sbtot.sales1+1
+      end  
+      if j.Sdate>=Date.parse('2013-11-01') and j.Sdate<=Date.parse('2013-12-31')
+        sb.sales2=sb.sales2+1
+        sbtot.sales2=sbtot.sales2+1
+      end  
+    end
+    @stats={}
+    sbs.each do |sb|
+      @stats[(HomeHelper.pad_num3 sb.assists.to_s).concat(sb.name)]=sb
+    end
+    @stats['-1'.to_s]=sbtot
+ 
+    #@stats=@stats.reverse!
+    @stats=@stats.sort_by{|k, v| k}
+    @stats=@stats.reverse!
+
+  end
 
   
 end

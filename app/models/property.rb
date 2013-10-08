@@ -7,6 +7,7 @@ class Property < ActiveRecord::Base
   has_many :jobs, :foreign_key => "jobinfoid"
   has_one :geocode, :foreign_key => "id"
   
+  has_one :convertcalls, :foreign_key => "cfid"
   
   def self.search(key) 
     where("address like ? ", "%#{key}%").order("address") 

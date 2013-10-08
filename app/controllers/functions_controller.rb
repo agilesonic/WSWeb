@@ -2766,7 +2766,7 @@ class FunctionsController <  ApplicationController
     sbs<<sb
     sbtot=make_sbs 'TOTAL'
     sbs<<sb
-    jobs=Job.jobs_sold_today Date.today-1
+    jobs=Job.jobs_sold_today Date.today
 
     jobs.each do |j|
       sb=SalesStatsBundle.new

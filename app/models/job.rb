@@ -24,7 +24,7 @@ class Job < ActiveRecord::Base
   end
 
   def self.jobs_sold_today date 
-    where("datesold = ?", date) 
+    where("datesold = ? and sdate is not null", date) 
   end
 
   def self.jobs_sold_between(date1, date2,jobid)

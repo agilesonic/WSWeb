@@ -49,6 +49,7 @@ WSWeb::Application.routes.draw do
       get 'recruiting_menu'
       get 'recruiters'
       post 'recruits'
+      get 'recruits'
       get 'new_recruiters'
       get 'new_recruits'
       post 'save_recruiter'

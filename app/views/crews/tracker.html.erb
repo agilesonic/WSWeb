@@ -7,14 +7,18 @@
 				<tr class="cell">
 					<th><b>Partner1</b></th>
 					<th><b>Partner2</b></th>
+					<th><b>Phone</b></th>
+					<th><b>Status</b></th>
 					<th><b>Prod</b></th>
 				</tr>	
-			<%@crew_bundles.each do |crew|
+			<%@crew_bundles.each do |k,crew|
 			  class5='mystyle'
 			%>
 				<tr class=<%=class5%>>
 					<td><b><%= crew.driver %></b></td>
 					<td><b><%= crew.partner %></b></td>
+					<td><b><%= crew.phone %></b></td>
+					<td><b><%= crew.status %></b></td>
 					<td><b><%= number_to_currency crew.prod %></b></td>
 					<td><%= link_to 'Crew Activity', activity_crew_path(:id => crew.driver),{:style=>"color: yellow"}%></td>
 				</tr>	

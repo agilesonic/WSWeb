@@ -15,6 +15,10 @@ class Job < ActiveRecord::Base
     where("jobid not like ?","JB98%").maximum("JobID")
   end
 
+  def self.jobs_crew crew, date
+    where("crewname= ? and schdate = ?","#{crew}",date).order('reportstime')
+  end
+
   def self.jobs_sold_after(date)
     where("datesold>= ?",date)
   end

@@ -460,7 +460,7 @@ class EmployeesController <  ApplicationController
   def delete_recruit
     @rec= Recruit.find(params[:id])
     @rec.destroy
-    redirect_to recruits_employees_url
+    redirect_to show_recruits_employees_url
   end  
      
   def edit_recruit
@@ -527,7 +527,7 @@ class EmployeesController <  ApplicationController
       rec.training=erf[:training]
     end
     rec.save!
-    redirect_to recruits_employees_url
+    redirect_to show_recruits_employees_url
   end
      
   def call_recruit
@@ -564,8 +564,8 @@ class EmployeesController <  ApplicationController
     @selected_day=crf[:actionday]
     actiondate=Date.parse(@selected_year.concat('-').concat(@selected_month).concat('-').concat(@selected_day))
     rec.actiondate=actiondate
-    rec.save
-    redirect_to recruits_employees_url
+    rec.save!
+    redirect_to show_recruits_employees_url
   end  
   
   def make_schedule

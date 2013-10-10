@@ -17,20 +17,22 @@ class Convertcalls < ActiveRecord::Base
 
   def self.search__calls (hrid, r1, r2, date,calls)
     if r1=='2.5'
-      where("cfid>='CF00039366' and lastjob is null and summcalls= ? and hrid = ? and rating between ? and ?", "#{calls}", "#{hrid}", "#{r1}", "#{r2}").count
+      where("cfid>='CF00041394' and lastjob is null and fallcalls= ? and hrid = ? and rating between ? and ?", "#{calls}", "#{hrid}", "#{r1}", "#{r2}").count
     else
-      where("summcalls= ? and hrid = ? and (lastjob is null or lastjob<'2013-08-31') and rating between ? and ?", "#{calls}", "#{hrid}", "#{r1}", "#{r2}").count
+      where("fallcalls= ? and hrid = ? and (lastjob is null or lastjob<'2013-08-31') and rating between ? and ?", "#{calls}", "#{hrid}", "#{r1}", "#{r2}").count
     end 
   end
 
   def self.search_newests_zero_calls(hrid, today)
-    where("cfid>='CF00039366' and lastjob is null and summcalls='0' and hrid = ?", "#{hrid}") 
+    where("cfid>='CF00041394' and lastjob is null and fallcalls='0' and hrid = ?", "#{hrid}") 
   end
 
 
   def self.search_pendings(hrid, today)
-    where("hrid = ? and laststatus=? and lastcall>'2013-09-01' and (lastjob is null or lastjob<'2013-08-31') and (followup is null or followup<= ? or lastcall = ?)"+
-    " and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved'))", "#{hrid}", "Pending", today, today) 
+    where("hrid = ? and laststatus=? and lastcall>'2013-09-01' and (lastjob is null or lastjob<'2013-08-31')"+
+    " and (followup is null or followup<= ? or lastcall = ?)"+
+    " and clientstatus='Normal Client' and (laststatus is null or "+
+    " (laststatus <>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved'))", "#{hrid}", "Pending", today, today) 
   end
 
 
@@ -38,13 +40,13 @@ class Convertcalls < ActiveRecord::Base
       
  
   def self.count_profile_ratings(highcf, hrid, today, r1, r2, numcalls)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-08-31') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and rating between ? and ?",
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-08-31') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and ((followup is null or followup<= ?) and ((lastcall = ? and fallcalls =?) or((lastcall is null or lastcall < ?) and fallcalls =?))) and rating between ? and ?",
          "#{highcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").count 
   end
    
 
   def self.count_profile_lastsummer(highcf, hrid, today, numcalls)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-08-31') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and numjobsls>'0'",
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-08-31') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and ((followup is null or followup<= ?) and ((lastcall = ? and fallcalls =?) or((lastcall is null or lastcall < ?) and fallcalls =?))) and numjobsls>'0'",
          "#{highcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today,"#{numcalls}").count 
   end 
 
@@ -112,15 +114,17 @@ class Convertcalls < ActiveRecord::Base
 
 
   def self.search_profile_ratings_prevnext(lowcf, limit, hrid, today, r1, r2, numcalls)
-    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-08-31') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
-    " and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and rating between ? and ? ",
+    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-08-31') and clientstatus='Normal Client' and"+
+    " (laststatus is null or (laststatus <>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
+    " and ((followup is null or followup<= ?) and ((lastcall = ? and fallcalls =?) or((lastcall is null or lastcall < ?)"+
+    " and fallcalls =?))) and rating between ? and ? ",
          "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").limit(limit) 
   end
 
 
   def self.search_profile_lastsummer_prevnext(lowcf, limit, hrid, today,numcalls)
-    where("cfid >= ? and hrid= ? and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?)"+
-    " or((lastcall is null or lastcall < ?) and summcalls =?))) and (lastjob is null or lastjob<'2013-08-31')"+
+    where("cfid >= ? and hrid= ? and ((followup is null or followup<= ?) and ((lastcall = ? and fallcalls =?)"+
+    " or((lastcall is null or lastcall < ?) and fallcalls =?))) and (lastjob is null or lastjob<'2013-08-31')"+
     " and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
     " and numjobsls>'0'", "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
   end
@@ -204,14 +208,14 @@ class Convertcalls < ActiveRecord::Base
 
   def self.search_profile_ratings(lowcf, limit, hrid, today, r1, r2, numcalls)
     where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-08-31') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Pending' and laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
-    " ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and rating between ? and ?",
+    " ((followup is null or followup<= ?) and ((lastcall = ? and fallcalls =?) or((lastcall is null or lastcall < ?) and fallcalls =?))) and rating between ? and ?",
          "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").order('cfid').limit(limit) 
   end
 
 #......
 #  def self.search_profile_ratings_prevnext(lowcf, limit, hrid, today, r1, r2, numcalls)
 #    where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-08-31') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved'))"+
-#    " and ((followup is null or followup<= ?) and ((lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?))) and rating between ? and ? ",
+#    " and ((followup is null or followup<= ?) and ((lastcall = ? and fallcalls =?) or((lastcall is null or lastcall < ?) and fallcalls =?))) and rating between ? and ? ",
 #         "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}", "#{r1}", "#{r2}").limit(limit) 
 #  end
 #..........
@@ -220,7 +224,7 @@ class Convertcalls < ActiveRecord::Base
 
   def self.search_profile_lastsummer(lowcf, limit, hrid, today, numcalls)
     where("cfid >= ? and hrid= ? and (lastjob is null or lastjob<'2013-08-31') and clientstatus='Normal Client' and (laststatus is null or (laststatus <>'Phone OOS' and laststatus <>'Moved')) and"+
-    " ((followup is null or followup<= ?) and (lastcall = ? and summcalls =?) or((lastcall is null or lastcall < ?) and summcalls =?)) and numjobsls>'0'",
+    " ((followup is null or followup<= ?) and (lastcall = ? and fallcalls =?) or((lastcall is null or lastcall < ?) and fallcalls =?)) and numjobsls>'0'",
     "#{lowcf}","#{hrid}", today, today, "#{numcalls.to_i+1}", today, "#{numcalls}").limit(limit) 
   end
 
@@ -294,7 +298,7 @@ class Convertcalls < ActiveRecord::Base
 
   def self.search_unassigned_all
     where("hrid is null and (lastjob is null or lastjob<'2013-08-31') and (rating>='3.3' or"+ 
-    " (cfid>='CF00039366' and rating = '2.5'))").count 
+    " (cfid>='CF00041394' and rating = '2.5'))").count 
   end
 
   def self.search_unassigned(r1,r2)
@@ -302,7 +306,7 @@ class Convertcalls < ActiveRecord::Base
   end
 
   def self.search_unassigned_newestimates 
-    where("hrid is null and (lastjob is null or lastjob<'2013-08-31') and cfid>='CF00039366' and rating = '2.5'").count 
+    where("hrid is null and (lastjob is null or lastjob<'2013-08-31') and cfid>='CF00041394' and rating = '2.5'").count 
   end
 
   def self.search_unassigned_lastsummer
@@ -338,9 +342,9 @@ class Convertcalls < ActiveRecord::Base
 
   def self.search_assigned_by_holder_newestimates hrid
     if hrid.nil?
-      where("hrid is null and cfid>='CF00039366' and (lastjob is null or lastjob<'2013-08-31')").count
+      where("hrid is null and cfid>='CF00041394' and (lastjob is null or lastjob<'2013-08-31')").count
     else
-      where("hrid=? and cfid>='CF00039366' and (lastjob is null or lastjob<'2013-08-31')","#{hrid}").count
+      where("hrid=? and cfid>='CF00041394' and (lastjob is null or lastjob<'2013-08-31')","#{hrid}").count
     end 
   end
 
@@ -365,9 +369,9 @@ class Convertcalls < ActiveRecord::Base
   def self.search_assigned_by_holder_newestimates_cc hrid
 #    where("hrid=? and cfid>='CF00039366'","#{hrid}") 
     if hrid.nil?
-      where("hrid is null and cfid>='CF00039366' and rating='2.5' and (lastjob is null or lastjob<'2013-08-31')")
+      where("hrid is null and cfid>='CF00041394' and rating='2.5' and (lastjob is null or lastjob<'2013-08-31')")
     else
-      where("hrid=? and cfid>='CF00039366' and rating='2.5' and (lastjob is null or lastjob<'2013-08-31')","#{hrid}")
+      where("hrid=? and cfid>='CF00041394' and rating='2.5' and (lastjob is null or lastjob<'2013-08-31')","#{hrid}")
     end 
   end
 
@@ -390,24 +394,24 @@ class Convertcalls < ActiveRecord::Base
   end
 
   def self.sales_by_assist(datesold1, datesold2, salesid)
-  #  Convertcalls.joins(:properties).joins(:jobs).where("jobs.Sdate between '2013-04-01' and '2013-09-30' and jobs.Datesold between ? and ? and convertcalls.hrid= ? and convertcalls.summcalls>'0'",
+  #  Convertcalls.joins(:properties).joins(:jobs).where("jobs.Sdate between '2013-04-01' and '2013-09-30' and jobs.Datesold between ? and ? and convertcalls.hrid= ? and convertcalls.fallcalls>'0'",
    #  datesold1, datesold2, "#{salesid}").count
-#   Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between "+datesold1.to_s+" and "+datesold2.to_s+" and cc.hrid= "+"#{salesid}"+" and cc.summcalls>'0'",
+#   Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between "+datesold1.to_s+" and "+datesold2.to_s+" and cc.hrid= "+"#{salesid}"+" and cc.fallcalls>'0'",
 #   datesold1, datesold2, "#{salesid}").count
-  Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between '"+datesold1.to_s+"' and '"+datesold2.to_s+"' and cc.hrid= '"+"#{salesid}"+"' and cc.summcalls>'0'").count
+  Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between '"+datesold1.to_s+"' and '"+datesold2.to_s+"' and cc.hrid= '"+"#{salesid}"+"' and cc.fallcalls>'0'").count
     end
   
   def self.sales_by_direct(datesold1, datesold2, salesid)
-  #  Convertcalls.joins(:properties).joins(:jobs).where("jobs.Sdate between '2013-04-01' and '2013-09-30' and jobs.Datesold between ? and ? and convertcalls.hrid= ? and convertcalls.summcalls>'0'",
+  #  Convertcalls.joins(:properties).joins(:jobs).where("jobs.Sdate between '2013-04-01' and '2013-09-30' and jobs.Datesold between ? and ? and convertcalls.hrid= ? and convertcalls.fallcalls>'0'",
    #  datesold1, datesold2, "#{salesid}").count
-#   Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between "+datesold1.to_s+" and "+datesold2.to_s+" and cc.hrid= "+"#{salesid}"+" and cc.summcalls>'0'",
+#   Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between "+datesold1.to_s+" and "+datesold2.to_s+" and cc.hrid= "+"#{salesid}"+" and cc.fallcalls>'0'",
 #   datesold1, datesold2, "#{salesid}").count
   Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between '"+datesold1.to_s+"' and '"+datesold2.to_s+"' and cc.hrid=j.salesid1 and j.salesid1= '"+"#{salesid}"+"'").count
     end
 
 
   def self.sales_by_assist_sdates(datesold1, datesold2, salesid, sdate1, sdate2)
-    Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between '"+datesold1.to_s+"' and '"+datesold2.to_s+"' and cc.hrid= '"+"#{salesid}"+"' and cc.summcalls>'0' and sdate between '"+sdate1.to_s+"' and '"+sdate2.to_s+"'").count
+    Convertcalls.find_by_sql("select * from convertcalls cc, cfjobinfo cj, jobs j where cc.cfid=cj.cfid and cj.jobinfoid=j.jobinfoid and j.sdate between '2013-04-01' and '2013-09-30' and j.datesold between '"+datesold1.to_s+"' and '"+datesold2.to_s+"' and cc.hrid= '"+"#{salesid}"+"' and cc.fallcalls>'0' and sdate between '"+sdate1.to_s+"' and '"+sdate2.to_s+"'").count
   end
   
   def self.sales_by_direct_sdates(datesold1, datesold2, salesid, sdate1, sdate2)

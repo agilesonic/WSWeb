@@ -93,12 +93,16 @@
 <b><%= link_to 'Back To Sales List', sales_path%></b><br/>
 <br/><br/>
 
+<%if !@owe_some_dough.nil?%>
+	<h2 class="emerg">*****<%=@owe_some_dough%>*****</h2>
+<%end%>
+<br/>
 
 <%if !@client_header1.nil?%>
-<h2><%=@client_header1%></h2>
-<h2><%=@client_header2%></h2>
-<h2><%=@client_header3%></h2>
-<h2><%=@client_header4%>&nbsp;&nbsp;&nbsp;&nbsp;<%=@client_header5%></h2>
+	<h2><%=@client_header1%></h2>
+	<h2><%=@client_header2%></h2>
+	<h2><%=@client_header3%></h2>
+	<h2><%=@client_header4%>&nbsp;&nbsp;&nbsp;&nbsp;<%=@client_header5%></h2>
 <%end%>
 
 <%if !@function.nil?

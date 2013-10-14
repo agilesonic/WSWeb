@@ -788,7 +788,7 @@ class FunctionsController <  ApplicationController
     @client_header2=name
     @client_header3=address+' '+phone
     @client_header4='Rating:'+overallrate.to_s
-    
+    @owe_some_dough=nil
     if @client.registerdate.nil? || @client.registerdate==''
       @client_header5='Date Registered: unknown'
     else 
@@ -850,13 +850,18 @@ class FunctionsController <  ApplicationController
 #        sb.typedesc='satjob'
 #        sb.jobdnf='sat'
 
-    
+    num_owed=0
+    amt_owed=0
     @jobs.each do |job|
       if job.datetag=='fall2012'
         @jobs_last_fall<<job    
       end
 
-      if job.datetag=='2013' && ((job.typedesc!='upcomingjob') && (job.typedesc!='upcomingdnf')) 
+      if job.datetag=='2013' && ((job.typedesc!='upcomingjob') && (job.typedesc!='upcomingdnf'))
+        if !job.daystopay.nil? && job.daystopay.to_s.index('Receivable')==0
+          num_owed+=1
+          amt_owed+=job.price
+        end 
         @jobs_2013<<job    
       end
       
@@ -864,6 +869,10 @@ class FunctionsController <  ApplicationController
         @jobs_upcoming<<job
       end
       @jobs_all<<job
+    end
+    
+    if num_owed>0
+      @owe_some_dough='CLIENT OWES US '.concat('$').concat(amt_owed.to_s).concat(' FOR ').concat(num_owed.to_s).concat(' JOB(S)')
     end
     
     @edit_client_form=EditClientForm.new

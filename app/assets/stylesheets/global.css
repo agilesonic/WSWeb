@@ -664,6 +664,13 @@ fieldset legend {
 		color:white;
 	}
 	
+	h2.emerg{
+		font-weight:bold;
+		background:black;
+		color:red
+	}
+
+
 
 	td.col50{
 		font-weight:bold;

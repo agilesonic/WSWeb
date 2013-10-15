@@ -3,7 +3,7 @@ class CrewsController <  ApplicationController
   
   
   def tracker
-    date=Date.today-2
+    date=Date.today
     @test='trackerses'
     @crew_bundles={}
     crews=OC.find_crews date     
@@ -67,7 +67,7 @@ class CrewsController <  ApplicationController
   def activity
     name=params[:id]
     jobs5={}
-    jobs=Job.jobs_crew name, Date.today-2
+    jobs=Job.jobs_crew name, Date.today
     jobs.each do |j|
         if j.reportstime.nil?
           j.reportstime='99:99:99'

@@ -31,6 +31,7 @@ WSWeb::Application.routes.draw do
     end
     member do
       get 'activity'
+      get 'job_details'
     end
   end
 

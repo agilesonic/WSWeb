@@ -64,12 +64,6 @@ class EmployeesController <  ApplicationController
     end
     min_rate=@rate/60
     @rate=@rate.to_s
-    puts 'shour',@shour
-    puts 'smin',@smin
-
-    puts 'fhour',@fhour
-    puts 'fmin',@fmin
-
     shour1=HomeHelper.pad_num2 @shour
     smin1=HomeHelper.pad_num2 @smin
     fhour1=HomeHelper.pad_num2 @shour
@@ -122,9 +116,6 @@ class EmployeesController <  ApplicationController
     
     #@hr_pay, 
     #@min_pay=total_min.divmod 60
-    #puts 'Hr_Pay', @hr_pay
-    #puts 'Min_Pay', @min_pay
-    #puts 'PAY',@pay
     #if @hr_pay.nil?
     #  @hr_pay='0.00'
     #else
@@ -160,10 +151,6 @@ class EmployeesController <  ApplicationController
   
   def savepay
     rpf=params[:record_pay_form]
-    puts 'Form*****************'
-    rpf.each do |k,v|
-      puts k,v
-    end
     id=rpf[:id]
     @ws=Workschedule.find id
     shr=params[:shr]  
@@ -205,7 +192,6 @@ class EmployeesController <  ApplicationController
     
     source=params[:source]
     if source=='showindpay'
-      puts '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   IN RIGHT PLACE'
       move_params params
       render 'showindpay'
       return  
@@ -593,7 +579,6 @@ class EmployeesController <  ApplicationController
       if params[:nextday]=='next'   
         date=date+1
         date=date.to_s
-        puts '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%',year
         month=date[5..6]
         @selected_year=date[0..3]
         @selected_month=HomeHelper.get_month_from_num month
@@ -609,12 +594,33 @@ class EmployeesController <  ApplicationController
     @username=session[:username]
     @sched=[]
     sched=HomeHelper.sort_schedule @sched5, @username
-    #puts 'HI HO HI HO HI HO',sched.size 
     sched.each do |ws| 
          if (ws.date-Date.today).to_i>=0
            @sched<<ws
          end
     end
+    @selected_person=params[:person]
+    @selected_stime=params[:stime]
+    @selected_ftime=params[:ftime] 
+    @selected_open=params[:open]
+    @selected_line1=params[:line1]
+    @selected_otherlines=params[:otherlines]
+    @selected_emails=params[:emails]
+    @selected_conn=params[:conn]
+    @selected_voicemail=params[:voicemail]
+    @selected_voicemailw=params[:voicemailw]
+    @selected_emails=params[:emails]
+    @selected_recble15=params[:recble15]
+    @selected_recble30=params[:recble30]
+    @selected_recble45=params[:recble45]
+    @selected_payments=params[:payments]
+    @selected_sats=params[:sats]
+    @selected_gth=params[:gth]
+    @selected_estsigns=params[:estsigns]
+    @selected_getmail=params[:getmail]
+    @selected_newsletter=params[:newsletter]
+    @selected_close=params[:close]
+    @selected_notes=params[:notes]
   end
   
   # attr_accessor :year, :month, :day, :conn, :voicemail, :payments, :recble15, :recble30, :recble45, :gth, :estsigns 
@@ -626,60 +632,77 @@ class EmployeesController <  ApplicationController
     tasks=''
     @selected_year=msf[:year]
     x=msf[:year]
-    puts '555555555555555555555555555555555',x
     @selected_month=msf[:month]
     @selected_day=msf[:day]
     date=Date.parse(@selected_year.concat('-').concat(@selected_month).concat('-').concat(@selected_day))
     sched.date=date
+    puts 'OPEN*******',msf[:open]
     if msf[:open]=='1'
+      open=true
       tasks+='Open//'
     end
     if msf[:line1]=='1'
+      line1=true
       tasks+='Line 1//'
     end
     if msf[:otherlines]=='1'
+      otherlines=true
       tasks+='Line 2+//'
     end
     if msf[:conn]=='1'
+      conn=true
       tasks+='Conn Calls//'
     end
     if msf[:voicemail]=='1'
+      voicemail=true
       tasks+='Voice Mail//'
     end
     if msf[:voicemailw]=='1'
+      voicemailw=true
       tasks+='Voice Mail Wknd//'
     end
     if msf[:emails]=='1'
+      emails=true
       tasks+='Check Emails//'
     end
     if msf[:recble15]=='1'
+      recble15=true
       tasks+='Recble15//'
     end
     if msf[:recble30]=='1'
+      recble30=true
       tasks+='Recble30//'
     end
     if msf[:recble45]=='1'
+      recble45=true
       tasks+='Recble45//'
     end
     if msf[:payments]=='1'
+      payments=true
       tasks+='Process Payments//'
     end
     if msf[:sats]=='1'
+      sats=true
       tasks+='Sats//'
     end
     if msf[:gth]=='1'
+      gth=true
       tasks+='GTH//'
     end
     if msf[:estsigns]=='1'
+      estsigns=true
       tasks+='Ests Signs//'
     end
     if msf[:getmail]=='1'
+      getmail=true
       tasks+='Get Mail//'
     end
     if msf[:newsletter]=='1'
+      newsletter=true
       tasks+='Newsletter//'
     end
     if msf[:close]=='1'
+      close=true
       tasks+='Close//'
     end
     
@@ -688,13 +711,19 @@ class EmployeesController <  ApplicationController
     sched.notes=notes
     sched.stime=msf[:stime]
     sched.ftime=msf[:ftime]
+    stime=msf[:stime]
+    ftime=msf[:ftime]
     person=msf[:person]
     ids=Employee.just_id_from_name person
     id=ids.first
     sched.hrid=id
     sched.save
     nextday=msf[:nextday]
-    redirect_to make_schedule_employees_url(:year=>msf[:year], :month=>msf[:month], :day=>msf[:day], :nextday=>nextday)
+    redirect_to make_schedule_employees_url(:year=>msf[:year], :month=>msf[:month], :day=>msf[:day], :nextday=>nextday,
+     :person=>person, :stime=>stime, :ftime=>ftime, :open=>open, :line1=>line1, :otherlines=>otherlines, :emails=>emails,
+     :conn=>conn, :voicemail=>voicemail, :voicemailw=>voicemailw, :emails=>emails, :recble15=>recble15, :recble30=>recble30,
+     :recble45=>recble45, :payments=>payments, :sats=>sats, :gth=>gth, :estsigns=>estsigns, :getmail=>getmail,
+     :newsletter=>newsletter, :close=>close, :notes=>notes)
   end
 
   def deleteschedule

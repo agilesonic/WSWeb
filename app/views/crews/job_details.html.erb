@@ -1,0 +1,754 @@
+hi ho
+<script text="text/javascript" type="text/javascript">
+		//window.onload=job_desc();
+		$(document).ready(function(){
+			job_desc();
+	    });
+		
+		function jobtype(){
+			var appt=$('#create_sale_form_jobtype_appt');
+			var floater=$('#create_sale_form_jobtype_floater');
+			var fyear=$('#create_sale_form_fyear');
+			var fmonth=$('#create_sale_form_fmonth');
+			var fday=$('#create_sale_form_fday');
+	
+			var syear=$('#create_sale_form_syear');
+			var smonth=$('#create_sale_form_smonth');
+			var sday=$('#create_sale_form_sday');
+
+			var fyear1=$('#create_sale_form_fyear1');
+			var fmonth1=$('#create_sale_form_fmonth1');
+			var fday1=$('#create_sale_form_fday1');
+		
+			var syear1=$('#create_sale_form_syear1');
+			var smonth1=$('#create_sale_form_smonth1');
+			var sday1=$('#create_sale_form_sday1');
+            
+            var sy=syear1.val();
+            var sm=smonth1.val();
+            var sd=sday1.val();
+
+			if ($('#create_sale_form_jobtype_appt').attr('checked')) {
+				//fyear.val("2013");
+				//fmonth.val("Oct");
+				//fday.val("26");
+
+				fyear.val(syear.val());
+				fmonth.val(smonth.val());
+				fday.val(sday.val());
+			}
+			if ($('#create_sale_form_jobtype_floater').attr('checked')) {
+				syear.val(syear1.val());
+				smonth.val(smonth1.val());
+				sday.val(sday1.val());
+
+				fyear.val(syear1.val());
+				fmonth.val(smonth1.val());
+				fday.val(sday1.val());
+			}
+
+		}
+
+		
+		function job_desc(){
+			  disabs();
+			  var w1=$('#create_sale_form_w1');
+	          var w1PriceText =$('#create_sale_form_w1price');
+	          var w1Price=parseFloat(w1PriceText.val());
+			  var w2=$('#create_sale_form_w2');
+	          var w2PriceText =$('#create_sale_form_w2price');
+	          var w2Price=parseFloat(w2PriceText.val());
+			  var w3=$('#create_sale_form_w3');
+	          var w3PriceText =$('#create_sale_form_w3price');
+	          var w3Price=parseFloat(w3PriceText.val());
+			  var w4=$('#create_sale_form_w4');
+	          var w4PriceText =$('#create_sale_form_w4price');
+	          var w4Price=parseFloat(w4PriceText.val());
+			  var eh=$('#create_sale_form_eh');
+	          var ehPriceText =$('#create_sale_form_ehprice');
+	          var ehPrice=parseFloat(ehPriceText.val());
+			  var eg=$('#create_sale_form_eg');
+	          var egPriceText =$('#create_sale_form_egprice');
+	          var egPrice=parseFloat(egPriceText.val());
+	          var cagePriceText =$('#create_sale_form_cageprice');
+	          
+	          var cages=$('#create_sale_form_cages');
+	          var numCages=$('#create_sale_form_cagenum');
+	          var cagesPrice;
+	          if(numCages.val()=='As Reqd')
+	          	cagesPrice=Number('0');
+	          else
+	          	cagesPrice=Number(5)*Number(numCages.val());
+	          var amtCages=$('#create_sale_form_cageprice');
+	          amtCages.val(cagesPrice);
+	          
+	          var custom=$('#create_sale_form_custom');
+	          var customDesc=$('#create_sale_form_customdesc');
+	          var customDescVal=customDesc.val();
+	          var customPriceText=$('#create_sale_form_customprice');           
+	          var customPrice=parseFloat(customPriceText.val());
+	                     
+			  
+			  var jobDesc=$('#create_sale_form_jobdesc');
+	          var price=$('#create_sale_form_jobprice');
+	          
+	          var first=true;
+	          jobDesc.val("");
+	          var jobString="";
+	          var finalprice=parseFloat(0);
+	          
+			  if(w1.attr('checked')){
+				  if(first){
+					  jobString="W1";
+					  finalprice+=parseFloat(w1Price);
+					  first=false;
+				  }else{
+					  jobString+=" + W1";
+					  finalprice+=parseFloat(w1Price);
+				  }
+			  }
+			  if(w2.attr('checked')){
+				  if(first){
+					  jobString="W2";
+					  finalprice+=parseFloat(w2Price);
+					  first=false;
+				  }else{
+					  jobString+=" + W2";
+					  finalprice+=parseFloat(w2Price);
+				  }
+			  }
+			  if(w3.attr('checked')){
+				  if(first){
+					  jobString="W3";
+					  finalprice+=parseFloat(w3Price);
+					  first=false;
+				  }else{
+					  jobString+=" + W3";
+					  finalprice+=parseFloat(w3Price);
+				  }
+		      }
+		      if(w4.attr('checked')){
+				  if(first){
+					  jobString="W4";
+					  finalprice+=parseFloat(w4Price);
+					  first=false;
+				  }else{
+					  jobString+=" + W4";
+					  finalprice+=parseFloat(w4Price);
+				  }
+		  	  }
+		  	  if(eh.attr('checked')){
+				  if(first){
+					  jobString="EH";
+					  finalprice+=parseFloat(ehPrice);
+					  first=false;
+				  }else{
+					  jobString+=" + EH";
+					  finalprice+=parseFloat(ehPrice);
+				  }
+			  }
+			  if(eg.attr('checked')){
+				  if(first){
+					  jobString="EG";
+					  finalprice+=parseFloat(egPrice);
+					  first=false;
+				  }else{
+					  jobString+=" + EG";
+					  finalprice+=parseFloat(egPrice);
+				  }
+			  }
+			  if(cages.attr('checked')){
+				  var cage5 = numCages.val();
+			  	  //cages.value=parseInt(cage5);
+			  	  if(first){
+					  jobString="install cages("+cage5+")";
+					  finalprice+=parseFloat(cagesPrice);
+					  first=false;
+				  }else{
+					  jobString+=" + install cages("+cage5+")";
+					  finalprice+=parseFloat(cagesPrice);
+				  }
+			  }
+			  if(custom.attr('checked')){
+				  if(first){
+					  jobString=customDescVal;
+					  finalprice+=parseFloat(customPrice);
+					  first=false;
+				  }else{
+					  jobString+=" + "+customDescVal;
+					  finalprice+=parseFloat(customPrice);
+				  }
+			  }
+			  
+			  if(jobString==""){
+				jobDesc.val("");
+			  }else{
+	          	jobDesc.val(jobString);
+			  }
+	
+	
+			  var oneZero=false;
+			  if(w1.attr('checked')){
+				  if(w1PriceText.val()==0||w1PriceText.val()=='')
+					  oneZero=true;
+			  }
+			  if(w2.attr('checked')){
+				  if(w2PriceText.val()==0||w2PriceText.val()=='')
+					  oneZero=true;
+			  }
+			  if(w3.attr('checked')){
+				  if(w3PriceText.val()==0||w3PriceText.val()=='')
+					  oneZero=true;
+		      }
+		      if(w4.attr('checked')){
+				  if(w4PriceText.val()==0||w4PriceText.val()=='')
+					  oneZero=true;
+		  	  }
+		  	  if(eh.attr('checked')){
+				  if(ehPriceText.val() ==0||ehPriceText.val()=='')
+					  oneZero=true;
+			  }
+			  if(eg.attr('checked')){
+				  if(egPriceText.val()==0||egPriceText.val()=='')
+					  oneZero=true;
+			  }
+			  if(cages.attr('checked')){
+				  if(cagePriceText.val()==0||cagePriceText.val()=='')
+					  oneZero=true;
+			  }
+			  if(custom.attr('checked')){
+				  if(customPriceText.val()==0||customPriceText.val()=='')
+					  oneZero=true;
+			  }
+			  if(oneZero)
+				  price.val("0.00");
+			  else
+			  	  price.val(finalprice.toFixed(2));
+			  fhst();
+			  ftotal();
+			  
+	  }
+
+
+	  function fhst(){
+		  var priceText=$('#create_sale_form_jobprice');
+          var price=parseFloat(priceText.val());
+          var hstRate=parseFloat(".13");
+          var hst=price*hstRate;
+          var hstText = $('#create_sale_form_jobhst');
+          hstText.val(hst.toFixed(2)); 
+	  }
+
+	  function ftotal(){
+		  var priceText= $('#create_sale_form_jobprice');
+          var price=parseFloat(priceText.val());
+          var hstText = $('#create_sale_form_jobhst');
+          var hst=parseFloat(hstText.val());
+          var total=price+hst;
+          var totalText = $('#create_sale_form_jobtotal');
+          totalText.val(total.toFixed(2));  
+      }
+
+	  function enableCages(){
+          var cages= $('#create_sale_form_cages');
+          var numCages= $('#create_sale_form_cagenum');
+          if(cages.attr('checked')){
+	          numCages.disabled=false;
+          }else{
+	          numCages.disabled=true;
+          }
+          job_desc();
+	  }
+
+	  function enableCustom(){
+          var custom= $('#create_sale_form_custom');
+          var customDesc= $('#create_sale_form_customdesc');
+          var customPrice= $('#create_sale_form_customprice');
+          if(custom.attr('checked')){
+        	  customDesc.disabled=false;
+        	  customPrice.disabled=false;
+          }else{
+        	  customDesc.disabled=true;
+        	  customPrice.disabled=true;
+          }
+          job_desc();
+	  }
+
+
+      function disabs(){
+
+		  var w1=$('#create_sale_form_w1');
+          var w1PriceText =$('#create_sale_form_w1price');
+		  var w2=$('#create_sale_form_w2');
+          var w2PriceText =$('#create_sale_form_w2price');
+		  var w3=$('#create_sale_form_w3');
+          var w3PriceText =$('#create_sale_form_w3price');
+		  var w4=$('#create_sale_form_w4');
+          var w4PriceText =$('#create_sale_form_w4price');
+		  var eh=$('#create_sale_form_eh');
+          var ehPriceText =$('#create_sale_form_ehprice');
+		  var eg=$('#create_sale_form_eg');
+          var egPriceText =$('#create_sale_form_egprice');
+
+          var cages=$('#create_sale_form_cages');
+          var numCages=$('#create_sale_form_cagenum');
+          
+          var custom=$('#create_sale_form_custom');
+          var customDesc=$('#create_sale_form_customdesc');
+          var customPriceText=$('#create_sale_form_customprice');           
+		  var jobDesc=$('#create_sale_form_jobdesc');
+          var price=$('#create_sale_form_jobprice');
+          if(w1.attr('checked'))
+              w1PriceText.disabled=false;
+          else{
+              w1PriceText.disabled=true;
+          }
+          if(w2.attr('checked'))
+              w2PriceText.disabled=false;
+          else{
+              w2PriceText.disabled=true;
+          }
+          if(w3.attr('checked'))
+              w3PriceText.disabled=false;
+          else{
+              w3PriceText.disabled=true;
+          }
+          if(w4.attr('checked'))
+              w4PriceText.disabled=false;
+          else{
+              w4PriceText.disabled=true;
+          }
+          if(eh.attr('checked'))
+              ehPriceText.disabled=false;
+          else{
+              ehPriceText.disabled=true;
+          }
+          if(eg.attr('checked'))
+              egPriceText.disabled=false;
+          else{
+              egPriceText.disabled=true;
+          }
+          if(cages.attr('checked'))
+              numCages.disabled=false;
+          else{
+        	  numCages.disabled=true;
+          }
+          if(custom.attr('checked')){
+              customDesc.disabled=false;
+              customPriceText.disabled=false;
+          }else{
+        	  customDesc.disabled=true;
+              customPriceText.disabled=true;
+          }
+      }
+      
+
+        function numtomonth(num){
+        	if(num=='0')
+        		return 'Jan';
+        	else if(num=='1')
+        	  	return 'Feb';   
+        	else if(num=='2')
+        	  	return 'Mar';   
+        	else if(num=='3')
+        	  	return 'Apr';   
+        	else if(num=='4')
+        	  	return 'May';   
+        	else if(num=='5')
+        	  	return 'Jun';   
+        	else if(num=='6')
+        	  	return 'Jul';   
+        	else if(num=='7')
+        	  	return 'Aug';   
+        	else if(num=='8')
+        	  	return 'Sep';   
+        	else if(num=='9')
+        	  	return 'Oct';   
+        	else if(num=='10')
+        	  	return 'Nov';   
+        	else if(num=='11')
+        	  	return 'Dec';
+        }
+
+        function monthtonum(month){
+        	if(month=='Jan')
+        		return '0';
+        	else if(month=='Feb')
+        	  	return '1';   
+        	else if(month=='Mar')
+        	  	return '2';   
+        	else if(month=='Apr')
+        	  	return '3';   
+        	else if(month=='May')
+        	  	return '4';   
+        	else if(month=='Jun')
+        	  	return '5';   
+        	else if(month=='Jul')
+        	  	return '6';   
+        	else if(month=='Aug')
+        	  	return '7';   
+        	else if(month=='Sep')
+        	  	return '8';   
+        	else if(month=='Oct')
+        	  	return '9';   
+        	else if(month=='Nov')
+        	  	return '10';   
+        	else if(month=='Dec')
+        	  	return '11';
+        }
+        
+        function setDates(){
+			var bookoption=$('#bookoption');
+			var fyear=$('#create_sale_form_fyear');
+			var fmonth=$('#create_sale_form_fmonth');
+			var fday=$('#create_sale_form_fday');
+	
+			var syear=$('#create_sale_form_syear');
+			var smonth=$('#create_sale_form_smonth');
+			var sday=$('#create_sale_form_sday');
+			var currdate=new Date();
+			var curryear=currdate.getFullYear();
+			var currday=currdate.getDate();
+			var currmonth=numtomonth(currdate.getMonth());
+			$('#create_sale_form_jobtype_floater').attr('checked',true);
+			
+			if(bookoption.val()=='before April 15'){
+        		syear.val(curryear);
+        		smonth.val(currmonth);
+        		sday.val(currday);
+        		fyear.val("2013");
+        		fmonth.val("Apr");
+        		fday.val("15");
+        	}else if(bookoption.val()=='April 16-30'){
+        		syear.val("2013");
+        		smonth.val('Apr');
+        		sday.val('16');
+        		fyear.val("2013");
+        		fmonth.val("Apr");
+        		fday.val("30");
+        	}else if(bookoption.val()=='May 1-15'){
+        		syear.val("2013");
+        		smonth.val("May");
+        		sday.val("01");
+        		fyear.val("2013");
+        		fmonth.val("May");
+        		fday.val("15");
+        	}else if(bookoption.val()=='May 16-31'){
+        		syear.val("2013");
+        		smonth.val("May");
+        		sday.val("16");
+        		fyear.val("2013");
+        		fmonth.val("May");
+        		fday.val("31");
+        	}else if(bookoption.val()=='June 1-15'){
+        		syear.val("2013");
+        		smonth.val("Jun");
+        		sday.val("01");
+        		fyear.val("2013");
+        		fmonth.val("Jun");
+        		fday.val("15");
+        	}else if(bookoption.val()=='June 16-30'){
+        		syear.val("2013");
+        		smonth.val("Jun");
+        		sday.val("16");
+        		fyear.val("2013");
+        		fmonth.val("Jun");
+        		fday.val("30");
+        	}
+//		<option value="July 1-15">July 1-15</option>
+//		<option value="July 16-31">July 16-31</option>
+//		<option value="August 1-15">August 1-15</option>
+//		<option value="August 16-31">August 16-31</option>
+//		<option value="September 1-15">September 1-15</option>
+//		<option value="September 16-30">September 16-30</option>
+//		<option value="October 1-15">October 1-15</option>
+//		<option value="October 16-31">October 16-31</option>
+//		<option value="November 1-15">November 1-15</option>
+//		<option value="November 16-30">November 16-30</option>
+//		<option value="December 1-15">December 1-15</option>
+//		<option value="December 16-31">December 16-31</option>
+        }
+
+		function show_schedule(){
+			var butt=$('#schedule');
+			var sched=$('#show_schedule');
+			if(butt.html()=='Show Schedule'){
+				butt.html('Hide Schedule');
+				sched.show();
+			}else{
+				butt.html('Show Schedule');
+				sched.hide();
+			}
+			
+		}
+		
+	
+
+</script>
+
+<%=@ln%>
+<%if !@nosale.nil?%>
+<h1><font color="red"><%=@nosale%></font></h1>
+<br/><br/>
+<%end%>
+<h1><b><%=@ppr.client%> &nbsp; <%=@ppr.address%>&nbsp; <%=@ppr.city%></b></h1>
+
+<b><%=link_to 'Back To Client Profile', clientprofile_function_path(:CFID=>@cfid,:jobid1=>@jobid1,:source=>@source,:function=>@function)%></b><br/><br/></br/>     
+
+
+<%if !@notes_list.nil? && !@notes_list.empty?%>
+	<fieldset class="mystyle">
+		<legend>Job Notes</legend>
+		<table border="1" class="mystyle">
+		    <%@notes_list.each do |note|%>
+				<tr border="1" class="cell">
+					<td><%=note.ts %></td>
+					<td><%=note.recorder %></td>
+					<td><%=note.notes %></td>
+				</tr>
+			<%end%>       
+		</table>
+	</fieldset>
+<%end%>
+
+
+<%= form_for @esf_form, :url => savemodifysale_sale_url(:jobid => @jobid, :jobid1=>@jobid1, :source => @source, :function=>@function) do |cc| %>
+	<fieldset class="mystyle">
+		<legend>Save Job</legend>
+		    <%=cc.hidden_field :cfid, :value=>@cfid%>
+		    <%=cc.hidden_field :jobid, :value=>@jobid%>
+		    <%=cc.hidden_field :jobinfoid, :value=>@jobinfoid%>
+		    <%=cc.hidden_field :address, :value=>@ppr.address%>
+		    <%=cc.hidden_field :syear1, :value=>@selected_syear%>
+		    <%=cc.hidden_field :smonth1, :value=>@selected_smonth%>
+		    <%=cc.hidden_field :sday1, :value=>@selected_sday%>
+		    <%=cc.hidden_field :fyear1, :value=>@selected_fyear%>
+		    <%=cc.hidden_field :fmonth1, :value=>@selected_fmonth%>
+		    <%=cc.hidden_field :fday1, :value=>@selected_fday%>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<%if @job.Sdate!=@job.Fdate%>
+					<td><%=cc.radio_button :jobtype, 'floater',:checked=>true, :onclick=>'jobtype()' %>
+					<%=cc.label :jobtype_floater,'Floater' %></td>
+					<td><%=cc.radio_button :jobtype, 'appt', :onclick=>'jobtype()'%>
+					<%=cc.label :jobtype_appt,'Appointment' %></td>
+				<%else%>
+					<td><%=cc.radio_button :jobtype, 'floater', :onclick=>'jobtype()' %>
+					<%=cc.label :jobtype_floater,'Floater' %></td>
+					<td><%=cc.radio_button :jobtype, 'appt',:checked=>true, :onclick=>'jobtype()'%>
+					<%=cc.label :jobtype_appt,'Appointment' %></td>
+				<%end%>
+			</tr>
+			<tr border="1" class="cell">
+				<td><%=cc.label 'Start Date' %></td>
+				<td>
+					<%=cc.select :syear, options_for_select(@syear_options, @selected_syear)%>
+					<%=cc.select :smonth, options_for_select(@smonth_options, @selected_smonth)%>
+					<%=cc.select :sday, options_for_select(@sday_options, @selected_sday)%>
+				</td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%=cc.label 'Finish Date' %></td>
+				<td>
+					<%=cc.select :fyear, options_for_select(@fyear_options, @selected_fyear)%>
+					<%=cc.select :fmonth, options_for_select(@fmonth_options, @selected_fmonth)%>
+					<%=cc.select :fday, options_for_select(@fday_options, @selected_fday)%>
+				</td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%=cc.label :stime %></td>
+				<td>
+					<%=cc.select :stime, options_for_select(@stime_options, @selected_stime)%>
+				</td>
+			</tr>
+		</table><br/>	
+        
+		<% 
+		w1=''
+		w2=''
+		eh=''
+		eg=''
+		if !@ppr.nil?	
+				if @ppr.w1.nil?
+					w1=''
+				else
+					w1=sprintf("$%0.02f", @ppr.w1)
+					w1=w1[1,w1.length]
+				end
+				if @ppr.w2.nil?
+					w2=''
+				else
+					w2=sprintf("$%0.02f", @ppr.w2)
+					w2=w2[1,w2.length]
+				end
+				if @ppr.eh.nil?
+					eh=''
+				else
+					eh=sprintf("$%0.02f", @ppr.eh)
+					eh=eh[1,eh.length]
+				end
+				if @ppr.eg.nil?
+					eg=''
+				else
+					eg=sprintf("$%0.02f", @ppr.eg)
+					eg=eg[1,eg.length]
+				end
+						
+		    %>
+			<h2><b>*******<%=@ppr.address%>*******<%=@ppr.city%>*******</b></h2>
+			<table border="1" class="mystyle">
+				<tr border="1" class="cell">
+					<%if @job.W1!=nil%>
+						<td><%=cc.check_box :w1, :value=>'1',:checked=>true, :onclick=>'job_desc()'%><%=cc.label :w1, 'W1' %><%=cc.text_field :w1price, :size=>'7', :value=>w1, :onkeyup=>'job_desc()' %></td>
+					<%else%>
+						<td><%=cc.check_box :w1, :onclick=>'job_desc()'%><%=cc.label :w1, 'W1' %><%=cc.text_field :w1price, :size=>'7', :value=>w1, :onkeyup=>'job_desc()' %></td>
+					<%end%>
+					<%if @job.W2!=nil%>
+						<td><%=cc.check_box :w2, :value=>'1',:checked=>true, :onclick=>'job_desc()'%><%=cc.label :w2, 'W2' %><%=cc.text_field :w2price, :size=>'7',:value=>w2, :onkeyup=>'job_desc()' %></td>
+					<%else%>
+						<td><%=cc.check_box :w2, :onclick=>'job_desc()'%><%=cc.label :w2, 'W2' %><%=cc.text_field :w2price, :size=>'7',:value=>w2, :onkeyup=>'job_desc()' %></td>
+					<%end%>
+					
+					<%if @job.W3!=nil%>
+						<td><%=cc.check_box :w3, :value=>'1',:checked=>true, :onclick=>'job_desc()'%><%=cc.label :w3, 'W3' %><%=cc.text_field :w3price, :size=>'7', :onkeyup=>'job_desc()' %></td>
+					<%else%>
+						<td><%=cc.check_box :w3, :onclick=>'job_desc()'%><%=cc.label :w3, 'W3' %><%=cc.text_field :w3price, :size=>'7',:value=>w2, :onkeyup=>'job_desc()' %></td>
+					<%end%>
+					
+					<%if @job.W4!=nil%>
+						<td><%=cc.check_box :w4, :value=>'1',:checked=>true, :onclick=>'job_desc()'%><%=cc.label :w4, 'W4' %><%=cc.text_field :w4price, :size=>'7', :onkeyup=>'job_desc()' %></td>
+					<%else%>
+						<td><%=cc.check_box :w4, :onclick=>'job_desc()'%><%=cc.label :w4, 'W4' %><%=cc.text_field :w4price, :size=>'7',:value=>w2, :onkeyup=>'job_desc()' %></td>
+					<%end%>
+				</tr>
+				
+				<tr border="1" class="cell">
+					<%if @job.EH!=nil%>
+						<td><%=cc.check_box :eh, :value=>'1',:checked=>true, :onclick=>'job_desc()'%><%=cc.label :eh, 'EH' %><%=cc.text_field :ehprice,:size=>'7', :value=>eh,:onkeyup=>'job_desc()' %></td>
+					<%else%>
+						<td><%=cc.check_box :eh, :onclick=>'job_desc()'%><%=cc.label :eh, 'EH' %><%=cc.text_field :ehprice,:size=>'7', :value=>eh,:onkeyup=>'job_desc()' %></td>
+					<%end%>
+					
+					<%if @job.EG!=nil%>
+						<td><%=cc.check_box :eg, :value=>'1',:checked=>true, :onclick=>'job_desc()'%><%=cc.label :eg, 'EG' %><%=cc.text_field :egprice,:size=>'7', :value=>eg,:onkeyup=>'job_desc()' %></td>
+					<%else%>
+						<td><%=cc.check_box :eg, :onclick=>'job_desc()'%><%=cc.label :eg, 'EG' %><%=cc.text_field :egprice,:size=>'7', :value=>eg,:onkeyup=>'job_desc()' %></td>
+					<%end%>
+					
+					<td colspan=2>
+					<%if @job.Cages!=nil
+						if @job.Cages=='-1'
+							@selected_cagenum='As Reqd'
+						else
+							cagenum=@job.Cages/5
+							@selected_cagenum=cagenum
+						end
+					%>
+					    
+						<%=cc.check_box :cages, :value=>'1',:checked=>true, :onclick=>'job_desc()'%>
+						<%=cc.label :cages, 'Cages' %>
+						<%=cc.select :cagenum, options_for_select(@cagenum_options, @selected_cagenum), :onselect=>'job_desc()'%>
+						<%=cc.text_field :cageprice,:size=>'7'%></td>
+					<%else%>
+						<%=cc.check_box :cages, :onclick=>'job_desc()'%>
+						<%=cc.label :cages, 'Cages' %>
+						<%=cc.select :cagenum, options_for_select(@cagenum_options, @selected_cagenum), {},{:onchange=>'job_desc()'}%>
+						<%=cc.text_field :cageprice,:size=>'7'%></td>
+					<%end%>	
+				
+				
+				</tr>
+				<tr border="1" class="cell">
+					<%if @job.Custom!=nil%>
+						<td colspan=4><%=cc.check_box :custom, :value=>'1',:checked=>true, :onclick=>'job_desc()'%><%=cc.label :custom, 'Custom' %><%=cc.label :customprice, 'Price' %><%=cc.text_field :customprice,:size=>'7', :onkeyup=>'job_desc()'%>
+						<%=cc.label :customdesc, 'Cust Desc' %><%=cc.text_field :customdesc,:size=>'15', :value=>@job.CustomDesc, :onkeyup=>'job_desc()'%></td>
+					<%else%>
+						<td colspan=4><%=cc.check_box :custom, :onclick=>'job_desc()'%><%=cc.label :custom, 'Custom' %><%=cc.label :customprice, 'Price' %><%=cc.text_field :customprice,:size=>'7', :onkeyup=>'job_desc()'%>
+						<%=cc.label :customdesc, 'Cust Desc' %><%=cc.text_field :customdesc,:size=>'15', :onkeyup=>'job_desc()'%></td>
+					<%end%>
+				</tr>
+			</table><br/>	
+		<%end%>
+		<table border="1" class="mystyle">
+			<tr border="1" class="cell">
+				<td colspan=3><%=cc.text_area :jobdesc, :value=>@job.JobDesc ,:size=>'60x4'%></td>
+			</tr>
+			<tr border="1" class="cell"><td  colspan=3><%=cc.label :notes, 'Job Notes' %><%=cc.text_field :notes,:size=>'50'%></td></tr>
+			<tr border="1" class="cell">
+				<td><%=cc.label :jobprice, 'Price' %><%=cc.text_field :jobprice, :size=>'7'%></td>
+				<td><%=cc.label :jobhst, 'HST' %><%=cc.text_field :jobhst, :size=>'7'%></td>
+				<td><%=cc.label :jobtotal, 'Total' %><%=cc.text_field :jobtotal, :size=>'7'%></td>
+			</tr>
+		</table><br/>
+        
+		<table border="1" class="mystyle">
+			<tr class="cell">
+				<td>Start Time</td>
+				<td><%=cc.select :shour, options_for_select(@hour_options, @selected_reportshour)%>:
+					<%=cc.select :smin, options_for_select(@min_options, @selected_reportsmin)%></td>
+			</tr>
+			<tr class="cell">
+				<td>Est Minutes</td>
+				<td><%=cc.text_field :estmin, :value=>@estmin_value%></td>
+			</tr>
+			<tr class="cell">
+				<td>Finish Time</td>
+				<td><%=cc.select :fhour, options_for_select(@hour_options, @selected_reportfhour)%>:
+					<%=cc.select :fmin, options_for_select(@min_options, @selected_reportfmin)%></td>
+			</tr>
+			<tr class="cell">
+				<td>Actual Minutes</td>
+				<td><%=cc.text_field :actmin, :value=>@actmin_value%></td>
+			</tr>
+
+			<tr border="1" class="cell">
+				<td><%=cc.label 'Date Done' %></td>
+				<td>
+					<%=cc.select :done_year, options_for_select(@pyear_options, @selected_pyear)%>
+					<%=cc.select :done_month, options_for_select(@pmonth_options, @selected_pmonth)%>
+					<%=cc.select :done_day, options_for_select(@pday_options, @selected_fday)%>
+				</td>
+			</tr>
+        </table><br/></br/>
+		<table border="1" class="mystyle">
+			<tr class="cell">
+				<td>Client Home</td>
+				<td><%=cc.select :clienthm, options_for_select(@clienthm_options, @selected_clienthm)%></td>
+			</tr>
+			<tr class="cell">
+				<td>Lawnsign</td>
+				<td><%=cc.select :lawnsign, options_for_select(@lawnsign_options, @selected_lawnsign)%></td>
+			</tr>
+			
+			<tr class="cell">
+				<td>Current Recstatus</td><td><%=@origrecstatus%></td>
+			</tr>
+			<tr class="cell">
+				<td>Rec Status</td>
+				<td><%=cc.select :recstatus, options_for_select(@rec_options)%></td>
+			</tr>
+			<tr>
+			<td>Chq#</td>
+			<td><%=cc.text_field :chqnum%></td>
+	        </tr>
+		</table>
+
+
+
+
+
+
+
+
+			<tr style="padding-top:10px" border="1" class="cell">
+				<td colspan=3, align=center><%= cc.submit "Save Job" %></td>
+			</tr>
+		</table>
+	</fieldset>
+<%end%>	
+
+
+	
+

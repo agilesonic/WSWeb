@@ -1,2 +1,45 @@
 testing
 <b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
+
+<%if !@jobs55.nil? && !@jobs55.empty? %>
+	<b><h2>Crew Tracker</h2></b>
+		<table border="1" class="mystyle">
+				<tr class="cell">
+					<th><b>Job ID</b></th>
+					<th><b>Address</b></th>
+					<th><b>Job Desc</b></th>
+					<th><b>Price</b></th>
+					<th><b>Start</b></th>
+					<th><b>Finish</b></th>
+					<th><b>Next Destination</b></th>
+				</tr>	
+			<%@jobs55.each do |j|
+			  class5=''
+			  if j.reportstime!='99:99:99' && j.reportftime!='99:99:99'
+			  	class5='done'
+			  elsif j.reportstime!='99:99:99' && j.reportftime=='99:99:99'
+			  	class5='started'
+			  	j.reportftime='nil'
+			  else	
+			  	class5='mystyle'
+			  	j.reportstime='nil'
+			  	j.reportftime='nil'
+			  end
+			  if j.JobID==@lastjob && @started=='false'
+			  	class5='travel'
+			  end
+			%>
+				<tr class=<%=class5%>>
+					<td><b><%= j.JobID %></b></td>
+					<td><b><%= j.Actiontake %></b></td>
+					<td><b><%= j.JobDesc %></b></td>
+					<td><b><%= number_to_currency j.Price %></b></td>
+					<td><b><%= j.reportstime %></b></td>
+					<td><b><%= j.reportftime %></b></td>
+					<td><b><%= j.nextdestination %></b></td>
+					<td><%= link_to 'Job Details', job_details_crew_path(:id => j.JobID),{:style=>"color: yellow"}%></td>
+				</tr>	
+			<%end%>
+		</table>
+	<%end%>
+

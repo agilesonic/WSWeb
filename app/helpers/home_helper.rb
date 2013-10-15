@@ -3,6 +3,13 @@ module HomeHelper
     YEARS=['2013', '2014','2015']
     DAYS=['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20',
          '21','22','23','24','25','26','27','28','29','30','31']
+
+    PROD_MONTHS=['nil', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    PROD_YEARS=['nil', '2013', '2014','2015']
+    PROD_DAYS=['nil', '01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20',
+         '21','22','23','24','25','26','27','28','29','30','31']
+
+
     STIME=['8:00 AM','Critical 8:00 AM','10:00 AM','Critical 10:00 AM','12:00 PM','Critical 12:00 PM','Anytime','Critical Anytime']
     CAGES=['1','2','3','4','5','As Reqd']
     SAT_TYPES=['Spoke to Client','Client Called Us','Left Message Machine','Left Message Person','No Contact']
@@ -26,7 +33,7 @@ module HomeHelper
     
     SCHEDULING_NOTES=['MON => Markham, Thornhill, Richmond Hill','TUES => Scarborough','WED => Woodbridge, Vaughan',
       'THURS => Mississauga, Oakville, Brampton','FRI => Keep light for Rain Days','SAT => 1/2 Crews working and 50% more labor cost']
-    HOURS=['07','08','09','10','11','12','13','14','15','16','17','18','19','20']
+    HOURS=['00','07','08','09','10','11','12','13','14','15','16','17','18','19','20']
     MIN=['00','05','10','15','20','25','30','35','40','45','50','55']
     SOURCE=['TORONTO SUN', 'METRO']
     SHOP=['East(Carlaw Ave/Lakeshore Blvd)', 'Central(Morse/Osler)', 'West(Dundas St West/Bloor St West)']
@@ -37,10 +44,12 @@ module HomeHelper
       'SCHEDULE TRAINING-TRAINING HOUSES', 'CONFIRM CALL', 'CALLED BACK', 'TRAINING FEEDBACK-LADDER', 
       'TRAINING FEEDBACK-CLASSROOM', 'TRAINING FEEDBACK-TRAINING HOUSES', 'FIELD READY', 'DEAD', 'WAIT LIST']
     TIMES_OPTIONS=['8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm']
+    REC_OPTIONS=['Unknown', 'Client Did Not Pay', 'Client Paid Cash', 'Client Paid By Cheque']
+    CLIENTHM_OPTIONS=['nil', 'Client not home', 'Client home', 'Client home start', 'Client home end',]
+    LAWNSIGN_OPTIONS=['nil', 'Yes', 'No']
     
     def self.check_missing tasks, task
       miss='';
-      puts 'TASKS',tasks
       if tasks.index(task).nil?
         miss=task.concat(' / ')
       end
@@ -133,7 +142,6 @@ module HomeHelper
         notes.each do |n|
           cbl=CallLogBundle.new
           cbl.ts=n.ts
-          puts n.id.to_s.concat('  ').concat(n.ts.to_s).concat(n.notes)
           if !n.nil? && !n.notes.nil? && !n.notes.index('Recble').nil?
             cbl.type='Recble'
           else  
@@ -172,7 +180,6 @@ module HomeHelper
       mess=Messages.calllog_resolved_message hrid, date
       mess.each do |m|
         cbl=CallLogBundle.new
-        puts 'IN RESOLVED'.concat(m.ts.to_s)
         cbl.ts=m.ts
         cbl.type='Resolved Message'
         cbl.object=''
@@ -248,7 +255,6 @@ module HomeHelper
       lastcl=nil
       i=0
       call_log.each do |k,cl|
-        puts k
         cl.class5='ok'
         if i==0
           lastcl=cl
@@ -422,7 +428,6 @@ module HomeHelper
       i=1
       if !@props.nil?
         @props.each do |p|
-          puts 'PROPERTY',p.address
           c=Client.find p.CFID
           ppr=PropPrices.new
           ppr.client= c.honorific+' '+c.firstname+' '+c.lastname
@@ -441,7 +446,6 @@ module HomeHelper
               elsif price5.JobType.eql? 'EG' then
                 ppr.eg= price5.price 
               end
-              puts price5.JobType, price5.price
             end
           end
               @prices_all << ppr
@@ -499,7 +503,6 @@ module HomeHelper
       else
         limany=as.first.lim
       end
-       puts d1.to_s,lim12,twelves
       sb=ScheduleBundle.new
       sb.date=d1
       sb.eights=eights

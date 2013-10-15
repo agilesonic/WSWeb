@@ -22,33 +22,117 @@ where bee yoo
 
 			
 			<tr class="cell">
-				<th><b>Open</b></th><td><b><%=msf.check_box :open, :size=>"25x1" %></b></td>
-				<th><b>Line 1</b></th><td><b><%=msf.check_box :line1, :size=>"25x1" %></b></td>
-				<th><b>Line 2+</b></th><td><b><%=msf.check_box :otherlines, :size=>"25x1" %></b></td>
-				<th><b>Check Emails</b></th><td><b><%=msf.check_box :emails, :size=>"25x1" %></b></td>
+				<% if @selected_open %>
+					<th><b>Open</b></th><td><b><%=msf.check_box :open, :value=>'1', :checked=>true, :size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Open</b></th><td><b><%=msf.check_box :open, :size=>"25x1" %></b></td>
+				<%end%>
+				<% if @selected_line1 %>
+					<th><b>Line 1</b></th><td><b><%=msf.check_box :line1, :value=>'1', :checked=>true, :size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Line 1</b></th><td><b><%=msf.check_box :line1, :size=>"25x1" %></b></td>
+				<%end%>
+				
+				<% if @selected_otherlines %>
+					<th><b>Line 2+</b></th><td><b><%=msf.check_box :otherlines, :value=>'1', :checked=>true, :size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Line 2+</b></th><td><b><%=msf.check_box :otherlines, :size=>"25x1" %></b></td>
+				<%end%>
+				
+				<% if @selected_emails %>
+					<th><b>Check Emails</b></th><td><b><%=msf.check_box :emails, :value=>'1', :checked=>true, :size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Check Emails</b></th><td><b><%=msf.check_box :emails,  :size=>"25x1" %></b></td>
+				<%end%>
 			</tr>
 			<tr class="cell">
-				<th><b>Recble 15</b></th><td><b><%=msf.check_box :recble15, :size=>"25x1" %></b></td>
-				<th><b>Recble 30</b></th><td><b><%=msf.check_box :recble30, :size=>"25x1" %></b></td>
-				<th><b>Recble 45</b></th><td><b><%=msf.check_box :recble45, :size=>"25x1" %></b></td>
-				<th><b>Process Payments</b></th><td><b><%=msf.check_box :payments, :size=>"25x1" %></b></td>
-				<th><b>Go To House</b></th><td><b><%=msf.check_box :gth, :size=>"25x1" %></b></td>
+				<% if @selected_recble15 %>
+					<th><b>Recble 15</b></th><td><b><%=msf.check_box :recble15, :value=>'1', :checked=>true,:size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Recble 15</b></th><td><b><%=msf.check_box :recble15, :size=>"25x1" %></b></td>
+				<%end%>
+
+				<% if @selected_recble30 %>
+					<th><b>Recble 30</b></th><td><b><%=msf.check_box :recble30, :value=>'1', :checked=>true,:size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Recble 30</b></th><td><b><%=msf.check_box :recble30, :size=>"25x1" %></b></td>
+				<%end%>
+
+				<% if @selected_recble45 %>
+					<th><b>Recble 45</b></th><td><b><%=msf.check_box :recble45, :value=>'1', :checked=>true,:size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Recble 45</b></th><td><b><%=msf.check_box :recble45, :size=>"25x1" %></b></td>
+				<%end%>
+				
+				<% if @selected_payments %>
+					<th><b>Process Payments</b></th><td><b><%=msf.check_box :payments, :value=>'1', :checked=>true,:size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Process Payments</b></th><td><b><%=msf.check_box :payments, :size=>"25x1" %></b></td>
+				<%end%>
+				
+				<% if @selected_gth %>
+					<th><b>Go To House</b></th><td><b><%=msf.check_box :gth, :value=>'1', :checked=>true,:size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Go To House</b></th><td><b><%=msf.check_box :gth, :size=>"25x1" %></b></td>
+				<%end%>
+				
+				
 			</tr>
 			<tr class="cell">
-				<th><b>Connection Calls</b></th><td><b><%=msf.check_box :conn, :size=>"25x1" %></b></td>
-				<th><b>Satisfaction Calls</b></th><td><b><%=msf.check_box :sats, :size=>"25x1" %></b></td>
-				<th><b>Estimates/Signs</b></th><td><b><%=msf.check_box :estsigns, :size=>"25x1" %></b></td>
-				<th><b>Voice Mail</b></th><td><b><%=msf.check_box :voicemail, :size=>"25x1" %></b></td>
-				<th><b>Voice Mail Weekend</b></th><td><b><%=msf.check_box :voicemail, :size=>"25x1" %></b></td>
+				<% if @selected_conn %>
+					<th><b>Connection Calls</b></th><td><b><%=msf.check_box :conn, :value=>'1', :checked=>true,:size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Connection Calls</b></th><td><b><%=msf.check_box :conn, :size=>"25x1" %></b></td>
+				<%end%>
+				
+				<% if @selected_sats %>
+					<th><b>Satisfaction Calls</b></th><td><b><%=msf.check_box :sats, :value=>'1', :checked=>true,:size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Satisfaction Calls</b></th><td><b><%=msf.check_box :sats, :size=>"25x1" %></b></td>
+				<%end%>
+				
+				<% if @selected_estsigns %>
+					<th><b>Estimates/Signs</b></th><td><b><%=msf.check_box :estsigns, :value=>'1', :checked=>true,:size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Estimates/Signs</b></th><td><b><%=msf.check_box :estsigns, :size=>"25x1" %></b></td>
+				<%end%>
+				
+				<% if @selected_voicemail %>
+					<th><b>Voice Mail</b></th><td><b><%=msf.check_box :voicemail, :value=>'1', :checked=>true,:size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Voice Mail</b></th><td><b><%=msf.check_box :voicemail, :size=>"25x1" %></b></td>
+				<%end%>
+				
+				<% if @selected_voicemailw %>
+					<th><b>Voice Mail Weekend</b></th><td><b><%=msf.check_box :voicemailw, :value=>'1', :checked=>true,:size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Voice Mail Weekend</b></th><td><b><%=msf.check_box :voicemailw, :size=>"25x1" %></b></td>
+				<%end%>
+				
 			</tr>
 			<tr class="cell">
-				<th><b>Get Mail</b></th><td><b><%=msf.check_box :getmail, :size=>"25x1" %></b></td>
-				<th><b>Newsletter</b></th><td><b><%=msf.check_box :newsletter, :size=>"25x1" %></b></td>
-				<th><b>Close</b></th><td><b><%=msf.check_box :close, :size=>"25x1" %></b></td>
+				<% if @selected_getmail %>
+					<th><b>Get Mail</b></th><td><b><%=msf.check_box :getmail, :value=>'1', :checked=>true,:size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Get Mail</b></th><td><b><%=msf.check_box :getmail, :size=>"25x1" %></b></td>
+				<%end%>
+				
+				<% if @selected_newsletter %>
+					<th><b>Newsletter</b></th><td><b><%=msf.check_box :newsletter, :value=>'1', :checked=>true,:size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Newsletter</b></th><td><b><%=msf.check_box :newsletter, :size=>"25x1" %></b></td>
+				<%end%>
+				
+				<% if @selected_close %>
+					<th><b>Close</b></th><td><b><%=msf.check_box :close, :value=>'1', :checked=>true,:size=>"25x1" %></b></td>
+				<%else%>
+					<th><b>Close</b></th><td><b><%=msf.check_box :close, :size=>"25x1" %></b></td>
+				<%end%>
+				
 			</tr>
 
 			<tr class="cell">
-				<th><b>Notes</b></th><td colspan=10><b><%=msf.text_area :notes, :size=>"110x3" %></b></td>
+				<th><b>Notes</b></th><td colspan=10><b><%=msf.text_area :notes, :value=>@selected_notes, :size=>"110x3" %></b></td>
 			</tr>
 			<tr class="cell">
 				<th><b>Same Day</b></th><td><b><%=msf.radio_button :nextday,"same", :checked=>@checked_same  %></b></td>

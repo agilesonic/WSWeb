@@ -65,9 +65,9 @@ class CrewsController <  ApplicationController
   end
   
   def activity
-    name=params[:id]
+    @crew_name=params[:id]
     jobs5={}
-    jobs=Job.jobs_crew name, Date.today
+    jobs=Job.jobs_crew @crew_name, Date.today
     jobs.each do |j|
         if j.reportstime.nil?
           j.reportstime='99:99:99'
@@ -98,7 +98,7 @@ class CrewsController <  ApplicationController
     
     def job_details
         @jobid=params[:id]
-       
+        @crew_name=params[:crew_name]
         @job=Job.find @jobid
         props=Property.get_property_from_jobinfoid @job.JobInfoID
         prop=props[0]
@@ -206,6 +206,24 @@ class CrewsController <  ApplicationController
           nb.ts=note.ts
           @notes_list<<nb
         end
+        @next_destination_options=[]
+        @next_destination_options<<"None Selected"
+        next_dests=Job.next_destination @crew_name, Date.today
+        next_dests.each do |dest|
+          @next_destination_options<<dest.JobID+' '+dest.property.address
+        end
+        @next_destination_options<<"Morse"
+        @next_destination_options<<"Osler"
+    end
+    
+    def save_job
+      puts 'GOT HERE 777777777777777777777777777777777777777777777777'
+      @crew_name=params[:crew_name]
+      esf=params[:create_sale_form]
+      puts 'JOBID%%%%%%%',esf[:jobid]
+      num_orig=Notes.get_num_orignotes(esf[:jobid])
+      puts 'NUM ORIG%%%%%%%',num_orig
+      redirect_to activity_crews_url(:id=>@crew_name)
     end
 
 end

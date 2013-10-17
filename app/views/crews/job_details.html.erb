@@ -482,7 +482,28 @@ hi ho
 			
 		}
 		
-	
+      function checkData(){
+    	var nextdest=$('#create_sale_form_nextdest');
+      		alert(nextdest.val());
+    	if(nextdest.val()=="None Selected"){
+      		alert("false");
+      		return false;
+      	}else{
+      		alert("true");
+      		return true;
+      	}	
+      }
+
+      function verify_job(){
+      	alert ("Got In")
+		var form=$('#jobdetailsform');
+		if(checkData()){
+        	return true;
+        }else{
+        	return false;
+        }
+	  }
+
 
 </script>
 
@@ -512,7 +533,7 @@ hi ho
 <%end%>
 
 
-<%= form_for @esf_form, :url => savemodifysale_sale_url(:jobid => @jobid, :jobid1=>@jobid1, :source => @source, :function=>@function) do |cc| %>
+<%= form_for @esf_form, :url => save_job_crew_url(:jobid => @jobid, :crew_name=>@crew_name ),:html => {:method => :post,:id=>'jobdetailsform', :onsubmit=>'return verify_job()'} do |cc| %>
 	<fieldset class="mystyle">
 		<legend>Save Job</legend>
 		    <%=cc.hidden_field :cfid, :value=>@cfid%>
@@ -721,6 +742,10 @@ hi ho
 				<td>Lawnsign</td>
 				<td><%=cc.select :lawnsign, options_for_select(@lawnsign_options, @selected_lawnsign)%></td>
 			</tr>
+			<tr class="cell">
+				<td>Next Destination</td>
+				<td><%=cc.select :nextdest, options_for_select(@next_destination_options, @selected_nextdest)%></td>
+			</tr>
 			
 			<tr class="cell">
 				<td>Current Recstatus</td><td><%=@origrecstatus%></td>
@@ -743,7 +768,7 @@ hi ho
 
 
 			<tr style="padding-top:10px" border="1" class="cell">
-				<td colspan=3, align=center><%= cc.submit "Save Job" %></td>
+				<td colspan=3, align=center><%= cc.submit "Save Job"%></td>
 			</tr>
 		</table>
 	</fieldset>

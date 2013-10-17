@@ -1489,7 +1489,7 @@ class FunctionsController <  ApplicationController
     @source=params[:source]
     @function=params[:function]
     @jobid1=params[:jobid1]
-    Satisfaction.count_sats @jobid1
+    count=Satisfaction.count_sats @jobid1
     @cfmess='Satisfaction Call Already Recorded!!!'
     if count==0
       scf=SatCallForm.new(params[:sat_call_form])

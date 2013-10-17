@@ -5,7 +5,7 @@ class CreateSaleForm < BaseForm
      :syear1, :smonth1, :sday1, :fyear1, :fmonth1, :fday1, :notes, :source, :early_eaves,
      
      :shour, :smin, :estmin, :actmin, :fhour, :fmin, :done_year, :done_month, :done_day, :recstatus, :chqnum,
-     :clienthm, :lawnsign
+     :clienthm, :lawnsign, :nextdest
      
      
      

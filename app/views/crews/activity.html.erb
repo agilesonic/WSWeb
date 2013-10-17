@@ -2,7 +2,7 @@ testing
 <b><%= link_to 'Main Menu', login1_functions_path%></b><br/><br/>
 
 <%if !@jobs55.nil? && !@jobs55.empty? %>
-	<b><h2>Crew Tracker</h2></b>
+	<b><h2>Crew Activity</h2></b>
 		<table border="1" class="mystyle">
 				<tr class="cell">
 					<th><b>Job ID</b></th>
@@ -37,7 +37,7 @@ testing
 					<td><b><%= j.reportstime %></b></td>
 					<td><b><%= j.reportftime %></b></td>
 					<td><b><%= j.nextdestination %></b></td>
-					<td><%= link_to 'Job Details', job_details_crew_path(:id => j.JobID),{:style=>"color: yellow"}%></td>
+					<td><%= link_to 'Job Details', job_details_crew_path(:id => j.JobID,:crew_name=>@crew_name),{:style=>"color: yellow"}%></td>
 				</tr>	
 			<%end%>
 		</table>

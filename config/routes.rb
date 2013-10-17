@@ -28,10 +28,12 @@ WSWeb::Application.routes.draw do
   resources :crews do
     collection do
       get 'tracker'
+      get 'activity'
     end
     member do
       get 'activity'
       get 'job_details'
+      post 'save_job'
     end
   end
 

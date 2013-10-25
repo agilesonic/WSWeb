@@ -1725,8 +1725,8 @@ class FunctionsController <  ApplicationController
       personal_bundle=PersonalBundle.new
       emps=Employee.name_from_id id
       name=emps.first.name  
-      salesass=Convertcalls.sales_by_assist_sdates @date_summer1, @date_summer2, id, sdate1, sdate2
-      salesdir=Convertcalls.sales_by_direct_sdates @date_summer1, @date_summer2, id, sdate1, sdate2
+      salesass=Convertcall.sales_by_assist_sdates @date_summer1, @date_summer2, id, sdate1, sdate2
+      salesdir=Convertcall.sales_by_direct_sdates @date_summer1, @date_summer2, id, sdate1, sdate2
       sales=salesass.to_i+salesdir.to_i
       atts=Clientcontact.num_cfcontacts_fall2013_ind id
       attscurr=Clientcontact.num_cfcontacts_fall2013_ind_curr id, @date_summer2
@@ -1804,8 +1804,8 @@ class FunctionsController <  ApplicationController
       personal_bundle=PersonalBundle.new
       emps=Employee.name_from_id id
       name=emps.first.name  
-      salesass=Convertcalls.sales_by_assist_sdates @date_summer1, @date_summer2, id, sdate1, sdate2
-      salesdir=Convertcalls.sales_by_direct_sdates @date_summer1, @date_summer2, id, sdate1, sdate2
+      salesass=Convertcall.sales_by_assist_sdates @date_summer1, @date_summer2, id, sdate1, sdate2
+      salesdir=Convertcall.sales_by_direct_sdates @date_summer1, @date_summer2, id, sdate1, sdate2
       sales=salesass.to_i+salesdir.to_i
       atts=Clientcontact.num_cfcontacts_fall2013_ind id
       attscurr=Clientcontact.num_cfcontacts_fall2013_ind_curr id, @date_summer2
@@ -2734,11 +2734,18 @@ class FunctionsController <  ApplicationController
   
   def make_sbs name
     sb=SalesStatsBundle.new
-    sb.name=name
-    sb.assists=0
-    sb.sales=0
-    sb.sales1=0
-    sb.sales2=0
+      sb.name=name
+      puts 'NAME ',name
+      ids=Employee.just_id_from_name name
+      id=ids.first
+      sales1=Job.number_jobs_sold_ind Date.parse('2013-10-01'), Date.today-1, Date.parse('2013-12-31'), id 
+      sales2=Job.number_jobs_assist_ind Date.parse('2013-10-01'), Date.today-1, Date.parse('2013-12-31'), id
+      sb.assists=0
+      sb.sales=0
+      sb.sales1=0
+      sb.sales2=0
+      sb.sales_ytd=sales1
+      sb.assists_ytd=sales2
     return sb
   end
   
@@ -2752,6 +2759,106 @@ class FunctionsController <  ApplicationController
   
   
   def sales_stats
+    puts 'HELLO'
+    sbs=[]
+    sb=make_sbs 'Derek Boyd'
+    sbs<<sb
+    sb=make_sbs 'Diana Price'
+    sbs<<sb
+    sb=make_sbs 'Joshua Roes'
+    sbs<<sb
+    sb=make_sbs 'Maribel V Campollo'
+    sbs<<sb
+    sb=make_sbs 'Megan Atkinson'
+    sbs<<sb
+    sb=make_sbs 'Natasha D Angelo'
+    sbs<<sb
+    sb=make_sbs 'Neil S Samchand'
+    sbs<<sb
+    sb=make_sbs 'Nicole Robitaille'
+    sbs<<sb
+    sb=make_sbs 'Ryan Carreira'
+    sbs<<sb
+    sb=make_sbs 'Shanti Ramcharan'
+    sbs<<sb
+    sb=make_sbs 'www.whiteshark.ca'
+    sbs<<sb
+    sbtot=SalesStatsBundle.new
+    sbtot.name='TOTAL'
+    sbtot.assists=0
+    sbtot.sales=0
+    sbtot.sales1=0
+    sbtot.sales2=0
+    sbtot.sales_ytd=0
+    sbtot.assists_ytd=0
+
+    jobs=Job.jobs_sold_today_before Date.today, Date.parse('2013-12-31') 
+
+    jobs.each do |j|
+#      sb=SalesStatsBundle.new
+      puts j.SalesID1
+      emps=Employee.just_name_from_id j.SalesID1
+      name=emps.first
+      puts name
+    end
+    
+
+    jobs.each do |j|
+#      sb=SalesStatsBundle.new
+      emps=Employee.just_name_from_id j.SalesID1
+      name=emps.first
+      sb=find_sb sbs, name
+      #sb=sbs.first
+      p=j.property
+      cc=Convertcall.find_by_cfid p.CFID
+      cc=cc.first
+      if !cc.nil? && !cc.hrid.nil? && cc.hrid!=j.SalesID1
+        emps=Employee.just_name_from_id cc.hrid
+        name=emps.first
+        sb=find_sb sbs, name
+        #sb=sbs.first
+        sb.assists=sb.assists+1
+        sbtot.assists=sbtot.assists+1
+      end 
+      sb.sales=sb.sales+1
+      sbtot.sales=sbtot.sales+1
+      if j.Sdate>=Date.parse('2013-10-01') and j.Sdate<=Date.parse('2013-10-31')
+        sb.sales1=sb.sales1+1
+        sbtot.sales1=sbtot.sales1+1
+      end  
+      if j.Sdate>=Date.parse('2013-11-01') and j.Sdate<=Date.parse('2013-12-31')
+        sb.sales2=sb.sales2+1
+        sbtot.sales2=sbtot.sales2+1
+      end  
+    end
+    
+    sbs.each do |sb|
+     #if sb.name!='TOTAL'
+        puts sb.name
+ #       sbtot.sales_ytd=sbtot.sales_ytd+sb.sales_ytd
+ #       sbtot.assists_ytd=sbtot.assists_ytd+sb.assists_ytd
+     #end
+    end
+
+
+
+    @stats={}
+    sbs.each do |sb|
+      sbtot.sales_ytd=sbtot.sales_ytd+sb.sales_ytd
+      sbtot.assists_ytd=sbtot.assists_ytd.to_i+sb.assists_ytd
+      @stats[(HomeHelper.pad_num3 sb.assists.to_s).concat(sb.name)]=sb
+    end
+    
+    @stats['-1'.to_s]=sbtot
+ 
+    #@stats=@stats.reverse!
+    @stats=@stats.sort_by{|k, v| k}
+    @stats=@stats.reverse!
+    render 'sales_stats'
+  end
+  
+  
+  def sales_stats5
     sbs=[]
     sb=make_sbs 'Derek Boyd'
     sbs<<sb
@@ -2776,6 +2883,7 @@ class FunctionsController <  ApplicationController
     sbtot=make_sbs 'TOTAL'
     sbs<<sb
     jobs=Job.jobs_sold_today Date.today
+    jobs_ytd=Job.jobs_sold_today Date.today
 
     jobs.each do |j|
       sb=SalesStatsBundle.new
@@ -2783,7 +2891,7 @@ class FunctionsController <  ApplicationController
       name=emps.first
       sb=find_sb sbs, name
       p=j.property
-      cc=Convertcalls.find_by_cfid p.CFID
+      cc=Convertcall.find_by_cfid p.CFID
       cc=cc.first
       if !cc.nil? && !cc.hrid.nil? && cc.hrid!=j.SalesID1
         emps=Employee.just_name_from_id cc.hrid
@@ -2802,6 +2910,7 @@ class FunctionsController <  ApplicationController
         sbtot.sales2=sbtot.sales2+1
       end  
     end
+
     @stats={}
     sbs.each do |sb|
       @stats[(HomeHelper.pad_num3 sb.assists.to_s).concat(sb.name)]=sb

@@ -1,6 +1,6 @@
 
-class Convertcalls < ActiveRecord::Base
-  self.table_name="convertcalls"
+class Convertcall < ActiveRecord::Base
+  #self.table_name="convertcalls"
   
   belongs_to :client
   has_many :properties, :foreign_key => "cfid"

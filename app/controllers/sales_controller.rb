@@ -114,7 +114,7 @@ class SalesController < ApplicationController
   end
 
   def screensales
-    maxdate=Convertcalls.max_datesold
+    maxdate=Convertcall.max_datesold
     puts 'MAAXXXDDDAAATEEE',maxdate
     #maxdate1=Date.parse('2013-04-03')
     #maxdate2=Date.parse('2013-04-04')
@@ -126,7 +126,7 @@ class SalesController < ApplicationController
     end
     jobs.each do |job|
       c=job.client
-      ccs=Convertcalls.find_by_cfid c.CFID
+      ccs=Convertcall.find_by_cfid c.CFID
       cc=ccs.first
       if !cc.nil?
         cc.lastjob=job.Datesold
@@ -147,7 +147,7 @@ class SalesController < ApplicationController
 
   def callprofile
     @cp_form=CallProfileForm.new
-    cc=Convertcalls.select(:hrid).uniq
+    cc=Convertcall.select(:hrid).uniq
     @caller_options=[]
     cc.each do |c|
       if !c.hrid.nil?
@@ -175,33 +175,33 @@ class SalesController < ApplicationController
     @find_client_form=FindClientForm.new
     @action_client_form=ActionClientForm.new
     @profile_options=HomeHelper::PROFILE_OPTIONS
-    cc=Convertcalls.select(:hrid).uniq
+    cc=Convertcall.select(:hrid).uniq
     @callers=[]
     cb=CallerBundle.new
     cb.name='Unassigned'
-    cb.num=Convertcalls.search_unassigned_all
-        cb.fourseven=Convertcalls.search_unassigned('4.6','4.7')     
-        cb.fourfive=Convertcalls.search_unassigned('4.4','4.5')    
-        cb.fourthree=Convertcalls.search_unassigned('4.2','4.3')    
-        cb.fourone=Convertcalls.search_unassigned('4.0','4.1') 
-        cb.threenine=Convertcalls.search_unassigned('3.7','3.9') 
-        cb.threesix=Convertcalls.search_unassigned('3.3','3.6') 
-        cb.newests=Convertcalls.search_unassigned_newestimates 
+    cb.num=Convertcall.search_unassigned_all
+        cb.fourseven=Convertcall.search_unassigned('4.6','4.7')     
+        cb.fourfive=Convertcall.search_unassigned('4.4','4.5')    
+        cb.fourthree=Convertcall.search_unassigned('4.2','4.3')    
+        cb.fourone=Convertcall.search_unassigned('4.0','4.1') 
+        cb.threenine=Convertcall.search_unassigned('3.7','3.9') 
+        cb.threesix=Convertcall.search_unassigned('3.3','3.6') 
+        cb.newests=Convertcall.search_unassigned_newestimates 
     @callers<<cb
     cc.each do |c|
       if !c.hrid.nil?
         cb=CallerBundle.new
         emp=Employee.name_from_id c.hrid
         cb.name=emp.first.name
-        cb.num=Convertcalls.search_assigned_by_holder_all c.hrid
-        cb.fourseven=Convertcalls.search_assigned_by_holder(c.hrid,'4.6','4.7')    
-        cb.fourfive=Convertcalls.search_assigned_by_holder(c.hrid,'4.4','4.5')    
-        cb.fourthree=Convertcalls.search_assigned_by_holder(c.hrid,'4.2','4.3')    
-        cb.fourone=Convertcalls.search_assigned_by_holder(c.hrid,'4.0','4.1')    
-        cb.threenine=Convertcalls.search_assigned_by_holder(c.hrid,'3.7','3.9')    
-        cb.threesix=Convertcalls.search_assigned_by_holder(c.hrid,'3.3','3.6')    
-        cb.newests=Convertcalls.search_assigned_by_holder(c.hrid,'2.5','2.5')    
-        cb.lastsummer=Convertcalls.search_assigned_by_holder_lastsummer c.hrid    
+        cb.num=Convertcall.search_assigned_by_holder_all c.hrid
+        cb.fourseven=Convertcall.search_assigned_by_holder(c.hrid,'4.6','4.7')    
+        cb.fourfive=Convertcall.search_assigned_by_holder(c.hrid,'4.4','4.5')    
+        cb.fourthree=Convertcall.search_assigned_by_holder(c.hrid,'4.2','4.3')    
+        cb.fourone=Convertcall.search_assigned_by_holder(c.hrid,'4.0','4.1')    
+        cb.threenine=Convertcall.search_assigned_by_holder(c.hrid,'3.7','3.9')    
+        cb.threesix=Convertcall.search_assigned_by_holder(c.hrid,'3.3','3.6')    
+        cb.newests=Convertcall.search_assigned_by_holder(c.hrid,'2.5','2.5')    
+        cb.lastsummer=Convertcall.search_assigned_by_holder_lastsummer c.hrid    
         @callers<<cb
       end
     end
@@ -241,21 +241,21 @@ class SalesController < ApplicationController
 #puts action,profile,from_hrid
 #    if action=='unassign'
       if profile=='4.0=>4.1 clients'
-        cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.0', '4.1')
+        cc=Convertcall.search_assigned_by_holder_cc(from_hrid, '4.0', '4.1')
       elsif profile=='4.2=>4.3 clients'
-        cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.2', '4.3')
+        cc=Convertcall.search_assigned_by_holder_cc(from_hrid, '4.2', '4.3')
       elsif profile=='4.4=>4.5 clients'
-        cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.4', '4.5')
+        cc=Convertcall.search_assigned_by_holder_cc(from_hrid, '4.4', '4.5')
       elsif profile=='4.6=>4.7 clients'
-        cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '4.6', '4.7')
+        cc=Convertcall.search_assigned_by_holder_cc(from_hrid, '4.6', '4.7')
       elsif profile=='3.7=>3.9 clients'
-        cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '3.7', '3.9')
+        cc=Convertcall.search_assigned_by_holder_cc(from_hrid, '3.7', '3.9')
       elsif profile=='3.3=>3.6 clients'
-        cc=Convertcalls.search_assigned_by_holder_cc(from_hrid, '3.3', '3.6')
+        cc=Convertcall.search_assigned_by_holder_cc(from_hrid, '3.3', '3.6')
       elsif profile=='New Estimates'
-        cc=Convertcalls.search_assigned_by_holder_newestimates_cc from_hrid  
+        cc=Convertcall.search_assigned_by_holder_newestimates_cc from_hrid  
       elsif profile=='Used Us Last Summer'
-        cc=Convertcalls.search_assigned_by_holder_lastsummer_cc from_hrid  
+        cc=Convertcall.search_assigned_by_holder_lastsummer_cc from_hrid  
       end
     puts 'CC SIZE.......',cc.size
     i=0
@@ -284,25 +284,25 @@ class SalesController < ApplicationController
     @cc=[]
   #    PROFILE_OPTIONS=['4.1+ clients', 'Used Us Last Summer']
     if fcf.profile=='4.0=>4.1 clients'
-      @cc=Convertcalls.available_ratings fcf.lowcf, fcf.limit, '4.0', '4.1'
+      @cc=Convertcall.available_ratings fcf.lowcf, fcf.limit, '4.0', '4.1'
     elsif fcf.profile=='4.2=>4.3 clients'
-      @cc=Convertcalls.available_ratings  fcf.lowcf, fcf.limit, '4.2', '4.3'
+      @cc=Convertcall.available_ratings  fcf.lowcf, fcf.limit, '4.2', '4.3'
     elsif fcf.profile=='4.4=>4.5 clients'
-      @cc=Convertcalls.available_ratings  fcf.lowcf, fcf.limit, '4.4', '4.5'
+      @cc=Convertcall.available_ratings  fcf.lowcf, fcf.limit, '4.4', '4.5'
     elsif fcf.profile=='4.6=>4.7 clients'
-      @cc=Convertcalls.available_ratings  fcf.lowcf, fcf.limit, '4.6', '4.7'
+      @cc=Convertcall.available_ratings  fcf.lowcf, fcf.limit, '4.6', '4.7'
     elsif fcf.profile=='3.7=>3.9 clients'
-      @cc=Convertcalls.available_ratings  fcf.lowcf, fcf.limit, '3.7', '3.9'
+      @cc=Convertcall.available_ratings  fcf.lowcf, fcf.limit, '3.7', '3.9'
     elsif fcf.profile=='3.3=>3.6 clients'
-      @cc=Convertcalls.available_ratings  fcf.lowcf, fcf.limit, '3.3', '3.6'
+      @cc=Convertcall.available_ratings  fcf.lowcf, fcf.limit, '3.3', '3.6'
     elsif fcf.profile=='New Estimates'
       lowcf=fcf.lowcf
       if lowcf<'CF00039366'
         lowcf='CF00039366'
       end
-      @cc=Convertcalls.available_new_estimates  lowcf, fcf.limit
+      @cc=Convertcall.available_new_estimates  lowcf, fcf.limit
     elsif fcf.profile=='Used Us Last Summer'
-      @cc=Convertcalls.available_lastsummer fcf.lowcf, fcf.limit  
+      @cc=Convertcall.available_lastsummer fcf.lowcf, fcf.limit  
     end
     @assign_client_form=AssignClientForm.new
     emps=Employee.active_sales_people
@@ -322,24 +322,24 @@ class SalesController < ApplicationController
   #'4.0=>4.1 clients','4.2=>4.3 clients','4.4=>4.5 clients', '4.6=>4.7 clients'
   
     if profile=='4.0=>4.1 clients'
-      cc=Convertcalls.available_ratings lowcf, limit, '4.0', '4.1'
+      cc=Convertcall.available_ratings lowcf, limit, '4.0', '4.1'
     elsif profile=='4.2=>4.3 clients'
-      cc=Convertcalls.available_ratings lowcf, limit, '4.2', '4.3'
+      cc=Convertcall.available_ratings lowcf, limit, '4.2', '4.3'
     elsif profile=='4.4=>4.5 clients'
-      cc=Convertcalls.available_ratings lowcf, limit, '4.4', '4.5'
+      cc=Convertcall.available_ratings lowcf, limit, '4.4', '4.5'
     elsif profile=='4.6=>4.7 clients'
-      cc=Convertcalls.available_ratings lowcf, limit, '4.6', '4.7'
+      cc=Convertcall.available_ratings lowcf, limit, '4.6', '4.7'
     elsif profile=='3.7=>3.9 clients'
-      cc=Convertcalls.available_ratings lowcf, limit, '3.7', '3.9'
+      cc=Convertcall.available_ratings lowcf, limit, '3.7', '3.9'
     elsif profile=='3.3=>3.6 clients'
-      cc=Convertcalls.available_ratings lowcf, limit, '3.3', '3.6'
+      cc=Convertcall.available_ratings lowcf, limit, '3.3', '3.6'
     elsif profile=='Used Us Last Summer'
-      cc=Convertcalls.available_lastsummer lowcf, limit  
+      cc=Convertcall.available_lastsummer lowcf, limit  
     elsif profile=='New Estimates'
       if lowcf<'CF00039366'
         lowcf='CF00039366'
       end
-      cc=Convertcalls.available_new_estimates lowcf, limit  
+      cc=Convertcall.available_new_estimates lowcf, limit  
     end
     salesp=acf.salesp
     low=acf.low
@@ -360,17 +360,17 @@ class SalesController < ApplicationController
     
     emp=Employee.name_from_id hrid
     @cb.name=emp.first.name
-    @cb.num=Convertcalls.search_assigned_by_holder_all hrid
-    @cb.fourseven=Convertcalls.search_assigned_by_holder hrid, '4.6', '4.7'    
-    @cb.fourfive=Convertcalls.search_assigned_by_holder hrid, '4.4', '4.5'    
-    @cb.fourthree=Convertcalls.search_assigned_by_holder hrid, '4.2', '4.3'    
-    @cb.fourone=Convertcalls.search_assigned_by_holder hrid, '4.0', '4.1'    
-    @cb.threenine=Convertcalls.search_assigned_by_holder hrid, '3.7', '3.9'    
-    @cb.threesix=Convertcalls.search_assigned_by_holder hrid, '3.3', '3.6'    
-    @cb.newests=Convertcalls.search_assigned_by_holder hrid, '2.5', '2.5'    
-    @cb.lastsummer=Convertcalls.search_assigned_by_holder_lastsummer hrid    
+    @cb.num=Convertcall.search_assigned_by_holder_all hrid
+    @cb.fourseven=Convertcall.search_assigned_by_holder hrid, '4.6', '4.7'    
+    @cb.fourfive=Convertcall.search_assigned_by_holder hrid, '4.4', '4.5'    
+    @cb.fourthree=Convertcall.search_assigned_by_holder hrid, '4.2', '4.3'    
+    @cb.fourone=Convertcall.search_assigned_by_holder hrid, '4.0', '4.1'    
+    @cb.threenine=Convertcall.search_assigned_by_holder hrid, '3.7', '3.9'    
+    @cb.threesix=Convertcall.search_assigned_by_holder hrid, '3.3', '3.6'    
+    @cb.newests=Convertcall.search_assigned_by_holder hrid, '2.5', '2.5'    
+    @cb.lastsummer=Convertcall.search_assigned_by_holder_lastsummer hrid    
    
-    ccs=Convertcalls.search__highcf hrid, '4.6', '4.7', Date.today
+    ccs=Convertcall.search__highcf hrid, '4.6', '4.7', Date.today
     if ccs.nil? || ccs.size==0
       @cb.fourseven_highcf='nil'
     else  
@@ -378,7 +378,7 @@ class SalesController < ApplicationController
         @cb.fourseven_highcf=cc.cfid
     end      
 
-    ccs=Convertcalls.search__highcf hrid, '4.4', '4.5', Date.today
+    ccs=Convertcall.search__highcf hrid, '4.4', '4.5', Date.today
     if ccs.nil? || ccs.size==0
       @cb.fourfive_highcf='nil'
     else  
@@ -386,7 +386,7 @@ class SalesController < ApplicationController
         @cb.fourfive_highcf=cc.cfid
     end      
     
-    ccs=Convertcalls.search__highcf hrid, '4.2', '4.3', Date.today
+    ccs=Convertcall.search__highcf hrid, '4.2', '4.3', Date.today
     if ccs.nil? || ccs.size==0
       @cb.fourthree_highcf='nil'
     else  
@@ -394,7 +394,7 @@ class SalesController < ApplicationController
         @cb.fourthree_highcf=cc.cfid
     end      
 
-    ccs=Convertcalls.search__highcf hrid, '4.0', '4.1', Date.today
+    ccs=Convertcall.search__highcf hrid, '4.0', '4.1', Date.today
     if ccs.nil? || ccs.size==0
       @cb.fourone_highcf='nil'
     else  
@@ -402,7 +402,7 @@ class SalesController < ApplicationController
         @cb.fourone_highcf=cc.cfid
     end      
 
-    ccs=Convertcalls.search__highcf hrid, '3.7', '3.9', Date.today
+    ccs=Convertcall.search__highcf hrid, '3.7', '3.9', Date.today
     if ccs.nil? || ccs.size==0
       @cb.threenine_highcf='nil'
     else  
@@ -410,7 +410,7 @@ class SalesController < ApplicationController
       @cb.threenine_highcf=cc.cfid
     end      
     
-    ccs=Convertcalls.search__highcf hrid, '3.3', '3.6', Date.today
+    ccs=Convertcall.search__highcf hrid, '3.3', '3.6', Date.today
     if ccs.nil? || ccs.size==0
       @cb.threesix_highcf='nil'
     else  
@@ -418,7 +418,7 @@ class SalesController < ApplicationController
       @cb.threesix_highcf=cc.cfid
     end      
     
-    ccs=Convertcalls.search__highcf hrid, '2.5', '2.5', Date.today
+    ccs=Convertcall.search__highcf hrid, '2.5', '2.5', Date.today
     if ccs.nil? || ccs.size==0
       @cb.newests_highcf='nil'
     else  
@@ -426,7 +426,7 @@ class SalesController < ApplicationController
       @cb.newests_highcf=cc.cfid
     end      
     
-    ccs=Convertcalls.search__highcf_lastsummer hrid, Date.today
+    ccs=Convertcall.search__highcf_lastsummer hrid, Date.today
     if ccs.nil? || ccs.size==0
       @cb.lastsummer_highcf='nil'
     else  
@@ -437,25 +437,25 @@ class SalesController < ApplicationController
 
 #_____________________________________________________________________________________________________________________________
 
-    zeroes=Convertcalls.search__calls hrid, '4.6', '4.7', Date.today, '0'
+    zeroes=Convertcall.search__calls hrid, '4.6', '4.7', Date.today, '0'
       @cb.fourseven_zero=zeroes
 
-    zeroes=Convertcalls.search__calls hrid, '4.4', '4.5', Date.today, '0'
+    zeroes=Convertcall.search__calls hrid, '4.4', '4.5', Date.today, '0'
       @cb.fourfive_zero=zeroes
     
-    zeroes=Convertcalls.search__calls hrid, '4.2', '4.3', Date.today, '0'
+    zeroes=Convertcall.search__calls hrid, '4.2', '4.3', Date.today, '0'
       @cb.fourthree_zero=zeroes
 
-    zeroes=Convertcalls.search__calls hrid, '4.0', '4.1', Date.today, '0'
+    zeroes=Convertcall.search__calls hrid, '4.0', '4.1', Date.today, '0'
       @cb.fourone_zero=zeroes
 
-    zeroes=Convertcalls.search__calls hrid, '3.7', '3.9', Date.today, '0'
+    zeroes=Convertcall.search__calls hrid, '3.7', '3.9', Date.today, '0'
       @cb.threenine_zero=zeroes
     
-    zeroes=Convertcalls.search__calls hrid, '3.3', '3.6', Date.today, '0'
+    zeroes=Convertcall.search__calls hrid, '3.3', '3.6', Date.today, '0'
       @cb.threesix_zero=zeroes
     
-    zeroes=Convertcalls.search__calls hrid, '2.5', '2.5', Date.today, '0'
+    zeroes=Convertcall.search__calls hrid, '2.5', '2.5', Date.today, '0'
       @cb.newests_zero=zeroes
     
 
@@ -482,7 +482,7 @@ class SalesController < ApplicationController
       sf.lowcf='CF00000001'  
     end
     
-    @cc=Convertcalls.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today, sf.numcalls
+    @cc=Convertcall.search_ccrange sf.lowcf, sf.limit, hrid, sf.profile, Date.today, sf.numcalls
     
     if !@cc.empty?
       cc1=@cc.first
@@ -493,7 +493,7 @@ class SalesController < ApplicationController
       session[:limit] = sf.limit
       session[:numcalls]= sf.numcalls
       session[:selected_profile] = sf.profile
-      @count=Convertcalls.count_ccrange cc.cfid, hrid, sf.profile, Date.today, sf.numcalls
+      @count=Convertcall.count_ccrange cc.cfid, hrid, sf.profile, Date.today, sf.numcalls
     end
   end   
 
@@ -503,7 +503,7 @@ class SalesController < ApplicationController
     hrid=session[:hrid]
     profile=session[:profile]
     numcalls=session[:numcalls]
-    @cc=Convertcalls.search_ccrange(lowcf, limit, hrid, profile, Date.today, numcalls)
+    @cc=Convertcall.search_ccrange(lowcf, limit, hrid, profile, Date.today, numcalls)
     render 'loadclients'
   end
 
@@ -560,7 +560,7 @@ class SalesController < ApplicationController
     hrid=session[:hrid]
     profile=session[:profile]
     num=session[:num]
-    @cc=Convertcalls.search_ccrange(lowcf, limit, hrid, profile, Date.today, numcalls)
+    @cc=Convertcall.search_ccrange(lowcf, limit, hrid, profile, Date.today, numcalls)
     trip=false
     num=num.to_i+1
     loop do
@@ -601,7 +601,7 @@ class SalesController < ApplicationController
     profile=session[:profile]
     num=session[:num]
     numcalls=session[:numcalls]
-    @cc=Convertcalls.search_ccrange(lowcf, limit, hrid, profile, Date.today, numcalls)
+    @cc=Convertcall.search_ccrange(lowcf, limit, hrid, profile, Date.today, numcalls)
     
     #num=num.to_i-1
     #session[:num]=num.to_s
@@ -678,7 +678,7 @@ class SalesController < ApplicationController
   #end
   
   def update_convertcall(cfid, tstatus, followup)
-    convcall=Convertcalls.find cfid
+    convcall=Convertcall.find cfid
     if tstatus=='Pending Summer 2013' ||tstatus=='Pending Summer 2014' || tstatus=='Pending Fall 2013'|| tstatus=='Pending Fall 2014'
       tstatus='Pending'
     end
@@ -705,7 +705,7 @@ class SalesController < ApplicationController
       contact=contacts.last
       contact.destroy
     end
-    cc=Convertcalls.find cfid
+    cc=Convertcall.find cfid
     contacts=Clientcontact.search_cfcontacts cfid
     if !contacts.nil? && contacts.size==0
       cc.lastcall=nil
@@ -1233,7 +1233,7 @@ class SalesController < ApplicationController
   def screenconvertcalls
     Utils.set_jobid nil
     cfid1=Client.max_CFID
-    cfid=Convertcalls.max_CFID
+    cfid=Convertcall.max_CFID
     clients=Client.range_for_convertcalls cfid,cfid1 
     clients.each do |client|
 #      prices=HomeHelper::get_props_and_prices(client)
@@ -1244,7 +1244,7 @@ class SalesController < ApplicationController
 #          break
 #        end
 #      end
-        cc=Convertcalls.new
+        cc=Convertcall.new
         cc.cfid=client.CFID
         
         cc.numjobsls='0'

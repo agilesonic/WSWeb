@@ -25,6 +25,15 @@ class Property < ActiveRecord::Base
     where("jobinfoid = ?", "#{key}") 
   end
 
+  def self.convertcall 
+    where("jobinfoid = ?", "#{key}") 
+  end
+
+  def convertcall
+    Convertcall.find(self.property.CFID)    
+  end
+
+
 end
 
 

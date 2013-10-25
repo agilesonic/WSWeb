@@ -10,6 +10,8 @@
 				<td>Sales</td>
 				<td>Oct Sales</td>
 				<td>Nov/Dec Sales</td>
+				<td>Sales YTD</td>
+				<td>Assists YTD</td>
 			</tr>
 			<%@stats.each do |k, stat|%>
 				<tr class="cell" border="1">
@@ -18,6 +20,8 @@
 					<td><%=stat.sales%></td>
 					<td><%=stat.sales1%></td>
 					<td><%=stat.sales2%></td>
+					<td><%=stat.sales_ytd%></td>
+					<td><%=stat.assists_ytd%></td>
 				</tr>
 		    <%end%>
 </fieldset>

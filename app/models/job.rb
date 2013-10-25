@@ -35,6 +35,11 @@ class Job < ActiveRecord::Base
     where("datesold = ? and sdate is not null", date) 
   end
 
+  def self.jobs_sold_today_before date,sdate 
+    where("datesold = ? and sdate<= ?", date, sdate) 
+  end
+
+
   def self.jobs_sold_between(date1, date2,jobid)
     where("datesold between ? and ? and jobid>=?",date1, date2, jobid).order("JobID").limit(20)
   end
@@ -85,12 +90,18 @@ class Job < ActiveRecord::Base
     where("sdate between ? and ? and datebi is null", date1, date2).count
   end
 
-
-
-
   def self.number_jobs_sold(date1, date2, date3) 
     where("datesold between ? and ? and sdate < ?", date1, date2, date3).count 
   end
+
+  def self.number_jobs_sold_ind(date1, date2, date3, ind) 
+    where("datesold between ? and ? and sdate < ? and salesid1= ?", date1, date2, date3, ind).count 
+  end
+
+  def self.number_jobs_assist_ind(date1, date2, date3, ind) 
+    where("datesold between ? and ? and sdate < ? and salesid2= ?", date1, date2, date3, ind).count 
+  end
+
 
   def self.number_jobs_sold_sdates(date1, date2, date3, date4) 
     where("datesold between ? and ? and sdate between ? and ?", date1, date2, date3, date4).count 
